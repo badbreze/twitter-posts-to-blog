@@ -2,12 +2,8 @@
 /*
 Plugin Name: Twitter posts to Blog
 Description: Post twetts to your blog
-Version: 0.1
+Version: 0.2
 Author: Damian Gomez
-
-Copyleft 2012, racksoft@gmail.com
-
-I take NO RESPONSIBILITY on how you use of this plugin and/or any problem caused using this plugin, do what you want with it!
 */
 $dg_tw_queryes = array();
 $dg_tw_time = '';
@@ -17,8 +13,6 @@ $dg_tw_publish = '';
  * SETUP THE CRON
 */
 function dg_tw_load_next_items() {
-	error_log('Inizio cron!!!');
-	
 	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $wpdb;
 
 	if (!function_exists('curl_init'))
@@ -29,7 +23,6 @@ function dg_tw_load_next_items() {
 
 
 	foreach($dg_tw_queryes as $query) {
-		error_log('Entro nel foreach!!!');
 		$dg_tw_url_compose = "http://search.twitter.com/search.json?q=".urlencode($query['value'])."&since_id=".$query['last_id'];
 		$dg_tw_data = dg_tw_curl_file_get_contents($dg_tw_url_compose);
 		$dg_tw_data= json_decode($dg_tw_data, true);
@@ -219,8 +212,6 @@ function dg_tw_options() {
 	$dg_tw_publish = (string) get_option('dg_tw_publish');
 	$dg_tw_tags = (string) get_option('dg_tw_tags');
 
-	error_log("DATA ATTUALE SECONDO WORDPRESS: ".date_i18n(get_option('date_format')));
-
 	if(isset($_POST['dg_tw_data_update'])) {
 		$dg_temp_array = array();
 
@@ -248,7 +239,6 @@ function dg_tw_options() {
 			$recurrences = wp_get_schedules();
 			wp_schedule_event( time()+$recurrences[$dg_tw_time]['interval'], $dg_tw_time, 'dg_tw_event_start');
 		}
-		error_log('Twitter to wordpress: changed execution time!');
 	}
 
 	if(isset($_POST['dg_tw_publish_mode'])) {
