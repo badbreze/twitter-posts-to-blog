@@ -135,7 +135,8 @@ add_filter('cron_schedules','dg_tw_schedule');
  * Create admin menu element
  */
 function dg_add_menu_item() {
-	add_options_page( 'Twitter To WP', 'Twitter To WP', 'administrator', 'dg_tw_admin_menu', 'dg_tw_drawpage');
+	$privilege = get_option('dg_tw_ft');
+	add_options_page( 'Twitter To WP', 'Twitter To WP', $privilege['privileges'], 'dg_tw_admin_menu', 'dg_tw_drawpage');
 }
 add_action('admin_menu', 'dg_add_menu_item');
 
@@ -215,7 +216,7 @@ function dg_tw_activation() {
 	}
 	
 	if(!$dg_tw_ft) {
-		update_option('dg_tw_ft',array('ui'=>true,'text'=>true,'img_size'=>'bigger','ipp'=>15));
+		update_option('dg_tw_ft',array('ui'=>true,'text'=>true,'img_size'=>'bigger','ipp'=>15,'privileges'=>'administrator'));
 	}
 	
 	if ( !wp_next_scheduled( 'dg_tw_event_start' ) && $dg_tw_time && $dg_tw_time != "never") {
@@ -293,6 +294,7 @@ function dg_tw_options() {
 		$now_ft['text'] = (int) $_POST['dg_tw_ft_text'];
 		$now_ft['img_size'] = $_POST['dg_tw_ft_size'];
 		$now_ft['ipp'] = $_POST['dg_tw_ipp'];
+		$now_ft['privileges'] = $_POST['dg_tw_privileges'];
 		
 		update_option('dg_tw_ft',$now_ft);
 		$dg_tw_ft = get_option('dg_tw_ft');

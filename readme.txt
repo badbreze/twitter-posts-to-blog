@@ -13,14 +13,18 @@ This plugin simply create posts in your blog from selected twitter searches, I t
 = With this plugin you can stream tweets to your blog, it's simply to use =
 * Go to the plugin settings menu ( Settings -> Twitter To WP)
 * You have one text box called "Add query string:", type the query string you want to autopublish, eg.:
-* @yourUsername
-* #yourtag
-* anyText
-* Click ADD button
-* Click Save Now Button unser query strings
-* From "Cron Period" chose every how much time this plugin import new items and click Save Now
-* From "Autopublish Status" select your favorite publish status and click Save Now
-* Optional from "Some tags?" type the tags you want to be added in every post
+* @egUsername
+* #egTag
+* egText
+* Now Click ADD button to add this query string to "current queryes"
+* From "Cron Time" chose every how much time this plugin import new items
+* From "Publish Status" select your favorite publish status
+* Optional from "Post Tags" type the tags you want to be added in every post
+* Optional from "Body Images" chose if you want to insert user image into body
+* Optional from "Body Text" chose if you want to insert tweet text into body
+* Optional from "Image size" chose image size for the body image (if "Body Images" are selected)
+* Optional from "Items at time" chose how much tweets want to import each time the cron run
+* Click Save Settings Button
 * Now the plugin import automaticaly chosed tweets
 
 = More? =

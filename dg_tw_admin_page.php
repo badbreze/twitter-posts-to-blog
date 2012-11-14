@@ -93,6 +93,20 @@
 				</tr>
 				<tr valign="top">
 					<td scope="row">
+						<b>Privilege:</b>
+					</td>
+					<td>
+						<span class="description">Who can use this plugin:</span><br/>
+						<select name="dg_tw_privileges">
+							<option value="administrator"<?php if ($dg_tw_ft['privileges'] === 'administrator') echo ' selected=selected'; ?>>Administrator</option>
+							<option value="editor"<?php if ($dg_tw_ft['privileges'] === 'editor') echo ' selected=selected'; ?>>Editor</option>
+							<option value="author"<?php if ($dg_tw_ft['privileges'] === 'author') echo ' selected=selected'; ?>>Author</option>
+							<option value="contributor"<?php if ($dg_tw_ft['privileges'] === 'contributor') echo ' selected=selected'; ?>>Contributor</option>
+						</select>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
 						<b>Your search queryes</b>
 					</td>
 					<td>
