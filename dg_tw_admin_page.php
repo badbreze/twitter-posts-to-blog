@@ -64,7 +64,7 @@
 						<b>Body text:</b>
 					</td>
 					<td>
-						<span class="description">Insert twitt text in body</span><br/>
+						<span class="description">Insert tweet text in body</span><br/>
 						<input type="checkbox" name="dg_tw_ft_text" class="regular-text" value="1" <?php if ($dg_tw_ft['text']) echo ' checked=checked'; ?>/>
 					</td>
 				</tr>
