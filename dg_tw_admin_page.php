@@ -98,10 +98,10 @@
 					<td>
 						<span class="description">Who can use this plugin:</span><br/>
 						<select name="dg_tw_privileges">
-							<option value="administrator"<?php if ($dg_tw_ft['privileges'] === 'administrator') echo ' selected=selected'; ?>>Administrator</option>
-							<option value="editor"<?php if ($dg_tw_ft['privileges'] === 'editor') echo ' selected=selected'; ?>>Editor</option>
-							<option value="author"<?php if ($dg_tw_ft['privileges'] === 'author') echo ' selected=selected'; ?>>Author</option>
-							<option value="contributor"<?php if ($dg_tw_ft['privileges'] === 'contributor') echo ' selected=selected'; ?>>Contributor</option>
+							<option value="level_10"<?php if ($dg_tw_ft['privileges'] === 'level_10') echo ' selected=selected'; ?>>Administrator - Level 10</option>
+							<option value="level_7"<?php if ($dg_tw_ft['privileges'] === 'level_7') echo ' selected=selected'; ?>>Editor - Level 7</option>
+							<option value="level_2"<?php if ($dg_tw_ft['privileges'] === 'level_2') echo ' selected=selected'; ?>>Author - Level 2</option>
+							<option value="level_1"<?php if ($dg_tw_ft['privileges'] === 'level_1') echo ' selected=selected'; ?>>Contributor - Level 1</option>
 						</select>
 					</td>
 				</tr>

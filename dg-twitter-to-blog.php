@@ -216,7 +216,7 @@ function dg_tw_activation() {
 	}
 	
 	if(!$dg_tw_ft) {
-		update_option('dg_tw_ft',array('ui'=>true,'text'=>true,'img_size'=>'bigger','ipp'=>15,'privileges'=>'administrator'));
+		update_option('dg_tw_ft',array('ui'=>true,'text'=>true,'img_size'=>'bigger','ipp'=>15,'privileges'=>'level_10'));
 	}
 	
 	if ( !wp_next_scheduled( 'dg_tw_event_start' ) && $dg_tw_time && $dg_tw_time != "never") {
