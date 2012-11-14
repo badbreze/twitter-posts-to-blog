@@ -12,12 +12,12 @@ This plugin simply create posts in your blog from selected twitter searches, I t
 == Description ==
 = With this plugin you can stream tweets to your blog, it's simply to use =
 * Go to the plugin settings menu ( Settings -> Twitter To WP)
-* You have one text box called "Add query string:", type the quesry string you want to autopublish, eg.:
+* You have one text box called "Add query string:", type the query string you want to autopublish, eg.:
 * @yourUsername
 * #yourtag
 * anyText
 * Click ADD button
-* Click Save Now Button unser quesry strings
+* Click Save Now Button unser query strings
 * From "Cron Period" chose every how much time this plugin import new items and click Save Now
 * From "Autopublish Status" select your favorite publish status and click Save Now
 * Optional from "Some tags?" type the tags you want to be added in every post
@@ -39,3 +39,11 @@ Follow the description in order to configure the plugin
 
 = 0.1 =
 * Initial relase.
+
+= 0.2 =
+* Removed debug code.
+
+= 0.3 =
+* Formatting setting added.
+* New backend interface
+* More readable sorce code

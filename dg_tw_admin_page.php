@@ -3,14 +3,17 @@
 	<h2>Twitter To Wordpress Autopost</h2>
 	<h3>Autopost params</h3>
 	
-	<div style="display:block;float:right;width:350px;">
-		<div id="side-sortables" class="meta-box-sortabless" style="position:relative;">
-			<div class="postbox">
-				<h3 class="hndle" style="padding:7px;"><span>Cron Period</span></h3>
-				<div class="inside">
-					<form method="post" action="#">
-						<input type="hidden" name="dg_tw_time_update" value="yes" />
-						<span>Choose how much time must pass before load new items, use "never" to disable</span><br/><br/>
+	<form method="post" action="#">
+		<input type="hidden" name="dg_tw_data_update" value="yes" />
+		
+		<table class="form-table">
+			<tbody>
+				<tr valign="top">
+					<td scope="row" style="width:23%;">
+						<b>Cron time:</b>
+					</td>
+					<td>
+						<span class="description">Choose how much time must pass before load new items, use "never" to disable</span><br/>
 						<select name="dg_tw_time_selected">
 							<option value="never"<?php if ($dg_tw_time === 'never') echo ' selected=selected'; ?>>never</option>
 							<option value="dg_tw_oneminute"<?php if ($dg_tw_time === 'dg_tw_oneminute') echo ' selected=selected'; ?>>every minute</option>
@@ -23,72 +26,92 @@
 							<option value="daily"<?php if ($dg_tw_time === 'daily') echo ' selected=selected'; ?>>daily</option>
 							<option value="dg_tw_weekly"<?php if ($dg_tw_time === 'dg_tw_weekly') echo ' selected=selected'; ?>>weekly</option>
 							<option value="dg_tw_monthly"<?php if ($dg_tw_time === 'dg_tw_monthly') echo ' selected=selected'; ?>>monthly</option>
-						</select>&nbsp;&nbsp;
-						<input class="button-primary" type="submit" name="save" value="Save Now">
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div style="display:block;float:right;width:350px;clear: both;">
-		<div id="side-sortables" class="meta-box-sortabless" style="position:relative;">
-			<div class="postbox">
-				<h3 class="hndle" style="padding:7px;"><span>Autopublish status</span></h3>
-				<div class="inside">
-					<form method="post" action="#">
-						<input type="hidden" name="dg_tw_publish_mode" value="yes" />
-						<span>Choose how the plugin create articles: published or draft</span><br/><br/>
+						</select>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
+						<b>Publish status:</b>
+					</td>
+					<td>
+						<span class="description">Choose how the plugin create articles: published or draft</span><br/>
 						<select name="dg_tw_publish_selected">
 							<option value="publish"<?php if ($dg_tw_publish === 'publish') echo ' selected=selected'; ?>>Published</option>
 							<option value="draft"<?php if ($dg_tw_publish === 'draft') echo ' selected=selected'; ?>>Draft</option>
-						</select>&nbsp;&nbsp;
-						<input class="button-primary" type="submit" name="save" value="Save Now">
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<div style="display:block;float:right;width:350px;clear: both;">
-		<div id="side-sortables" class="meta-box-sortabless" style="position:relative;">
-			<div class="postbox">
-				<h3 class="hndle" style="padding:7px;"><span>Some tags?</span></h3>
-				<div class="inside">
-					<form method="post" action="#">
-						<input type="hidden" name="dg_tw_tags" value="yes" />
-						<span>Type tags you want append to each tweet</span><br/><br/>
-						<input type="text" size="60" name="dg_tw_tag_tweets" class="regular-text" value="<?php echo $dg_tw_tags; ?>">&nbsp;&nbsp;
-						<input class="button-primary" type="submit" name="save" value="Save Now">
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	<form method="post" action="#" style="display:block;margin-right:370px;">
-		<input type="hidden" name="dg_tw_data_update" value="yes" />
-		<div class="postbox">
-			<h3 class="hndle" style="padding:7px;"><span>From Twitter Search</span></h3>
-			<div class="inside" id="dg_tw_elements">
-				<p>You can add more item by click the ADD button below</p>
-				<p style="text-align:left;margin-bottom:40px;">
-					Add query string: 
-					<input type="text" id="dg_tw_add_title" size="60" name="dg_tw_query" class="regular-text" value=""> 
-					<input type="button" id="dg_tw_add_element" name="add_feed" value="Add" class="button-primary">
- 				</p>
-				<div id="dg_tw_elements_selected">
-					<?php if(!empty($dg_tw_queryes)) foreach($dg_tw_queryes as $query_element) { ?>
-						<p style="text-align:left;padding:5px;">
-							<input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"> 
-							<input type="text" size="30" class="regular-text" name="dg_tw_item_query[]" value="<?php echo $query_element['value']; ?>">
-							<span> - Last id: <a target="_blank" href="https://twitter.com/search?q=<?php echo urlencode($query_element['value']); ?>&since_id=<?php echo $query_element['last_id']; ?>"><?php echo $query_element['last_id']; ?></a></span> 
-						</p>
-					<?php } ?>
-				</div>
-				<input class="button-primary" type="submit" name="save" value="Save Now">
-				</div>
-			</div>
+						</select>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
+						<b>Post tags:</b>
+					</td>
+					<td>
+						<span class="description">Type tags you want append to each tweet</span><br/>
+						<input type="text" size="60" name="dg_tw_tag_tweets" class="regular-text" value="<?php echo $dg_tw_tags; ?>">
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
+						<b>Body images:</b>
+					</td>
+					<td>
+						<span class="description">Insert user image in body</span><br/>
+						<input type="checkbox" name="dg_tw_ft_ui" class="regular-text" value="1" <?php if ($dg_tw_ft['ui']) echo ' checked=checked'; ?>/>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
+						<b>Body text:</b>
+					</td>
+					<td>
+						<span class="description">Insert twitt text in body</span><br/>
+						<input type="checkbox" name="dg_tw_ft_text" class="regular-text" value="1" <?php if ($dg_tw_ft['text']) echo ' checked=checked'; ?>/>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
+						<b>Image size:</b>
+					</td>
+					<td>
+						<span class="description">Select user image size:</span><br/>
+						<select name="dg_tw_ft_size">
+							<option value="original"<?php if ($dg_tw_ft['img_size'] === 'original') echo ' selected=selected'; ?>>Original</option>
+							<option value="mini"<?php if ($dg_tw_ft['img_size'] === 'mini') echo ' selected=selected'; ?>>Mini - 24px by 24px</option>
+							<option value="normal"<?php if ($dg_tw_ft['img_size'] === 'normal') echo ' selected=selected'; ?>>Normal - 48px by 48px</option>
+							<option value="bigger"<?php if ($dg_tw_ft['img_size'] === 'bigger') echo ' selected=selected'; ?>>Bigger - 73px by 73px</option>
+						</select>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
+						<b>Your search queryes</b>
+					</td>
+					<td>
+						<span class="description">You can add more item by click the ADD button below</span><br/>
+						<input type="text" id="dg_tw_add_title" size="60" name="dg_tw_query" class="regular-text" value=""> 
+									<input type="button" id="dg_tw_add_element" name="add_feed" value="Add" class="button-primary">
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row"></td>
+					<td>
+						<span class="description">Current queryes</span><br/>
+						<div id="dg_tw_elements_selected">
+							<?php if(!empty($dg_tw_queryes)) foreach($dg_tw_queryes as $query_element) { ?>
+								<p style="text-align:left;padding:5px;">
+									<input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"> 
+									<input type="text" size="30" class="regular-text" name="dg_tw_item_query[]" value="<?php echo $query_element['value']; ?>">
+									<span> - Last id: <a target="_blank" href="https://twitter.com/search?q=<?php echo urlencode($query_element['value']); ?>&since_id=<?php echo $query_element['last_id']; ?>"><?php echo $query_element['last_id']; ?></a></span> 
+								</p>
+							<?php } ?>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<p class="submit">
+			<input type="submit" value="Save settings" class="button-primary" id="submit" name="submit"/>
+		</p>
 	</form>
 </div>
 <script type="text/javascript">

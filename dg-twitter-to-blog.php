@@ -2,7 +2,7 @@
 /*
 Plugin Name: Twitter posts to Blog
 Description: Post twetts to your blog
-Version: 0.2
+Version: 0.3
 Author: Damian Gomez
 */
 $dg_tw_queryes = array();
@@ -13,7 +13,7 @@ $dg_tw_publish = '';
  * SETUP THE CRON
 */
 function dg_tw_load_next_items() {
-	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $wpdb;
+	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_ft, $wpdb;
 
 	if (!function_exists('curl_init'))
 	{
@@ -44,11 +44,25 @@ function dg_tw_load_next_items() {
 						$postid = $wpdb->get_results($querystr);
 				
 			$time = strtotime($item['created_at']);
+
+			$post_content = "";
+			
+			if($dg_tw_ft['ui'] || $dg_tw_ft['text']) {
+				$post_content .= '<div class="twitter-post">';
+			
+				if($dg_tw_ft['ui'])
+					$post_content .= '<a href="http://twitter.com/statuses/'.$item['id_str'].'"><img src="https://api.twitter.com/1/users/profile_image?user_id='.$item['from_user_id'].'&size='.$dg_tw_ft['img_size'].'" alt="" align="baseline" border="0" /></a>';
+				
+				if($dg_tw_ft['text'])
+					$post_content .= $item['text'];
+				
+				$post_content .= '</div>';
+			}
 				
 			if(!count($postid)) {
 				$post = array(
 						'post_author'    => 0,
-						'post_content'   => '<div class="twitter-post"><a href="http://twitter.com/statuses/'.$item['id_str'].'"><img src="https://api.twitter.com/1/users/profile_image?user_id='.$item['from_user_id'].'&size=bigger" alt="" align="baseline" border="0" /></a> '.$item['text'].'</div>',
+						'post_content'   => $post_content,
 						'post_name'      => dg_tw_slug($item['text']),
 						'post_status'    => strval($dg_tw_publish),
 						'post_title'     => $item['text'],
@@ -73,46 +87,41 @@ function dg_tw_load_next_items() {
 }
 add_action('dg_tw_event_start', 'dg_tw_load_next_items');
 
-
+/*
+ * Add cron times
+ */
 function dg_tw_schedule($schedules)
 {
-	// 1 minute
 	$schedules['dg_tw_oneminute'] = array(
 			'interval'=> 60,
 			'display'=> __('Once Every Minute')
 	);
 
-	// 5 minutes
 	$schedules['dg_tw_fiveminutes'] = array(
 			'interval'=> 300,
 			'display'=> __('Once Every 5 Minutes')
 	);
 
-	// 10 minutes
 	$schedules['dg_tw_tenminutes'] = array(
 			'interval'=> 600,
 			'display'=> __('Once Every 10 Minutes')
 	);
 
-	// 20 minutes
 	$schedules['dg_tw_twentynminutes'] = array(
 			'interval'=> 1200,
 			'display'=> __('Once Every 20 Minutes')
 	);
 
-	// 30 minutes
 	$schedules['dg_tw_twicehourly'] = array(
 			'interval'=> 1800,
 			'display'=> __('Once Every 30 Minutes')
 	);
 
-	// weekly
 	$schedules['dg_tw_weekly'] = array(
 			'interval'=> 604800,
 			'display'=> __('Once Every 7 Days')
 	);
 
-	// monthly
 	$schedules['dg_tw_monthly'] = array(
 			'interval'=> 2592000,
 			'display'=> __('Once Every 30 Days')
@@ -122,17 +131,25 @@ function dg_tw_schedule($schedules)
 }
 add_filter('cron_schedules','dg_tw_schedule');
 
-
+/*
+ * Create admin menu element
+ */
 function dg_add_menu_item() {
 	add_options_page( 'Twitter To WP', 'Twitter To WP', 'administrator', 'dg_tw_admin_menu', 'dg_tw_drawpage');
 }
 add_action('admin_menu', 'dg_add_menu_item');
 
+/*
+ * Call admin page for this plugin
+ */
 function dg_tw_drawpage() {
-	global $dg_tw_queryes,$dg_tw_time, $dg_tw_publish, $dg_tw_tags;
+	global $dg_tw_queryes,$dg_tw_time, $dg_tw_publish, $dg_tw_ft, $dg_tw_tags;
 	require_once('dg_tw_admin_page.php');
 }
 
+/*
+ * Simple function to get curl content (json)
+ */
 function dg_tw_curl_file_get_contents($url) {
 	$curl = curl_init();
 
@@ -146,6 +163,9 @@ function dg_tw_curl_file_get_contents($url) {
 	return $contents;
 }
 
+/*
+ * 
+ */
 function dg_tw_slug($str) {
 	$str = strtolower(trim($str));
 	$str = preg_replace('/[^a-z0-9-]/', '-', $str);
@@ -153,12 +173,18 @@ function dg_tw_slug($str) {
 	return $str;
 }
 
+/*
+ * Starting up author filter dg_tw_the_author
+ */
 function dg_tw_loop_start() {
-	add_filter("the_author", "dg_tw_the_author"); // requires 2.0
-	add_filter("get_the_author", "dg_tw_the_author"); // requires 2.0
+	add_filter("the_author", "dg_tw_the_author");
+	add_filter("get_the_author", "dg_tw_the_author");
 }
 add_action("loop_start", "dg_tw_loop_start");
 
+/*
+ * Filter autor name for posts setting the twitter author name
+ */
 function dg_tw_the_author($author) {
 	$custom_fields = get_post_custom();
 	
@@ -168,6 +194,9 @@ function dg_tw_the_author($author) {
 	return $author;
 }
 
+/*
+ * Plugin activation hook set basic options if not set already, and start cronjobs if necessary
+ */
 function dg_tw_activation() {
 	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags;
 
@@ -175,6 +204,7 @@ function dg_tw_activation() {
 	$dg_tw_time = get_option('dg_tw_time');
 	$dg_tw_publish = (string) get_option('dg_tw_publish');
 	$dg_tw_tags = (string) get_option('dg_tw_tags');
+	$dg_tw_ft = get_option('dg_tw_ft');
 	
 	if(!$dg_tw_publish) {
 		update_option('dg_tw_publish','draft');
@@ -184,6 +214,10 @@ function dg_tw_activation() {
 		update_option('dg_tw_time','never');
 	}
 	
+	if(!$dg_tw_ft) {
+		update_option('dg_tw_ft',array('ui'=>true,'text'=>true,'img_size'=>'bigger'));
+	}
+	
 	if ( !wp_next_scheduled( 'dg_tw_event_start' ) && $dg_tw_time && $dg_tw_time != "never") {
 		$recurrences = wp_get_schedules();
 		wp_schedule_event( time()+$recurrences[$dg_tw_time]['interval'], $dg_tw_time, 'dg_tw_event_start');
@@ -191,6 +225,9 @@ function dg_tw_activation() {
 }
 register_activation_hook( __FILE__, 'dg_tw_activation' );
 
+/*
+ * Plugin deactivation hook remove cronjobs
+ */
 function dg_tw_deactivation() {
 	$timestamp = wp_next_scheduled( 'dg_tw_event_start' );
 	wp_clear_scheduled_hook( 'dg_tw_event_start' );
@@ -199,7 +236,7 @@ function dg_tw_deactivation() {
 register_deactivation_hook( __FILE__, 'dg_tw_deactivation' );
 
 function dg_tw_options() {
-	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags;
+	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_ft;
 
 	if (!function_exists('curl_init'))
 	{
@@ -211,10 +248,14 @@ function dg_tw_options() {
 	$dg_tw_time = get_option('dg_tw_time');
 	$dg_tw_publish = (string) get_option('dg_tw_publish');
 	$dg_tw_tags = (string) get_option('dg_tw_tags');
+	$dg_tw_ft = get_option('dg_tw_ft');
 
 	if(isset($_POST['dg_tw_data_update'])) {
 		$dg_temp_array = array();
 
+		/*
+		 * Each query string verified to ensure there is no duplicate and save last id
+		 */
 		foreach($_POST['dg_tw_item_query'] as $item_query) {
 			if(isset($dg_tw_queryes[urlencode($item_query)])) {
 				$dg_temp_array[urlencode($item_query)] = $dg_tw_queryes[urlencode($item_query)];
@@ -225,30 +266,48 @@ function dg_tw_options() {
 
 		update_option('dg_tw_queryes',$dg_temp_array);
 		$dg_tw_queryes = get_option('dg_tw_queryes');
-	}
 
-	if(isset($_POST['dg_tw_time_update'])) {
-		update_option('dg_tw_time',$_POST['dg_tw_time_selected']);
-		$dg_tw_time = get_option('dg_tw_time');
-
-		$timestamp = wp_next_scheduled( 'dg_tw_event_start' );
-		wp_clear_scheduled_hook( 'dg_tw_event_start' );
-		wp_unschedule_event($timestamp, 'dg_tw_event_start');
-
-		if ( !wp_next_scheduled( 'dg_tw_event_start' ) ) {
-			$recurrences = wp_get_schedules();
-			wp_schedule_event( time()+$recurrences[$dg_tw_time]['interval'], $dg_tw_time, 'dg_tw_event_start');
+		/*
+		 * UPDATE CRON TIME
+		 * if condition to dont slowdown the cron manager proccess
+		 */
+		if($_POST['dg_tw_time_selected'] != $dg_tw_time) {
+			update_option('dg_tw_time',$_POST['dg_tw_time_selected']);
+			$dg_tw_time = get_option('dg_tw_time');
+	
+			$timestamp = wp_next_scheduled( 'dg_tw_event_start' );
+			wp_clear_scheduled_hook( 'dg_tw_event_start' );
+			wp_unschedule_event($timestamp, 'dg_tw_event_start');
+	
+			if ( !wp_next_scheduled( 'dg_tw_event_start' ) ) {
+				$recurrences = wp_get_schedules();
+				wp_schedule_event( time()+$recurrences[$dg_tw_time]['interval'], $dg_tw_time, 'dg_tw_event_start');
+			}
 		}
-	}
+	
+		/*
+		 * UPDATE FORMATTING OPTIONS
+		 */
+		$now_ft = array();
+		$now_ft['ui'] = (int) $_POST['dg_tw_ft_ui'];
+		$now_ft['text'] = (int) $_POST['dg_tw_ft_text'];
+		$now_ft['img_size'] = $_POST['dg_tw_ft_size'];
+		
+		update_option('dg_tw_ft',$now_ft);
+		$dg_tw_ft = get_option('dg_tw_ft');
 
-	if(isset($_POST['dg_tw_publish_mode'])) {
+		/*
+		 * UPDATE PUBLISH MODE
+		 */
 		update_option('dg_tw_publish',$_POST['dg_tw_publish_selected']);
 		$dg_tw_publish = (string) get_option('dg_tw_publish');
-	}
-
-	if(isset($_POST['dg_tw_tags'])) {
+	
+		/*
+		 * UPDATE ATGS
+		 */
 		update_option('dg_tw_tags',$_POST['dg_tw_tag_tweets']);
 		$dg_tw_tags = (string) get_option('dg_tw_tags');
+	
 	}
 }
 add_action('wp_loaded', 'dg_tw_options');
