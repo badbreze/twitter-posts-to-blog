@@ -84,6 +84,15 @@
 				</tr>
 				<tr valign="top">
 					<td scope="row">
+						<b>Items at time:</b>
+					</td>
+					<td>
+						<span class="description">How many item want to load each time the cron run:</span><br/>
+						<input type="text" size="60" name="dg_tw_ipp" class="regular-text" value="<?php echo $dg_tw_ft['ipp']; ?>">
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
 						<b>Your search queryes</b>
 					</td>
 					<td>
