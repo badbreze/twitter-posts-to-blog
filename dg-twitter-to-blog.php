@@ -23,7 +23,7 @@ function dg_tw_load_next_items() {
 
 
 	foreach($dg_tw_queryes as $query) {
-		$dg_tw_url_compose = "http://search.twitter.com/search.json?q=".urlencode($query['value'])."&since_id=".$query['last_id']."&rpp=".$dg_tw_ft['ipp'];
+		$dg_tw_url_compose = "http://search.twitter.com/search.json?q=".urlencode($query['value'])."&since_id=".$query['last_id']."&count=".$dg_tw_ft['ipp'];
 		$dg_tw_data = dg_tw_curl_file_get_contents($dg_tw_url_compose);
 		$dg_tw_data= json_decode($dg_tw_data, true);
 
@@ -261,7 +261,7 @@ function dg_tw_options() {
 			if(isset($dg_tw_queryes[urlencode($item_query)])) {
 				$dg_temp_array[urlencode($item_query)] = $dg_tw_queryes[urlencode($item_query)];
 			} else {
-				$dg_temp_array[urlencode($item_query)] = array("value"=>$item_query,"last_id"=>0);
+				$dg_temp_array[urlencode($item_query)] = array("value"=>$item_query,"last_id"=>0,"firts_id"=>0);
 			}
 		}
 
