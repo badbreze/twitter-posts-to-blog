@@ -17,15 +17,15 @@ This plugin simply create posts in your blog from selected twitter searches, I t
 * #egTag
 * egText
 * Now Click ADD button to add this query string to "current queryes"
-* From "Cron Time" chose every how much time this plugin import new items
+* From "Cron Time" choose every how much time this plugin import new items
 * From "Publish Status" select your favorite publish status
 * Optional from "Post Tags" type the tags you want to be added in every post
-* Optional from "Body Images" chose if you want to insert user image into body
-* Optional from "Body Text" chose if you want to insert tweet text into body
-* Optional from "Image size" chose image size for the body image (if "Body Images" are selected)
-* Optional from "Items at time" chose how much tweets want to import each time the cron run
+* Optional from "Body Images" choose if you want to insert user image into body
+* Optional from "Body Text" choose if you want to insert tweet text into body
+* Optional from "Image size" choose image size for the body image (if "Body Images" are selected)
+* Optional from "Items at time" choose how much tweets want to import each time the cron run
 * Click Save Settings Button
-* Now the plugin import automaticaly chosed tweets
+* Now the plugin import automaticaly choosed tweets
 
 = More? =
 Want more functionality or some modifications? Ok tell me wath you want and i try to add or modify the plugin functions
