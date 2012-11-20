@@ -46,7 +46,7 @@
 						<b>Post tags:</b>
 					</td>
 					<td>
-						<span class="description">Type tags you want append to each tweet</span><br/>
+						<span class="description">Type tags you want append to each tweet (dont use query strings here)</span><br/>
 						<input type="text" size="60" name="dg_tw_tag_tweets" class="regular-text" value="<?php echo $dg_tw_tags; ?>">
 					</td>
 				</tr>
