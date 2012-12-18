@@ -51,3 +51,6 @@ Follow the description in order to configure the plugin
 * Formatting setting added.
 * New backend interface
 * More readable sorce code
+
+= 0.4 =
+* Post categories

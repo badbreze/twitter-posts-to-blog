@@ -52,6 +52,28 @@
 				</tr>
 				<tr valign="top">
 					<td scope="row">
+						<b>Post category:</b>
+					</td>
+					<td>
+						<span class="description">Select categories for tweets</span><br/>
+						<ul class="list:category categorychecklist form-no-clear">					
+							<?php
+								$selected_cats = $dg_tw_cats;
+								wp_terms_checklist(0,
+													array(
+														'taxonomy' => 'category',
+														'descendants_and_self' => 0,
+														'selected_cats' => $selected_cats,
+														'popular_cats' => false,
+														'walker' => null,
+														'checked_ontop' => false
+								));
+							?>
+						</ul>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
 						<b>Body images:</b>
 					</td>
 					<td>

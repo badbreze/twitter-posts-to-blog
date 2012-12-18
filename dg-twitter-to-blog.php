@@ -2,7 +2,7 @@
 /*
 Plugin Name: Twitter posts to Blog
 Description: Post twetts to your blog
-Version: 0.3
+Version: 0.4
 Author: Damian Gomez
 */
 $dg_tw_queryes = array();
@@ -13,7 +13,7 @@ $dg_tw_publish = '';
  * SETUP THE CRON
 */
 function dg_tw_load_next_items() {
-	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_ft, $wpdb;
+	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 
 	if (!function_exists('curl_init'))
 	{
@@ -68,7 +68,7 @@ function dg_tw_load_next_items() {
 						'post_name'      => dg_tw_slug($item['text']),
 						'post_status'    => strval($dg_tw_publish),
 						'post_title'     => $item['text'],
-						'post_category'  => array(1),
+						'post_category'  => $dg_tw_cats,
 						'tags_input'     => $post_tags,
 						'post_type'      => 'post',
 						'post_date'      => date('Y-m-d H:i:s', $time),
@@ -145,7 +145,7 @@ add_action('admin_menu', 'dg_add_menu_item');
  * Call admin page for this plugin
  */
 function dg_tw_drawpage() {
-	global $dg_tw_queryes,$dg_tw_time, $dg_tw_publish, $dg_tw_ft, $dg_tw_tags;
+	global $dg_tw_queryes,$dg_tw_time, $dg_tw_publish, $dg_tw_ft, $dg_tw_tags, $dg_tw_cats;
 	require_once('dg_tw_admin_page.php');
 }
 
@@ -200,12 +200,13 @@ function dg_tw_the_author($author) {
  * Plugin activation hook set basic options if not set already, and start cronjobs if necessary
  */
 function dg_tw_activation() {
-	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_ft;
+	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft;
 
 	$dg_tw_queryes = get_option('dg_tw_queryes');
 	$dg_tw_time = get_option('dg_tw_time');
 	$dg_tw_publish = (string) get_option('dg_tw_publish');
 	$dg_tw_tags = (string) get_option('dg_tw_tags');
+	$dg_tw_cats = get_option('dg_tw_cats');
 	$dg_tw_ft = get_option('dg_tw_ft');
 	
 	if(!$dg_tw_publish) {
@@ -238,7 +239,7 @@ function dg_tw_deactivation() {
 register_deactivation_hook( __FILE__, 'dg_tw_deactivation' );
 
 function dg_tw_options() {
-	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_ft;
+	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags,$dg_tw_cats, $dg_tw_ft;
 
 	if (!function_exists('curl_init'))
 	{
@@ -250,6 +251,7 @@ function dg_tw_options() {
 	$dg_tw_time = get_option('dg_tw_time');
 	$dg_tw_publish = (string) get_option('dg_tw_publish');
 	$dg_tw_tags = (string) get_option('dg_tw_tags');
+	$dg_tw_cats = get_option('dg_tw_cats');
 	$dg_tw_ft = get_option('dg_tw_ft');
 
 	if(isset($_POST['dg_tw_data_update'])) {
@@ -311,6 +313,12 @@ function dg_tw_options() {
 		 */
 		update_option('dg_tw_tags',$_POST['dg_tw_tag_tweets']);
 		$dg_tw_tags = (string) get_option('dg_tw_tags');
+	
+		/*
+		 * UPDATE CATS
+		 */
+		update_option('dg_tw_cats',$_POST['post_category']);
+		$dg_tw_cats = get_option('dg_tw_cats');
 	
 	}
 }
