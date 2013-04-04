@@ -181,7 +181,7 @@
 <script type="text/javascript">
 	jQuery('#dg_tw_add_element').click(function() {
 		if(jQuery('#dg_tw_add_title').val().length != 0) {
-			jQuery('#dg_tw_elements_selected').append('<p style="text-align:left;padding:5px;"><input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"><input type="text" size="30" class="regular-text" name="dg_tw_item_query['+jQuery('#dg_tw_add_title').val()+'][value]" value="'+jQuery('#dg_tw_add_title').val()+'">&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="30" class="regular-text" name="dg_tw_item_query['+jQuery('#dg_tw_add_title').val()+'][tag]" value="'+jQuery('#dg_tw_add_title').val()+'"></span></p>');
+			jQuery('#dg_tw_elements_selected').append('<p style="text-align:left;padding:5px;"><input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"><input type="text" size="20" class="regular-text" name="dg_tw_item_query['+jQuery('#dg_tw_add_title').val()+'][value]" value="'+jQuery('#dg_tw_add_title').val()+'">&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="20" class="regular-text" name="dg_tw_item_query['+jQuery('#dg_tw_add_title').val()+'][tag]" value="'+jQuery('#dg_tw_add_title').val()+'"></span></p>');
 			jQuery('#dg_tw_add_title').attr('value','')
 		} else {
 			alert('Fill the query string box!');
