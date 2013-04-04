@@ -2,7 +2,7 @@
 /*
 Plugin Name: Twitter posts to Blog
 Description: Post twetts to your blog
-Version: 0.4
+Version: 0.5
 Author: Damian Gomez
 */
 $dg_tw_queryes = array();
@@ -36,53 +36,57 @@ function dg_tw_load_next_items() {
 		$dg_result = array_reverse($dg_tw_data['results']);
 
 		foreach($dg_result as $item) {
-			$querystr = "SELECT *
-			FROM $wpdb->postmeta
-			WHERE (meta_key = 'dg_tw_id' AND meta_value = '".(int) $item['id_str']."')
-						GROUP BY post_id";
-						
-						$postid = $wpdb->get_results($querystr);
+			if(dg_tw_iswhite($item['text'])) {
+				$querystr = "SELECT *
+				FROM $wpdb->postmeta
+				WHERE (meta_key = 'dg_tw_id' AND meta_value = '".(int) $item['id_str']."')
+							GROUP BY post_id";
+							
+							$postid = $wpdb->get_results($querystr);
+					
+				$time = strtotime($item['created_at']);
+	
+				$post_content = "";
 				
-			$time = strtotime($item['created_at']);
-
-			$post_content = "";
-			
-			if($dg_tw_ft['ui'] || $dg_tw_ft['text']) {
-				$post_content .= '<div class="twitter-post">';
-			
-				if($dg_tw_ft['ui'])
-					$post_content .= '<a href="http://twitter.com/statuses/'.$item['id_str'].'"><img src="https://api.twitter.com/1/users/profile_image?user_id='.$item['from_user_id'].'&size='.$dg_tw_ft['img_size'].'" alt="" align="baseline" border="0" /></a>';
+				if($dg_tw_ft['ui'] || $dg_tw_ft['text']) {
+					$post_content .= '<div class="twitter-post">';
 				
-				if($dg_tw_ft['text'])
-					$post_content .= $item['text'];
-				
-				$post_content .= '</div>';
-			}
-			
-			$post_tags = htmlspecialchars($dg_tw_tags.','.$query['value']);
-				
-			if(!count($postid)) {
-				$post = array(
-						'post_author'    => 0,
-						'post_content'   => $post_content,
-						'post_name'      => dg_tw_slug($item['text']),
-						'post_status'    => strval($dg_tw_publish),
-						'post_title'     => $item['text'],
-						'post_category'  => $dg_tw_cats,
-						'tags_input'     => $post_tags,
-						'post_type'      => 'post',
-						'post_date'      => date('Y-m-d H:i:s', $time),
-						'post_date_gmt'  => gmdate('Y-m-d H:i:s', $time),
-						'post_status'    => strval($dg_tw_publish)
-				);
-
-				$dg_tw_this_post = wp_insert_post( $post, $wp_error );
-				if($dg_tw_this_post) {
-					add_post_meta($dg_tw_this_post, 'dg_tw_query', urlencode($query['value']));
-					add_post_meta($dg_tw_this_post, 'dg_tw_id', $item['id_str']);
-					add_post_meta($dg_tw_this_post, 'dg_tw_author', $item['from_user']);
+					if($dg_tw_ft['ui'])
+						$post_content .= '<a href="http://twitter.com/statuses/'.$item['id_str'].'"><img src="https://api.twitter.com/1/users/profile_image?user_id='.$item['from_user_id'].'&size='.$dg_tw_ft['img_size'].'" alt="" align="baseline" border="0" /></a>';
+					
+					if($dg_tw_ft['text'])
+						$post_content .= $item['text'];
+					
+					$post_content .= '</div>';
 				}
-			}
+				
+				$item['text'] = substr($item['text'],$dg_tw_ft['maxtitle']);
+				
+				$post_tags = htmlspecialchars($dg_tw_tags.','.$query['tag']);
+					
+				if(!count($postid)) {
+					$post = array(
+							'post_author'    => 0,
+							'post_content'   => $post_content,
+							'post_name'      => dg_tw_slug($item['text']),
+							'post_status'    => strval($dg_tw_publish),
+							'post_title'     => $item['text'],
+							'post_category'  => $dg_tw_cats,
+							'tags_input'     => $post_tags,
+							'post_type'      => 'post',
+							'post_date'      => date('Y-m-d H:i:s', $time),
+							'post_date_gmt'  => gmdate('Y-m-d H:i:s', $time),
+							'post_status'    => strval($dg_tw_publish)
+					);
+	
+					$dg_tw_this_post = wp_insert_post( $post, $wp_error );
+					if($dg_tw_this_post) {
+						add_post_meta($dg_tw_this_post, 'dg_tw_query', urlencode($query['value']));
+						add_post_meta($dg_tw_this_post, 'dg_tw_id', $item['id_str']);
+						add_post_meta($dg_tw_this_post, 'dg_tw_author', $item['from_user']);
+					}
+				}
+			} //iswhite
 		}
 	}
 }
@@ -175,6 +179,19 @@ function dg_tw_slug($str) {
 	return $str;
 }
 
+function dg_tw_iswhite($text) {
+	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
+	
+	$exploded = explode(',',$dg_tw_ft['badwords']);
+	
+	foreach($exploded as $word) {
+		if(strstr ($text , $word ))
+			return true;
+	}
+	
+	return true;
+}
+
 /*
  * Starting up author filter dg_tw_the_author
  */
@@ -218,7 +235,14 @@ function dg_tw_activation() {
 	}
 	
 	if(!$dg_tw_ft) {
-		update_option('dg_tw_ft',array('ui'=>true,'text'=>true,'img_size'=>'bigger','ipp'=>25,'privileges'=>'level_10'));
+		update_option('dg_tw_ft',array(
+			'ui'=>true,
+			'text'=>true,
+			'img_size'=>'bigger',
+			'ipp'=>25,
+			'privileges'=>'level_10',
+			'badwords'=>'',
+			'maxtitle'=>'60'));
 	}
 	
 	if ( !wp_next_scheduled( 'dg_tw_event_start' ) && $dg_tw_time && $dg_tw_time != "never") {
@@ -261,10 +285,10 @@ function dg_tw_options() {
 		 * Each query string verified to ensure there is no duplicate and save last id
 		 */
 		foreach($_POST['dg_tw_item_query'] as $item_query) {
-			if(isset($dg_tw_queryes[urlencode($item_query)])) {
-				$dg_temp_array[urlencode($item_query)] = $dg_tw_queryes[urlencode($item_query)];
+			if(isset($dg_tw_queryes[urlencode($item_query['value'])])) {
+				$dg_temp_array[urlencode($item_query['value'])] = $dg_tw_queryes[urlencode($item_query['value'])];
 			} else {
-				$dg_temp_array[urlencode($item_query)] = array("value"=>$item_query,"last_id"=>0,"firts_id"=>0);
+				$dg_temp_array[urlencode($item_query['value'])] = array("value"=>$item_query['value'],"tag"=>$item_query['tag'],"last_id"=>0,"firts_id"=>0);
 			}
 		}
 
@@ -298,6 +322,8 @@ function dg_tw_options() {
 		$now_ft['img_size'] = $_POST['dg_tw_ft_size'];
 		$now_ft['ipp'] = $_POST['dg_tw_ipp'];
 		$now_ft['privileges'] = $_POST['dg_tw_privileges'];
+		$now_ft['maxtitle'] = $_POST['dg_tw_maxtitle'];
+		$now_ft['badwords'] = $_POST['dg_tw_badwords'];
 		
 		update_option('dg_tw_ft',$now_ft);
 		$dg_tw_ft = get_option('dg_tw_ft');

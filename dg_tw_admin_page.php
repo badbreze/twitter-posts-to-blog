@@ -115,6 +115,24 @@
 				</tr>
 				<tr valign="top">
 					<td scope="row">
+						<b>Max Title Length:</b>
+					</td>
+					<td>
+						<span class="description">Set the maximum length in characters of the title;</span><br/>
+						<input type="text" size="60" name="dg_tw_maxtitle" class="regular-text" value="<?php echo $dg_tw_ft['maxtitle']; ?>">
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
+						<b>Words blacklist:</b>
+					</td>
+					<td>
+						<span class="description">Does not post tweets with these words:</span><br/>
+						<input type="text" size="60" name="dg_tw_badwords" class="regular-text" value="<?php echo $dg_tw_ft['badwords']; ?>">
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
 						<b>Privilege:</b>
 					</td>
 					<td>
@@ -145,7 +163,8 @@
 							<?php if(!empty($dg_tw_queryes)) foreach($dg_tw_queryes as $query_element) { ?>
 								<p style="text-align:left;padding:5px;">
 									<input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"> 
-									<input type="text" size="30" class="regular-text" name="dg_tw_item_query[]" value="<?php echo $query_element['value']; ?>">
+									<input type="text" size="30" class="regular-text" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][value]" value="<?php echo $query_element['value']; ?>">
+									&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="30" class="regular-text" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][tag]" value="<?php echo $query_element['tag']; ?>">
 									<span> - Last id: <a target="_blank" href="https://twitter.com/search?q=<?php echo urlencode($query_element['value']); ?>&since_id=<?php echo $query_element['last_id']; ?>"><?php echo $query_element['last_id']; ?></a></span> 
 								</p>
 							<?php } ?>
@@ -162,7 +181,7 @@
 <script type="text/javascript">
 	jQuery('#dg_tw_add_element').click(function() {
 		if(jQuery('#dg_tw_add_title').val().length != 0) {
-			jQuery('#dg_tw_elements_selected').append('<p style="text-align:left;padding:5px;"><input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"><input type="text" size="30" class="regular-text" name="dg_tw_item_query[]" value="'+jQuery('#dg_tw_add_title').val()+'"></span></p>');
+			jQuery('#dg_tw_elements_selected').append('<p style="text-align:left;padding:5px;"><input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"><input type="text" size="30" class="regular-text" name="dg_tw_item_query['+jQuery('#dg_tw_add_title').val()+'][value]" value="'+jQuery('#dg_tw_add_title').val()+'">&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="30" class="regular-text" name="dg_tw_item_query['+jQuery('#dg_tw_add_title').val()+'][tag]" value="'+jQuery('#dg_tw_add_title').val()+'"></span></p>');
 			jQuery('#dg_tw_add_title').attr('value','')
 		} else {
 			alert('Fill the query string box!');

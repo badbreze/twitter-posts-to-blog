@@ -2,7 +2,7 @@
 Contributors: badbreze
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QV5Y8ZNVWGEA8
 Tags: twitter, autopost
-Tested up to: 3.4
+Tested up to: 3.5.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -54,3 +54,9 @@ Follow the description in order to configure the plugin
 
 = 0.4 =
 * Post categories
+
+= 0.5 =
+* Users Feedback
+* Rob Yardman: Tags for each query string
+* Rob Yardman: Title length
+* hazem: Words blacklist
