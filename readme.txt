@@ -56,7 +56,10 @@ Follow the description in order to configure the plugin
 * Post categories
 
 = 0.5 =
-* Users Feedback
+* Users Feedback:
 * Rob Yardman: Tags for each query string
 * Rob Yardman: Title length
 * hazem: Words blacklist
+
+= 0.5.1 =
+* Small fix for query tags, thanks Rob Yardman

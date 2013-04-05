@@ -286,6 +286,9 @@ function dg_tw_options() {
 		 */
 		foreach($_POST['dg_tw_item_query'] as $item_query) {
 			if(isset($dg_tw_queryes[urlencode($item_query['value'])])) {
+				if($dg_tw_queryes[urlencode($item_query['value'])]['tag'] != $item_query['tag']) {
+					$dg_tw_queryes[urlencode($item_query['value'])]['tag'] = $item_query['tag'];
+				}
 				$dg_temp_array[urlencode($item_query['value'])] = $dg_tw_queryes[urlencode($item_query['value'])];
 			} else {
 				$dg_temp_array[urlencode($item_query['value'])] = array("value"=>$item_query['value'],"tag"=>$item_query['tag'],"last_id"=>0,"firts_id"=>0);
