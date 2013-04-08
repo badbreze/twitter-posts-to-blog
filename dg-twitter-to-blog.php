@@ -2,7 +2,7 @@
 /*
 Plugin Name: Twitter posts to Blog
 Description: Post twetts to your blog
-Version: 0.5.1
+Version: 0.5.2
 Author: Damian Gomez
 */
 $dg_tw_queryes = array();
@@ -182,11 +182,17 @@ function dg_tw_slug($str) {
 function dg_tw_iswhite($text) {
 	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 	
+	if(empty($dg_tw_ft['badwords']))
+		return true;
+	
 	$exploded = explode(',',$dg_tw_ft['badwords']);
 	
 	foreach($exploded as $word) {
-		if(strstr ($text , $word ))
-			return true;
+		if(empty($word))
+			continue;
+		
+		if(stristr ($text , $word ))
+			return false;
 	}
 	
 	return true;

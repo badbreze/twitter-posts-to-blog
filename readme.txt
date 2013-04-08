@@ -63,3 +63,6 @@ Follow the description in order to configure the plugin
 
 = 0.5.1 =
 * Small fix for query tags, thanks Rob Yardman
+
+= 0.5.2 =
+* Fix blacklist not filtering
