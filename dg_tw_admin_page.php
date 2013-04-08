@@ -163,8 +163,8 @@
 							<?php if(!empty($dg_tw_queryes)) foreach($dg_tw_queryes as $query_element) { ?>
 								<p style="text-align:left;padding:5px;">
 									<input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"> 
-									<input type="text" size="30" class="regular-text" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][value]" value="<?php echo $query_element['value']; ?>">
-									&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="30" class="regular-text" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][tag]" value="<?php echo $query_element['tag']; ?>">
+									<input type="text" size="20" class="regular-text" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][value]" value="<?php echo $query_element['value']; ?>">
+									&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="20" class="regular-text" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][tag]" value="<?php echo $query_element['tag']; ?>">
 									<span> - Last id: <a target="_blank" href="https://twitter.com/search?q=<?php echo urlencode($query_element['value']); ?>&since_id=<?php echo $query_element['last_id']; ?>"><?php echo $query_element['last_id']; ?></a></span> 
 								</p>
 							<?php } ?>

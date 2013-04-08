@@ -2,7 +2,7 @@
 /*
 Plugin Name: Twitter posts to Blog
 Description: Post twetts to your blog
-Version: 0.5
+Version: 0.5.1
 Author: Damian Gomez
 */
 $dg_tw_queryes = array();
