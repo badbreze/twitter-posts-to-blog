@@ -66,3 +66,6 @@ Follow the description in order to configure the plugin
 
 = 0.5.2 =
 * Fix blacklist not filtering
+
+= 0.6 =
+* NO CHANGES ONLY VERSION UPDATE
