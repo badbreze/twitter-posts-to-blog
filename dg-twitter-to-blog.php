@@ -2,7 +2,7 @@
 /*
 Plugin Name: Twitter posts to Blog
 Description: Post twetts to your blog
-Version: 0.6
+Version: 0.6.1
 Author: Damian Gomez
 */
 $dg_tw_queryes = array();
@@ -22,8 +22,9 @@ function dg_tw_load_next_items() {
 	}
 
 
+
 	foreach($dg_tw_queryes as $query) {
-		$dg_tw_url_compose = "http://search.twitter.com/search.json?q=".urlencode($query['value'])."&since_id=".$query['last_id']."&rpp=".$dg_tw_ft['ipp'];
+		$dg_tw_url_compose = "http://search.twitter.com/search.json?q=".urlencode($query['value'])."&since_id=".$query['last_id']."&include_entities=1&rpp=".$dg_tw_ft['ipp'];
 		$dg_tw_data = dg_tw_curl_file_get_contents($dg_tw_url_compose);
 		$dg_tw_data= json_decode($dg_tw_data, true);
 
@@ -34,7 +35,6 @@ function dg_tw_load_next_items() {
 		}
 
 		$dg_result = array_reverse($dg_tw_data['results']);
-
 		foreach($dg_result as $item) {
 			if(dg_tw_iswhite($item['text'])) {
 				$querystr = "SELECT *
@@ -45,23 +45,58 @@ function dg_tw_load_next_items() {
 							$postid = $wpdb->get_results($querystr);
 					
 				$time = strtotime($item['created_at']);
+				
+				$attach_id = 0;
+				
+				$attaches = array();
+				
+				if( isset($item['entities']['media']) ) {
+					foreach( $item['entities']['media'] as $media ) {
+						if( $media['type']=="photo" ) {
+							$upload_dir = wp_upload_dir();
+							$image_data = file_get_contents($media['media_url']);
+							$filename = strtolower(pathinfo($media['media_url'], PATHINFO_FILENAME)).".".strtolower(pathinfo($media['media_url'], PATHINFO_EXTENSION));
+							if(wp_mkdir_p($upload_dir['path']))
+								$file = $upload_dir['path'] . '/' . $filename;
+							else
+								$file = $upload_dir['basedir'] . '/' . $filename;
+							file_put_contents($file, $image_data);
+							$wp_filetype = wp_check_filetype($filename, null );
+							$attachment = array(
+									'post_mime_type' => $wp_filetype['type'],
+									'post_title' => sanitize_file_name($filename),
+									'post_content' => '',
+									'post_status' => 'inherit'
+							);
+							$attach_id = wp_insert_attachment( $attachment, $file, $dg_tw_this_post );
+							$attaches[] = $attach_id;
+							require_once(ABSPATH . 'wp-admin/includes/image.php');
+							$attach_data = wp_generate_attachment_metadata( $attach_id, $file );
+							wp_update_attachment_metadata( $attach_id, $attach_data );
+						}
+					}
+				}
 	
 				$post_content = "";
 				
 				if($dg_tw_ft['ui'] || $dg_tw_ft['text']) {
 					$post_content .= '<div class="twitter-post">';
 				
-					if($dg_tw_ft['ui'])
-						$post_content .= '<a href="http://twitter.com/statuses/'.$item['id_str'].'"><img src="https://api.twitter.com/1/users/profile_image?user_id='.$item['from_user_id'].'&size='.$dg_tw_ft['img_size'].'" alt="" align="baseline" border="0" /></a>';
+					if($dg_tw_ft['ui']) {
+						foreach($attaches as $attach)
+							$post_content .= '<img src="'.wp_get_attachment_url($attach).'" alt="'.dg_tw_slug($item['text']).'" align="baseline" border="0" />&nbsp;';
+					}
 					
-					if($dg_tw_ft['text'])
-						$post_content .= $item['text'];
+					if($dg_tw_ft['text']) {
+						$str= preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$item['text']);
+						
+						$post_content .= '<p>'.$str.'</p>';
+					}
 					
 					$post_content .= '</div>';
 				}
 				
 				$item['text'] = substr($item['text'],$dg_tw_ft['maxtitle']);
-				
 				$post_tags = htmlspecialchars($dg_tw_tags.','.$query['tag']);
 					
 				if(!count($postid)) {
@@ -84,6 +119,9 @@ function dg_tw_load_next_items() {
 						add_post_meta($dg_tw_this_post, 'dg_tw_query', urlencode($query['value']));
 						add_post_meta($dg_tw_this_post, 'dg_tw_id', $item['id_str']);
 						add_post_meta($dg_tw_this_post, 'dg_tw_author', $item['from_user']);
+						
+						// add image as post preview
+						set_post_thumbnail( $dg_tw_this_post, $attach_id );
 					}
 				}
 			} //iswhite

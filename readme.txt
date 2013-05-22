@@ -69,3 +69,8 @@ Follow the description in order to configure the plugin
 
 = 0.6 =
 * NO CHANGES ONLY VERSION UPDATE
+
+= 0.6.1 =
+* Users Feedback:
+* sllim99: Posts thumbnails if the tweet has images
+* Umpqua: Posts urls as hyperlinks
