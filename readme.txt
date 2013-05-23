@@ -2,11 +2,11 @@
 Contributors: badbreze
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QV5Y8ZNVWGEA8
 Tags: twitter, autopost
-Tested up to: 3.5.1
+Tested up to: 3.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-This plugin simply create posts in your blog from selected twitter searches, I take NO RESPONSIBILITY on how you use this plugin and/or any problem caused using this plugin, do what you want with it!
+This plugin simply create posts in your blog from selected twitter searches.
 
 
 == Description ==
@@ -68,9 +68,15 @@ Follow the description in order to configure the plugin
 * Fix blacklist not filtering
 
 = 0.6 =
-* NO CHANGES ONLY VERSION UPDATE
+* NO CHANGES, ONLY VERSION UPDATE
 
 = 0.6.1 =
 * Users Feedback:
 * sllim99: Posts thumbnails if the tweet has images
 * Umpqua: Posts urls as hyperlinks
+
+= 0.6.2 =
+* Some fix
+* New menu position with icon
+* Update capabilities because levels are deprecated
+* Visual fixes

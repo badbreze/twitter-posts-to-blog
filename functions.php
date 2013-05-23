@@ -1,15 +1,5 @@
 <?php
 /*
-Plugin Name: Twitter posts to Blog
-Description: Post twetts to your blog
-Version: 0.6.1
-Author: Damian Gomez
-*/
-$dg_tw_queryes = array();
-$dg_tw_time = '';
-$dg_tw_publish = '';
-
-/*
  * SETUP THE CRON
 */
 function dg_tw_load_next_items() {
@@ -20,8 +10,6 @@ function dg_tw_load_next_items() {
 		error_log('The DG Twitter to blog plugin require CURL libraries');
 		return;
 	}
-
-
 
 	foreach($dg_tw_queryes as $query) {
 		$dg_tw_url_compose = "http://search.twitter.com/search.json?q=".urlencode($query['value'])."&since_id=".$query['last_id']."&include_entities=1&rpp=".$dg_tw_ft['ipp'];
@@ -128,13 +116,11 @@ function dg_tw_load_next_items() {
 		}
 	}
 }
-add_action('dg_tw_event_start', 'dg_tw_load_next_items');
 
 /*
  * Add cron times
  */
-function dg_tw_schedule($schedules)
-{
+function dg_tw_schedule($schedules) {
 	$schedules['dg_tw_oneminute'] = array(
 			'interval'=> 60,
 			'display'=> __('Once Every Minute')
@@ -172,16 +158,18 @@ function dg_tw_schedule($schedules)
 
 	return $schedules;
 }
-add_filter('cron_schedules','dg_tw_schedule');
 
 /*
  * Create admin menu element
  */
 function dg_add_menu_item() {
 	$privilege = get_option('dg_tw_ft');
-	add_options_page( 'Twitter To WP', 'Twitter To WP', $privilege['privileges'], 'dg_tw_admin_menu', 'dg_tw_drawpage');
+	add_menu_page( 'Twitter To WP', 'Twitter To WP', $privilege['privileges'], 'dg_tw_admin_menu', 'dg_tw_drawpage', '', 3);
+	
+	wp_register_style( "twitter-posts-to-blog-css",  plugins_url('css/twitter-posts-to-blog.css', __FILE__), false, '1.0.0');
+	
+	wp_enqueue_style( "twitter-posts-to-blog-css");
 }
-add_action('admin_menu', 'dg_add_menu_item');
 
 /*
  * Call admin page for this plugin
@@ -243,7 +231,6 @@ function dg_tw_loop_start() {
 	add_filter("the_author", "dg_tw_the_author");
 	add_filter("get_the_author", "dg_tw_the_author");
 }
-add_action("loop_start", "dg_tw_loop_start");
 
 /*
  * Filter autor name for posts setting the twitter author name
@@ -284,7 +271,7 @@ function dg_tw_activation() {
 			'text'=>true,
 			'img_size'=>'bigger',
 			'ipp'=>25,
-			'privileges'=>'level_10',
+			'privileges'=>'activate_plugins',
 			'badwords'=>'',
 			'maxtitle'=>'60'));
 	}
@@ -294,7 +281,6 @@ function dg_tw_activation() {
 		wp_schedule_event( time()+$recurrences[$dg_tw_time]['interval'], $dg_tw_time, 'dg_tw_event_start');
 	}
 }
-register_activation_hook( __FILE__, 'dg_tw_activation' );
 
 /*
  * Plugin deactivation hook remove cronjobs
@@ -304,7 +290,6 @@ function dg_tw_deactivation() {
 	wp_clear_scheduled_hook( 'dg_tw_event_start' );
 	wp_unschedule_event($timestamp, 'dg_tw_event_start');
 }
-register_deactivation_hook( __FILE__, 'dg_tw_deactivation' );
 
 function dg_tw_options() {
 	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags,$dg_tw_cats, $dg_tw_ft;
@@ -328,14 +313,16 @@ function dg_tw_options() {
 		/*
 		 * Each query string verified to ensure there is no duplicate and save last id
 		 */
-		foreach($_POST['dg_tw_item_query'] as $item_query) {
-			if(isset($dg_tw_queryes[urlencode($item_query['value'])])) {
-				if($dg_tw_queryes[urlencode($item_query['value'])]['tag'] != $item_query['tag']) {
-					$dg_tw_queryes[urlencode($item_query['value'])]['tag'] = $item_query['tag'];
+		if(is_array($_POST['dg_tw_item_query'])) {
+			foreach($_POST['dg_tw_item_query'] as $item_query) {
+				if(isset($dg_tw_queryes[urlencode($item_query['value'])])) {
+					if($dg_tw_queryes[urlencode($item_query['value'])]['tag'] != $item_query['tag']) {
+						$dg_tw_queryes[urlencode($item_query['value'])]['tag'] = $item_query['tag'];
+					}
+					$dg_temp_array[urlencode($item_query['value'])] = $dg_tw_queryes[urlencode($item_query['value'])];
+				} else {
+					$dg_temp_array[urlencode($item_query['value'])] = array("value"=>$item_query['value'],"tag"=>$item_query['tag'],"last_id"=>0,"firts_id"=>0);
 				}
-				$dg_temp_array[urlencode($item_query['value'])] = $dg_tw_queryes[urlencode($item_query['value'])];
-			} else {
-				$dg_temp_array[urlencode($item_query['value'])] = array("value"=>$item_query['value'],"tag"=>$item_query['tag'],"last_id"=>0,"firts_id"=>0);
 			}
 		}
 
@@ -395,5 +382,4 @@ function dg_tw_options() {
 	
 	}
 }
-add_action('wp_loaded', 'dg_tw_options');
 ?>

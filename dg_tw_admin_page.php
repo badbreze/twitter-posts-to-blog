@@ -9,6 +9,19 @@
 		<table class="form-table">
 			<tbody>
 				<tr valign="top">
+					<td scope="row">
+						<b>Capabilities:</b>
+					</td>
+					<td>
+						<span class="description">Who can see this page and change settings:</span><br/>
+						<select name="dg_tw_privileges">
+							<option value="activate_plugins"<?php if ($dg_tw_ft['privileges'] === 'activate_plugins') echo ' selected=selected'; ?>>Administrator</option>
+							<option value="delete_pages"<?php if ($dg_tw_ft['privileges'] === 'delete_pages') echo ' selected=selected'; ?>>Editor</option>
+							<option value="delete_posts"<?php if ($dg_tw_ft['privileges'] === 'delete_posts') echo ' selected=selected'; ?>>Author</option>
+						</select>
+					</td>
+				</tr>
+				<tr valign="top">
 					<td scope="row" style="width:23%;">
 						<b>Cron time:</b>
 					</td>
@@ -77,8 +90,9 @@
 						<b>Body images:</b>
 					</td>
 					<td>
+						<input type="checkbox" name="dg_tw_ft_ui" value="1" <?php if ($dg_tw_ft['ui']) echo ' checked=checked'; ?>/>
+						&nbsp;
 						<span class="description">Insert user image in body</span><br/>
-						<input type="checkbox" name="dg_tw_ft_ui" class="regular-text" value="1" <?php if ($dg_tw_ft['ui']) echo ' checked=checked'; ?>/>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -86,8 +100,9 @@
 						<b>Body text:</b>
 					</td>
 					<td>
+						<input type="checkbox" name="dg_tw_ft_text" value="1" <?php if ($dg_tw_ft['text']) echo ' checked=checked'; ?>/>
+						&nbsp;
 						<span class="description">Insert tweet text in body</span><br/>
-						<input type="checkbox" name="dg_tw_ft_text" class="regular-text" value="1" <?php if ($dg_tw_ft['text']) echo ' checked=checked'; ?>/>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -133,20 +148,6 @@
 				</tr>
 				<tr valign="top">
 					<td scope="row">
-						<b>Privilege:</b>
-					</td>
-					<td>
-						<span class="description">Who can use this plugin:</span><br/>
-						<select name="dg_tw_privileges">
-							<option value="level_10"<?php if ($dg_tw_ft['privileges'] === 'level_10') echo ' selected=selected'; ?>>Administrator - Level 10</option>
-							<option value="level_7"<?php if ($dg_tw_ft['privileges'] === 'level_7') echo ' selected=selected'; ?>>Editor - Level 7</option>
-							<option value="level_2"<?php if ($dg_tw_ft['privileges'] === 'level_2') echo ' selected=selected'; ?>>Author - Level 2</option>
-							<option value="level_1"<?php if ($dg_tw_ft['privileges'] === 'level_1') echo ' selected=selected'; ?>>Contributor - Level 1</option>
-						</select>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
 						<b>Your search queryes</b>
 					</td>
 					<td>
@@ -164,7 +165,7 @@
 								<p style="text-align:left;padding:5px;">
 									<input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"> 
 									<input type="text" size="20" class="regular-text" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][value]" value="<?php echo $query_element['value']; ?>">
-									&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="20" class="regular-text" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][tag]" value="<?php echo $query_element['tag']; ?>">
+									&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="20" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][tag]" value="<?php echo $query_element['tag']; ?>">
 									<span> - Last id: <a target="_blank" href="https://twitter.com/search?q=<?php echo urlencode($query_element['value']); ?>&since_id=<?php echo $query_element['last_id']; ?>"><?php echo $query_element['last_id']; ?></a></span> 
 								</p>
 							<?php } ?>
@@ -181,7 +182,7 @@
 <script type="text/javascript">
 	jQuery('#dg_tw_add_element').click(function() {
 		if(jQuery('#dg_tw_add_title').val().length != 0) {
-			jQuery('#dg_tw_elements_selected').append('<p style="text-align:left;padding:5px;"><input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"><input type="text" size="20" class="regular-text" name="dg_tw_item_query['+jQuery('#dg_tw_add_title').val()+'][value]" value="'+jQuery('#dg_tw_add_title').val()+'">&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="20" class="regular-text" name="dg_tw_item_query['+jQuery('#dg_tw_add_title').val()+'][tag]" value="'+jQuery('#dg_tw_add_title').val()+'"></span></p>');
+			jQuery('#dg_tw_elements_selected').append('<p style="text-align:left;padding:5px;"><input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"><input type="text" size="20" class="regular-text" name="dg_tw_item_query['+jQuery('#dg_tw_add_title').val()+'][value]" value="'+jQuery('#dg_tw_add_title').val()+'">&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="20" name="dg_tw_item_query['+jQuery('#dg_tw_add_title').val()+'][tag]" value="'+jQuery('#dg_tw_add_title').val()+'"></span></p>');
 			jQuery('#dg_tw_add_title').attr('value','')
 		} else {
 			alert('Fill the query string box!');
