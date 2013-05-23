@@ -176,7 +176,29 @@ function dg_add_menu_item() {
  */
 function dg_tw_drawpage() {
 	global $dg_tw_queryes,$dg_tw_time, $dg_tw_publish, $dg_tw_ft, $dg_tw_tags, $dg_tw_cats;
+	
 	require_once('dg_tw_admin_page.php');
+}
+
+/*
+ * Print admin page message for feedback
+ */
+function dg_tw_feedback() {
+	$dg_tw_ft = get_option('dg_tw_ft');
+	
+	if(isset($dg_tw_ft['feedback']) && $dg_tw_ft['feedback'] == true)
+		return true;
+	
+	?>
+		<div class="updated">
+			<p>
+				Thanks for using this plugin, please leave feedback in the <a href="http://wordpress.org/plugins/twitter-posts-to-blog/">plugin page</a> 
+				and if you want you can <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QV5Y8ZNVWGEA8">offer me a beer</a>
+				<br/>
+				<a href="?page=dg_tw_admin_menu&feedback=true">Close message!</a>
+			</p>
+		</div>
+	<?php
 }
 
 /*
@@ -306,6 +328,13 @@ function dg_tw_options() {
 	$dg_tw_tags = (string) get_option('dg_tw_tags');
 	$dg_tw_cats = get_option('dg_tw_cats');
 	$dg_tw_ft = get_option('dg_tw_ft');
+	
+	if(isset($_REQUEST['feedback'])) {
+		$dg_tw_ft['feedback'] = true;
+
+		update_option('dg_tw_ft',$dg_tw_ft);
+		$dg_tw_ft = get_option('dg_tw_ft');
+	}
 
 	if(isset($_POST['dg_tw_data_update'])) {
 		$dg_temp_array = array();

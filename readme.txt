@@ -41,19 +41,28 @@ Follow the description in order to configure the plugin
 
 == Changelog ==
 
-= 0.1 =
-* Initial relase.
+= 0.6.2.1 =
+* Feedback request
 
-= 0.2 =
-* Removed debug code.
+= 0.6.2 =
+* Some fix
+* New menu position with icon
+* Update capabilities because levels are deprecated
+* Visual fixes
 
-= 0.3 =
-* Formatting setting added.
-* New backend interface
-* More readable sorce code
+= 0.6.1 =
+* Users Feedback:
+* sllim99: Posts thumbnails if the tweet has images
+* Umpqua: Posts urls as hyperlinks
 
-= 0.4 =
-* Post categories
+= 0.6 =
+* NO CHANGES, ONLY VERSION UPDATE
+
+= 0.5.2 =
+* Fix blacklist not filtering
+
+= 0.5.1 =
+* Small fix for query tags, thanks Rob Yardman
 
 = 0.5 =
 * Users Feedback:
@@ -61,22 +70,16 @@ Follow the description in order to configure the plugin
 * Rob Yardman: Title length
 * hazem: Words blacklist
 
-= 0.5.1 =
-* Small fix for query tags, thanks Rob Yardman
+= 0.4 =
+* Post categories
 
-= 0.5.2 =
-* Fix blacklist not filtering
+= 0.3 =
+* Formatting setting added.
+* New backend interface
+* More readable sorce code
 
-= 0.6 =
-* NO CHANGES, ONLY VERSION UPDATE
+= 0.2 =
+* Removed debug code.
 
-= 0.6.1 =
-* Users Feedback:
-* sllim99: Posts thumbnails if the tweet has images
-* Umpqua: Posts urls as hyperlinks
-
-= 0.6.2 =
-* Some fix
-* New menu position with icon
-* Update capabilities because levels are deprecated
-* Visual fixes
+= 0.1 =
+* Initial relase.
