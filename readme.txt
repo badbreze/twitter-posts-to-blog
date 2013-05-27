@@ -26,24 +26,24 @@ This plugin simply create posts in your blog from selected twitter searches.
 * Words blacklist: insert unwanted words to the blacklist (comma separated) tweets with choosed words will be ignored
 * Your search queryes: here you can add or remove terms for tweets import, here the query samples
 
-  =Example Finds tweets...=
-  twitter search				containing both "twitter" and "search". This is the default operator
-  "happy hour"					containing the exact phrase "happy hour"
-  love OR hate					containing either "love" or "hate" (or both)
-  beer -root					containing "beer" but not "root"
-  #haiku						containing the hashtag "haiku"
-  from:twitterapi				sent from the user @twitterapi
-  to:twitterapi					sent to the user @twitterapi
-  place:opentable:2				about the place with OpenTable ID 2
-  place:247f43d441defc03		about the place with Twitter ID 247f43d441defc03
-  @twitterapi					mentioning @twitterapi
-  superhero since:2011-05-09	containing "superhero" and sent since date "2011-05-09" (year-month-day).
-  twitterapi until:2011-05-09	containing "twitterapi" and sent before the date "2011-05-09".
-  movie -scary :)				containing "movie", but not "scary", and with a positive attitude.
-  flight :(						containing "flight" and with a negative attitude.
-  traffic ?						containing "traffic" and asking a question.
-  hilarious filter:links		containing "hilarious" and with a URL.
-  news source:tweet_button		containing "news" and entered via the Tweet Button
+=Example Finds tweets...=
+* twitter search - containing both "twitter" and "search". This is the default operator
+* "happy hour" - containing the exact phrase "happy hour"
+* love OR hate - containing either "love" or "hate" (or both)
+* beer -root - containing "beer" but not "root"
+* #haiku - containing the hashtag "haiku"
+* from:twitterapi - sent from the user @twitterapi
+* to:twitterapi - sent to the user @twitterapi
+* place:opentable:2 - about the place with OpenTable ID 2
+* place:247f43d441defc03 - about the place with Twitter ID 247f43d441defc03
+* @twitterapi - mentioning @twitterapi
+* superhero since:2011-05-09 - containing "superhero" and sent since date "2011-05-09" (year-month-day).
+* twitterapi until:2011-05-09 - containing "twitterapi" and sent before the date "2011-05-09".
+* movie -scary :) - containing "movie", but not "scary", and with a positive attitude.
+* flight :( - containing "flight" and with a negative attitude.
+* traffic ? - containing "traffic" and asking a question.
+* hilarious filter:links - containing "hilarious" and with a URL.
+* news source:tweet_button - containing "news" and entered via the Tweet Button
 
 = More? =
 Want more functionality or some modifications? Ok tell me wath you want and i try to add or modify the plugin functions
@@ -58,6 +58,9 @@ Follow the description in order to configure the plugin
 
 
 == Changelog ==
+
+= 0.6.2.3 =
+* Readme updated
 
 = 0.6.2.2 =
 * Readme updated
