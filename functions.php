@@ -177,7 +177,7 @@ function dg_add_menu_item() {
 function dg_tw_drawpage() {
 	global $dg_tw_queryes,$dg_tw_time, $dg_tw_publish, $dg_tw_ft, $dg_tw_tags, $dg_tw_cats;
 	
-	require_once('dg_tw_admin_page.php');
+	require_once('admin_page.php');
 }
 
 /*

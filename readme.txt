@@ -11,21 +11,39 @@ This plugin simply create posts in your blog from selected twitter searches.
 
 == Description ==
 = With this plugin you can stream tweets to your blog, it's simply to use =
-* Go to the plugin settings menu ( Settings -> Twitter To WP)
-* You have one text box called "Add query string:", type the query string you want to autopublish, eg.:
-* @egUsername
-* #egTag
-* egText
-* Now Click ADD button to add this query string to "current queryes"
-* From "Cron Time" choose every how much time this plugin import new items
-* From "Publish Status" select your favorite publish status
-* Optional from "Post Tags" type the tags you want to be added in every post
-* Optional from "Body Images" choose if you want to insert user image into body
-* Optional from "Body Text" choose if you want to insert tweet text into body
-* Optional from "Image size" choose image size for the body image (if "Body Images" are selected)
-* Optional from "Items at time" choose how much tweets want to import each time the cron run
-* Click Save Settings Button
-* Now the plugin import automaticaly choosed tweets
+* Go to the plugin settings menu "Twitter To WP" under "Dashboard"
+* Configure the plugin options eg.:
+* Capabilities: here you can select who can change settings of this plugin 
+* Cron time: choose how much time must pass before load new items, use "never" to disable
+* Publish status: Choose how the plugin create articles: published or draft
+* Posts Tags: Type tags you want append to each tweet (dont use query strings here)
+* Posts categories: Choose categories you want append to each tweet post
+* Body images: Check if you want to insert images into body of the posts
+* Body text: Check if you want to insert the tweet text into body of the posts
+* Images size: deprecated, witing for feedback about the use of this image (the user avatar)
+* Items at time: choose how much tweets want to import each time the cron run
+* Max Title Length: because the title is the tweet text here you can choose the lenght of the title (truncate tweet text) (0 = no title)
+* Words blacklist: insert unwanted words to the blacklist (comma separated) tweets with choosed words will be ignored
+* Your search queryes: here you can add or remove terms for tweets import, here the query samples
+
+  =Example Finds tweets...=
+  twitter search				containing both "twitter" and "search". This is the default operator
+  "happy hour"					containing the exact phrase "happy hour"
+  love OR hate					containing either "love" or "hate" (or both)
+  beer -root					containing "beer" but not "root"
+  #haiku						containing the hashtag "haiku"
+  from:twitterapi				sent from the user @twitterapi
+  to:twitterapi					sent to the user @twitterapi
+  place:opentable:2				about the place with OpenTable ID 2
+  place:247f43d441defc03		about the place with Twitter ID 247f43d441defc03
+  @twitterapi					mentioning @twitterapi
+  superhero since:2011-05-09	containing "superhero" and sent since date "2011-05-09" (year-month-day).
+  twitterapi until:2011-05-09	containing "twitterapi" and sent before the date "2011-05-09".
+  movie -scary :)				containing "movie", but not "scary", and with a positive attitude.
+  flight :(						containing "flight" and with a negative attitude.
+  traffic ?						containing "traffic" and asking a question.
+  hilarious filter:links		containing "hilarious" and with a URL.
+  news source:tweet_button		containing "news" and entered via the Tweet Button
 
 = More? =
 Want more functionality or some modifications? Ok tell me wath you want and i try to add or modify the plugin functions
@@ -40,6 +58,9 @@ Follow the description in order to configure the plugin
 
 
 == Changelog ==
+
+= 0.6.2.2 =
+* Readme updated
 
 = 0.6.2.1 =
 * Feedback request
