@@ -26,7 +26,7 @@ This plugin simply create posts in your blog from selected twitter searches.
 * Words blacklist: insert unwanted words to the blacklist (comma separated) tweets with choosed words will be ignored
 * Your search queryes: here you can add or remove terms for tweets import, here the query samples
 
-=Example Finds tweets...=
+= Example Finds tweets... =
 * twitter search - containing both "twitter" and "search". This is the default operator
 * "happy hour" - containing the exact phrase "happy hour"
 * love OR hate - containing either "love" or "hate" (or both)
