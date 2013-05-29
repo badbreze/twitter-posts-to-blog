@@ -59,17 +59,10 @@ Follow the description in order to configure the plugin
 
 == Changelog ==
 
-= 0.6.2.4 =
-* Fix feedback request every time you save settings
-
-= 0.6.2.3 =
-* Readme updated
-
-= 0.6.2.2 =
-* Readme updated
-
-= 0.6.2.1 =
+= 0.6.2.* =
 * Feedback request
+* Readme updated
+* Fix feedback request every time you save settings
 
 = 0.6.2 =
 * Some fix
