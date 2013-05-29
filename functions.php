@@ -379,7 +379,7 @@ function dg_tw_options() {
 		/*
 		 * UPDATE FORMATTING OPTIONS
 		 */
-		$now_ft = array();
+		$now_ft = $dg_tw_ft;
 		$now_ft['ui'] = (int) $_POST['dg_tw_ft_ui'];
 		$now_ft['text'] = (int) $_POST['dg_tw_ft_text'];
 		$now_ft['img_size'] = $_POST['dg_tw_ft_size'];
