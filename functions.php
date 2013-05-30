@@ -343,6 +343,12 @@ function dg_tw_options() {
 function dg_tw_publish_tweet($tweet,$query = false) {
 	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 	
+	$current_query = '';
+	
+	foreach($dg_tw_queryes as $single_query)
+		if($single_query['value'] == $query)
+			$current_query = $single_query;
+	
 	$querystr = "SELECT *
 					FROM $wpdb->postmeta
 					WHERE (meta_key = 'dg_tw_id' AND meta_value = '".(int) $tweet['id_str']."')
@@ -357,7 +363,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 	$post_content = "";
 	
 	$tweet['text'] = substr($tweet['text'],$dg_tw_ft['maxtitle']);
-	$post_tags = htmlspecialchars($dg_tw_tags.','.$query['tag']);
+	$post_tags = htmlspecialchars($dg_tw_tags.','.$current_query['tag']);
 						
 	if(!count($postid)) {
 		$post = array(
@@ -388,7 +394,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 			if(isset($tweet['user']['screen_name']))
 				$username = $tweet['user']['screen_name'];
 			
-			$query_string = urlencode($query['value']);
+			$query_string = urlencode($current_query['value']);
 			
 			if($query != false)
 				$query_string = $query;

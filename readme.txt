@@ -62,6 +62,7 @@ Follow the description in order to configure the plugin
 = 0.6.3.* =
 * User from twitter fix
 * Fix username and query in manual publishing
+* Some fixes
 
 = 0.6.3 =
 * List next tweets
