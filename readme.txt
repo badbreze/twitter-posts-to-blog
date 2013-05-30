@@ -59,6 +59,10 @@ Follow the description in order to configure the plugin
 
 == Changelog ==
 
+= 0.6.3 =
+* List next tweets
+* Manual publishing of tweets from the list
+
 = 0.6.2.* =
 * Feedback request
 * Readme updated

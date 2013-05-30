@@ -2,7 +2,7 @@
 /*
 Plugin Name: Twitter posts to Blog
 Description: Post twetts to your blog
-Version: 0.6.2.4
+Version: 0.6.3
 Author: Damian Gomez
 */
 
@@ -19,6 +19,7 @@ add_action('admin_menu', 'dg_add_menu_item');
 add_action("loop_start", "dg_tw_loop_start");
 add_action('wp_loaded', 'dg_tw_options');
 add_action( 'admin_notices', 'dg_tw_feedback' );
+add_action('wp_ajax_dg_tw_manual_publish', 'dg_tw_manual_publish');
 
 //Filters
 add_filter('cron_schedules','dg_tw_schedule');
