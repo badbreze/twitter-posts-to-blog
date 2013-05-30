@@ -59,6 +59,10 @@ Follow the description in order to configure the plugin
 
 == Changelog ==
 
+= 0.6.3.* =
+* User from twitter fix
+* Fix username and query in manual publishing
+
 = 0.6.3 =
 * List next tweets
 * Manual publishing of tweets from the list

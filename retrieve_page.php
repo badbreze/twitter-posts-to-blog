@@ -44,7 +44,7 @@
 										<?php echo $item['text']; ?>
 									</td>
 									<td scope="row">
-										<button type="button" class="manual_publish" data-pid="<?php echo $item['id_str']; ?>">Publish</button>
+										<button type="button" class="manual_publish" data-query="<?php echo $query['value']; ?>" data-pid="<?php echo $item['id_str']; ?>">Publish</button>
 									</td>
 								</tr>
 								<?php
@@ -74,7 +74,8 @@
 jQuery(document).ready(function($) {
 	jQuery('.manual_publish').on('click',function () {
 		var selected = jQuery(this);
-		var data = selected.data('pid');
+		var pid = selected.data('pid');
+		var query = selected.data('query');
 		var parent = selected.parent();
 		var parent_parent = selected.parent().parent();
 
@@ -83,8 +84,8 @@ jQuery(document).ready(function($) {
 		
 		var data = {
 			action: 'dg_tw_manual_publish',
-			candio: "casso",
-			id: data
+			id: pid,
+			query: query
 		};
 		
 		jQuery.post(ajaxurl, data, function(response) {

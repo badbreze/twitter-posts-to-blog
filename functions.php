@@ -183,7 +183,7 @@ function dg_tw_loop_start() {
  * Filter autor name for posts setting the twitter author name
  */
 function dg_tw_the_author($author) {
-	$custom_fields = get_post_custom();
+	$custom_fields = get_post_custom();print_r($custom_fields);
 	
 	if (isset($custom_fields["dg_tw_author"])) {
 		$author = '@'.implode(", ", $custom_fields["dg_tw_author"]);
@@ -340,7 +340,7 @@ function dg_tw_options() {
 /*
  * Create post from tweet
  */
-function dg_tw_publish_tweet($tweet) {
+function dg_tw_publish_tweet($tweet,$query = false) {
 	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 	
 	$querystr = "SELECT *
@@ -382,10 +382,20 @@ function dg_tw_publish_tweet($tweet) {
 			if( isset($tweet['entities']['media']) ) {
 				$attaches_id = dg_tw_insert_attachments($tweet['entities']['media'],$dg_tw_this_post);
 			}
+			
+			$username = (empty($tweet['from_user']) ? $tweet['from_user_name'] : $tweet['from_user']);
+			
+			if(isset($tweet['user']['screen_name']))
+				$username = $tweet['user']['screen_name'];
+			
+			$query_string = urlencode($query['value']);
+			
+			if($query != false)
+				$query_string = $query;
 	
-			add_post_meta($dg_tw_this_post, 'dg_tw_query', urlencode($query['value']));
+			add_post_meta($dg_tw_this_post, 'dg_tw_query', $query_string);
 			add_post_meta($dg_tw_this_post, 'dg_tw_id', $tweet['id_str']);
-			add_post_meta($dg_tw_this_post, 'dg_tw_author', $tweet['from_user']);
+			add_post_meta($dg_tw_this_post, 'dg_tw_author', $username);
 	
 			// add image as post preview
 			set_post_thumbnail( $dg_tw_this_post, end($attaches_id) );
@@ -462,6 +472,7 @@ function dg_tw_manual_publish() {
 	global $wpdb;
 	
 	$tweet_id = $_REQUEST['id'];
+	$query = $_REQUEST['query'];
 	
 	if(empty($tweet_id)) {
 		echo "false";
@@ -477,7 +488,7 @@ function dg_tw_manual_publish() {
 		die();
 	}
 	
-	$result = dg_tw_publish_tweet($dg_tw_data);
+	$result = dg_tw_publish_tweet($dg_tw_data,$query);
 
 	echo $result;
 	die();
