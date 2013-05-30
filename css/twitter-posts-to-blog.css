@@ -2,6 +2,6 @@
 #toplevel_page_dg_tw_admin_menu .wp-menu-image {
 	background: url(../images/balloon-twitter-left.png) no-repeat 6px -18px !important;
 }
-#toplevel_page_dg_tw_admin_menu:hover .wp-menu-image, #toplevel_page_dg_tw_admin_menu .current .wp-menu-image {
+#toplevel_page_dg_tw_admin_menu:hover .wp-menu-image, #toplevel_page_dg_tw_admin_menu .current .wp-menu-image, #toplevel_page_dg_tw_admin_menu .wp-has-current-submenu .wp-menu-image {
 	background-position:6px 6px !important;
 }
