@@ -183,7 +183,7 @@ function dg_tw_loop_start() {
  * Filter autor name for posts setting the twitter author name
  */
 function dg_tw_the_author($author) {
-	$custom_fields = get_post_custom();print_r($custom_fields);
+	$custom_fields = get_post_custom();
 	
 	if (isset($custom_fields["dg_tw_author"])) {
 		$author = '@'.implode(", ", $custom_fields["dg_tw_author"]);
