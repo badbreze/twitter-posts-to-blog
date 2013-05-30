@@ -25,7 +25,7 @@ function dg_tw_load_next_items() {
 		$dg_result = array_reverse($dg_tw_data['results']);
 		foreach($dg_result as $item) {
 			if(dg_tw_iswhite($item['text'])) {
-				dg_tw_publish_tweet($item);
+				dg_tw_publish_tweet($item,$query);
 			} //iswhite
 		}
 	}
@@ -345,9 +345,13 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 	
 	$current_query = '';
 	
-	foreach($dg_tw_queryes as $single_query)
-		if($single_query['value'] == $query)
-			$current_query = $single_query;
+	if(!is_array($query)) {
+		foreach($dg_tw_queryes as $single_query)
+			if($single_query['value'] == $query)
+				$current_query = $single_query;
+	} else {
+		$current_query = $query;
+	}
 	
 	$querystr = "SELECT *
 					FROM $wpdb->postmeta
