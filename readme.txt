@@ -7,6 +7,9 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 This plugin simply create posts in your blog from selected twitter searches.
+For my projects see http://www.divenock.com/progetti/
+
+Good work with this plugin.
 
 
 == Description ==
