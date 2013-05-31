@@ -152,6 +152,9 @@ function dg_tw_slug($str) {
 	return $str;
 }
 
+/*
+ * Check if there is blacklisted words in the text of the tweet
+ */
 function dg_tw_iswhite($text) {
 	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 	
@@ -366,16 +369,16 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 	
 	$post_content = "";
 	
-	$tweet['text'] = substr($tweet['text'],0,$dg_tw_ft['maxtitle']);
+	$tweet_title = substr($tweet['text'],0,$dg_tw_ft['maxtitle']);
 	$post_tags = htmlspecialchars($dg_tw_tags.','.$current_query['tag']);
 						
 	if(!count($postid)) {
 		$post = array(
 				'post_author'    => 0,
 				'post_content'   => $post_content,
-				'post_name'      => dg_tw_slug($tweet['text']),
+				'post_name'      => dg_tw_slug($tweet_title),
 				'post_status'    => strval($dg_tw_publish),
-				'post_title'     => $tweet['text'],
+				'post_title'     => $tweet_title,
 				'post_category'  => $dg_tw_cats,
 				'tags_input'     => $post_tags,
 				'post_type'      => 'post',
