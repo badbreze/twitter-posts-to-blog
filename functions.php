@@ -366,7 +366,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 	
 	$post_content = "";
 	
-	$tweet['text'] = substr($tweet['text'],$dg_tw_ft['maxtitle']);
+	$tweet['text'] = substr($tweet['text'],0,$dg_tw_ft['maxtitle']);
 	$post_tags = htmlspecialchars($dg_tw_tags.','.$current_query['tag']);
 						
 	if(!count($postid)) {
@@ -425,14 +425,13 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 				}
 					
 				$post_content .= '</div>';
+				
+				$update_post = array();
+				$update_post['ID'] = $dg_tw_this_post;
+				$update_post['post_content'] = $post_content;
+				
+				wp_update_post( $update_post );
 			}
-			
-			$update_post = array();
-			$update_post['ID'] = $dg_tw_this_post;
-			$update_post['post_content'] = $post_content;
-			
-			// Update the post into the database
-			wp_update_post( $my_post );
 		}
 	} else {
 		return "already";
