@@ -7,7 +7,6 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 This plugin simply create posts in your blog from selected twitter searches.
-For my projects see http://www.divenock.com/progetti/
 
 Good work with this plugin.
 
@@ -26,8 +25,11 @@ Good work with this plugin.
 * Images size: deprecated, witing for feedback about the use of this image (the user avatar)
 * Items at time: choose how much tweets want to import each time the cron run
 * Max Title Length: because the title is the tweet text here you can choose the lenght of the title (truncate tweet text) (0 = no title)
+* Post Modifications: here you can remove from tweets #hastags and/or @replies - Tanks to sforsberg
 * Words blacklist: insert unwanted words to the blacklist (comma separated) tweets with choosed words will be ignored
 * Your search queryes: here you can add or remove terms for tweets import, here the query samples
+
+For my projects see http://www.divenock.com/progetti/
 
 = Example Finds tweets... =
 * twitter search - containing both "twitter" and "search". This is the default operator
@@ -61,6 +63,9 @@ Follow the description in order to configure the plugin
 
 
 == Changelog ==
+
+= 0.6.4 =
+* sforsberg: Thanks for "Post Modifications" filters
 
 = 0.6.3.* =
 * User from twitter fix

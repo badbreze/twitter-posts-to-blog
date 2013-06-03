@@ -342,6 +342,8 @@ function dg_tw_options() {
 		$now_ft['privileges'] = $_POST['dg_tw_privileges'];
 		$now_ft['maxtitle'] = $_POST['dg_tw_maxtitle'];
 		$now_ft['badwords'] = $_POST['dg_tw_badwords'];
+		$now_ft['notags'] = isset($_POST['dg_tw_notags']) ? true : false;
+		$now_ft['noreplies'] = isset($_POST['dg_tw_noreplies']) ? true : false; 		
 		
 		update_option('dg_tw_ft',$now_ft);
 		$dg_tw_ft = get_option('dg_tw_ft');
@@ -353,7 +355,7 @@ function dg_tw_options() {
 		$dg_tw_publish = (string) get_option('dg_tw_publish');
 	
 		/*
-		 * UPDATE ATGS
+		 * UPDATE TAGS
 		 */
 		update_option('dg_tw_tags',$_POST['dg_tw_tag_tweets']);
 		$dg_tw_tags = (string) get_option('dg_tw_tags');
@@ -361,9 +363,10 @@ function dg_tw_options() {
 		/*
 		 * UPDATE CATS
 		 */
-		update_option('dg_tw_cats',$_POST['post_category']);
-		$dg_tw_cats = get_option('dg_tw_cats');
-	
+		if( isset($_POST['post_category']) ){
+			update_option('dg_tw_cats',$_POST['post_category']);
+			$dg_tw_cats = get_option('dg_tw_cats');
+		}
 	}
 }
 
@@ -414,7 +417,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 				'post_status'    => strval($dg_tw_publish)
 		);
 	
-		$dg_tw_this_post = wp_insert_post( $post, $wp_error );
+		$dg_tw_this_post = wp_insert_post( $post, true );
 
 		if($dg_tw_this_post) {
 			$attaches_id = array();
@@ -422,8 +425,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 			if( isset($tweet['entities']['media']) ) {
 				$attaches_id = dg_tw_insert_attachments($tweet['entities']['media'],$dg_tw_this_post);
 			}
-			
-			$username = (empty($tweet['from_user']) ? $tweet['from_user_name'] : $tweet['from_user']);
+			$username = (!isset($tweet['from_user'] || empty($tweet['from_user']) ? $tweet['from_user_name'] : $tweet['from_user']);
 			
 			if(isset($tweet['user']['screen_name']))
 				$username = $tweet['user']['screen_name'];
@@ -441,7 +443,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 			set_post_thumbnail( $dg_tw_this_post, end($attaches_id) );
 	
 			if($dg_tw_ft['ui'] || $dg_tw_ft['text']) {
-				$post_content .= '<div class="twitter-post">';
+				$post_content = '<div class="twitter-post">';
 			
 				if($dg_tw_ft['ui']) {
 					foreach($attaches_id as $attach)
@@ -450,7 +452,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 					
 				if($dg_tw_ft['text']) {
 					$str= preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$tweet['text']);
-			
+					$str = dg_tw_regexText($str);
 					$post_content .= '<p>'.$str.'</p>';
 				}
 					
@@ -468,6 +470,18 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 	}
 	
 	return 'true';
+}
+
+function dg_tw_regexText($string){
+	global $dg_tw_ft;
+	if($dg_tw_ft['noreplies']){
+		$string = preg_replace('#RT @[\\d\\w]+:#','',$string);
+		$string = preg_replace('#@[\\d\\w]+#','',$string); 									
+	}
+	if($dg_tw_ft['notags']){
+		$string = preg_replace('/#[\\d\\w]+/','',$string); 										
+	}
+	return $string;
 }
 
 /*

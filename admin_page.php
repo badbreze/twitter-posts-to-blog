@@ -148,6 +148,26 @@
 				</tr>
 				<tr valign="top">
 					<td scope="row">
+						<b>Post Modifications:</b>
+					</td>
+					<td>
+						<input type="checkbox" name="dg_tw_notags" <?php if( $dg_tw_ft['notags'] ) echo 'checked'; ?> />
+						<span class="description">Remove all hashtags from posts</span><br/>
+						<input type="checkbox" name="dg_tw_noreplies" <?php if( $dg_tw_ft['noreplies'] ) echo 'checked'; ?> />
+						<span class="description">Remove all @replies from posts (removes retweet "RT @user:" text as well)</span>
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
+						<b>Words blacklist:</b>
+					</td>
+					<td>
+						<span class="description">Does not post tweets with these words:</span><br/>
+						<input type="text" size="60" name="dg_tw_badwords" class="regular-text" value="<?php echo $dg_tw_ft['badwords']; ?>">
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
 						<b>Your search queryes</b>
 					</td>
 					<td>
