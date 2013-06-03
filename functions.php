@@ -425,7 +425,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 			if( isset($tweet['entities']['media']) ) {
 				$attaches_id = dg_tw_insert_attachments($tweet['entities']['media'],$dg_tw_this_post);
 			}
-			$username = (!isset($tweet['from_user'] || empty($tweet['from_user']) ? $tweet['from_user_name'] : $tweet['from_user']);
+			$username = (!isset($tweet['from_user']) || empty($tweet['from_user'])) ? $tweet['from_user_name'] : $tweet['from_user'];
 			
 			if(isset($tweet['user']['screen_name']))
 				$username = $tweet['user']['screen_name'];

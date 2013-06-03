@@ -64,6 +64,9 @@ Follow the description in order to configure the plugin
 
 == Changelog ==
 
+= 0.6.4.* =
+* fatal error fixed
+
 = 0.6.4 =
 * sforsberg: Thanks for "Post Modifications" filters
 
