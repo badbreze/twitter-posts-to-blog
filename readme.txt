@@ -66,6 +66,7 @@ Follow the description in order to configure the plugin
 * User from twitter fix
 * Fix username and query in manual publishing
 * Some fixes
+* Twitter auhor links in the loop
 
 = 0.6.3 =
 * List next tweets

@@ -180,10 +180,12 @@ function dg_tw_iswhite($text) {
 function dg_tw_loop_start() {
 	add_filter("the_author", "dg_tw_the_author");
 	add_filter("get_the_author", "dg_tw_the_author");
+	add_filter("the_author_posts_link", "dg_tw_the_author_link");
+	add_filter("author_link", "dg_tw_the_author_url");
 }
 
 /*
- * Filter autor name for posts setting the twitter author name
+ * Filter autor name for posts setting the twitter author name and link
  */
 function dg_tw_the_author($author) {
 	$custom_fields = get_post_custom();
@@ -191,6 +193,31 @@ function dg_tw_the_author($author) {
 	if (isset($custom_fields["dg_tw_author"])) {
 		$author = '@'.implode(", ", $custom_fields["dg_tw_author"]);
 	}
+	return $author;
+}
+
+function dg_tw_the_author_link($author) {
+	$custom_fields = get_post_custom();
+	
+	if (isset($custom_fields["dg_tw_author"])) {
+		$author = sprintf(
+			'<a href="https://twitter.com/%1$s" title="%2$s" rel="author">@%3$s</a>',
+			end($custom_fields["dg_tw_author"]),
+			end($custom_fields["dg_tw_author"]),
+			end($custom_fields["dg_tw_author"])
+		);
+	}
+	
+	return $author;
+}
+
+function dg_tw_the_author_url($author) {
+	$custom_fields = get_post_custom();
+	
+	if (isset($custom_fields["dg_tw_author"])) {
+		$author = "https://twitter.com/".end($custom_fields["dg_tw_author"]);
+	}
+	
 	return $author;
 }
 

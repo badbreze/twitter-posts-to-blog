@@ -2,7 +2,7 @@
 /*
 Plugin Name: Twitter posts to Blog
 Description: Post twetts to your blog
-Version: 0.6.3.7
+Version: 0.6.3.8
 Author: Damian Gomez
 */
 
