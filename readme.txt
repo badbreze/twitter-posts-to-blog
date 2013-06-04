@@ -62,10 +62,17 @@ This plugin create new menu under Settings ( Settings -> Twitter To WP )
 Follow the description in order to configure the plugin
 
 
+== Screenshots ==
+
+1. Configuration panel.
+2. List items matching configuration and alow to pubblish mannualy.
+
+
 == Changelog ==
 
 = 0.6.4.* =
 * fatal error fixed
+* Updated changelog and added screenshots
 
 = 0.6.4 =
 * sforsberg: Thanks for "Post Modifications" filters
