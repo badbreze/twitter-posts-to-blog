@@ -2,22 +2,28 @@
 /*
 Plugin Name: Twitter posts to Blog
 Description: Post twetts to your blog
-Version: 0.6.4.1
+Version: 1.0
 Author: Damian Gomez
 */
+date_default_timezone_set('UTC');
 
-require_once('functions.php');
+
+//require_once 'libs/tmhOAuth/tmhOAuth.php';
+//require_once 'libs/tmhOAuth/tmhUtilities.php';
+require_once 'libs/twitteroauth/twitteroauth.php';
+require_once 'functions.php';
 
 //Variables
 $dg_tw_queryes = array();
 $dg_tw_time = '';
 $dg_tw_publish = '';
+$tokens_error = false;
 
 //Actions
+add_action('wp_loaded', 'dg_tw_options');
 add_action('dg_tw_event_start', 'dg_tw_load_next_items');
 add_action('admin_menu', 'dg_add_menu_item');
 add_action("loop_start", "dg_tw_loop_start");
-add_action('wp_loaded', 'dg_tw_options');
 add_action( 'admin_notices', 'dg_tw_feedback' );
 add_action('wp_ajax_dg_tw_manual_publish', 'dg_tw_manual_publish');
 

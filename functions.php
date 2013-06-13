@@ -3,28 +3,32 @@
  * SETUP THE CRON
 */
 function dg_tw_load_next_items() {
-	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
+	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb,$connection;
 	
-	if (!function_exists('curl_init'))
-	{
+	if (!function_exists('curl_init')){
 		error_log('The DG Twitter to blog plugin require CURL libraries');
 		return;
 	}
 
 	foreach($dg_tw_queryes as $query) {
-		$dg_tw_url_compose = "http://search.twitter.com/search.json?q=".urlencode($query['value'])."&since_id=".$query['last_id']."&include_entities=1&rpp=".$dg_tw_ft['ipp'];
-		$dg_tw_data = dg_tw_curl_file_get_contents($dg_tw_url_compose);
-		$dg_tw_data= json_decode($dg_tw_data, true);
+		$parameters = array(
+				'q' => urlencode($query['value']),
+				'since_id' => $query['last_id'],
+				'include_entities' => true,
+				'count' => $dg_tw_ft['ipp']
+		);
+		
+		$dg_tw_data = $connection->get('search/tweets', $parameters);
 
-		if(count($dg_tw_data['results'])) {
-			$dg_tw_queryes[urlencode($query['value'])]['last_id'] = $dg_tw_data['results'][0]['id_str'];
+		if(count($dg_tw_data->statuses)) {
+			$dg_tw_queryes[urlencode($query['value'])]['last_id'] = $dg_tw_data->statuses[0]['id_str'];
 			update_option('dg_tw_queryes',$dg_tw_queryes);
 			$dg_tw_queryes = get_option('dg_tw_queryes');
 		}
 
-		$dg_result = array_reverse($dg_tw_data['results']);
+		$dg_result = array_reverse($dg_tw_data->statuses);
 		foreach($dg_result as $item) {
-			if(dg_tw_iswhite($item['text'])) {
+			if(dg_tw_iswhite($item->text)) {
 				dg_tw_publish_tweet($item,$query);
 			} //iswhite
 		}
@@ -91,7 +95,7 @@ function dg_add_menu_item() {
  * Call admin page for this plugin
  */
 function dg_tw_drawpage() {
-	global $dg_tw_queryes,$dg_tw_time, $dg_tw_publish, $dg_tw_ft, $dg_tw_tags, $dg_tw_cats;
+	global $dg_tw_queryes,$dg_tw_time, $dg_tw_publish, $dg_tw_ft, $dg_tw_tags, $dg_tw_cats,$tokens_error;
 	
 	require_once('admin_page.php');
 }
@@ -100,7 +104,7 @@ function dg_tw_drawpage() {
  * Call admin page for this plugin
  */
 function dg_tw_drawpage_retrieve() {
-	global $dg_tw_queryes,$dg_tw_time, $dg_tw_publish, $dg_tw_ft, $dg_tw_tags, $dg_tw_cats;
+	global $dg_tw_queryes,$dg_tw_time, $dg_tw_publish, $dg_tw_ft, $dg_tw_tags, $dg_tw_cats,$connection,$tokens_error;
 	
 	require_once('retrieve_page.php');
 }
@@ -269,8 +273,8 @@ function dg_tw_deactivation() {
 }
 
 function dg_tw_options() {
-	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags,$dg_tw_cats, $dg_tw_ft;
-
+	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags,$dg_tw_cats, $dg_tw_ft,$connection,$tokens_error;
+	
 	if (!function_exists('curl_init'))
 	{
 		error_log('The DG Twitter to blog plugin require CURL libraries');
@@ -283,6 +287,12 @@ function dg_tw_options() {
 	$dg_tw_tags = (string) get_option('dg_tw_tags');
 	$dg_tw_cats = get_option('dg_tw_cats');
 	$dg_tw_ft = get_option('dg_tw_ft');
+	
+	if(!empty($dg_tw_ft['access_key']) && !empty($dg_tw_ft['access_secret']) && !empty($dg_tw_ft['access_token']) && !empty($dg_tw_ft['access_token_secret'])) {
+		$connection = new TwitterOAuth($dg_tw_ft['access_key'], $dg_tw_ft['access_secret'],$dg_tw_ft['access_token'],$dg_tw_ft['access_token_secret']);
+	} else {
+		$tokens_error = true;
+	}
 	
 	if(isset($_REQUEST['feedback'])) {
 		$dg_tw_ft['feedback'] = true;
@@ -335,6 +345,10 @@ function dg_tw_options() {
 		 * UPDATE FORMATTING OPTIONS
 		 */
 		$now_ft = $dg_tw_ft;
+		$now_ft['access_key'] = $_POST['dg_tw_access_key'];
+		$now_ft['access_secret'] = $_POST['dg_tw_access_secret'];
+		$now_ft['access_token'] = $_POST['dg_tw_access_token'];
+		$now_ft['access_token_secret'] = $_POST['dg_tw_access_token_secret'];
 		$now_ft['ui'] = (int) $_POST['dg_tw_ft_ui'];
 		$now_ft['text'] = (int) $_POST['dg_tw_ft_text'];
 		$now_ft['img_size'] = $_POST['dg_tw_ft_size'];
@@ -388,20 +402,20 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 	
 	$querystr = "SELECT *
 					FROM $wpdb->postmeta
-					WHERE (meta_key = 'dg_tw_id' AND meta_value = '".(int) $tweet['id_str']."')
+					WHERE (meta_key = 'dg_tw_id' AND meta_value = '".(int) $tweet->id_str."')
 					GROUP BY post_id";
 				
 	$postid = $wpdb->get_results($querystr);
-				
-	$time = strtotime($tweet['created_at']);
+	
+	$time = strtotime($tweet->created_at);
 	
 	$attaches = array();
 	
 	$post_content = "";
 	
-	$tweet_title = substr($tweet['text'],0,$dg_tw_ft['maxtitle']);
+	$tweet_title = substr($tweet->text,0,$dg_tw_ft['maxtitle']);
 	$post_tags = htmlspecialchars($dg_tw_tags.','.$current_query['tag']);
-						
+	
 	if(!count($postid)) {
 		$post = array(
 				'post_author'    => 0,
@@ -416,19 +430,16 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 				'post_date_gmt'  => gmdate('Y-m-d H:i:s', $time),
 				'post_status'    => strval($dg_tw_publish)
 		);
-	
+		
 		$dg_tw_this_post = wp_insert_post( $post, true );
-
 		if($dg_tw_this_post) {
 			$attaches_id = array();
-	
-			if( isset($tweet['entities']['media']) ) {
-				$attaches_id = dg_tw_insert_attachments($tweet['entities']['media'],$dg_tw_this_post);
-			}
-			$username = (!isset($tweet['from_user']) || empty($tweet['from_user'])) ? $tweet['from_user_name'] : $tweet['from_user'];
 			
-			if(isset($tweet['user']['screen_name']))
-				$username = $tweet['user']['screen_name'];
+			if( isset($tweet->entities->media) ) {
+				$attaches_id = dg_tw_insert_attachments($tweet->entities->media,$dg_tw_this_post);
+			}
+			
+			$username = (isset($tweet->user->display_name) && !empty($tweet->user->display_name)) ? $tweet->user->display_name : $tweet->user->name;
 			
 			$query_string = urlencode($current_query['value']);
 			
@@ -436,7 +447,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 				$query_string = $query;
 	
 			add_post_meta($dg_tw_this_post, 'dg_tw_query', $query_string);
-			add_post_meta($dg_tw_this_post, 'dg_tw_id', $tweet['id_str']);
+			add_post_meta($dg_tw_this_post, 'dg_tw_id', $tweet->id_str);
 			add_post_meta($dg_tw_this_post, 'dg_tw_author', $username);
 	
 			// add image as post preview
@@ -447,11 +458,11 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 			
 				if($dg_tw_ft['ui']) {
 					foreach($attaches_id as $attach)
-						$post_content .= '<img src="'.wp_get_attachment_url($attach).'" alt="'.dg_tw_slug($tweet['text']).'" align="baseline" border="0" />&nbsp;';
+						$post_content .= '<img src="'.wp_get_attachment_url($attach).'" alt="'.dg_tw_slug($tweet->text).'" align="baseline" border="0" />&nbsp;';
 				}
 					
 				if($dg_tw_ft['text']) {
-					$str= preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$tweet['text']);
+					$str= preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$tweet->text);
 					$str = dg_tw_regexText($str);
 					$post_content .= '<p>'.$str.'</p>';
 				}
@@ -491,10 +502,10 @@ function dg_tw_insert_attachments($medias,$post_id) {
 	$attach_id = false;
 	
 	foreach( $medias as $media ) {
-		if( $media['type']=="photo" ) {
+		if( $media->type=="photo" ) {
 			$upload_dir = wp_upload_dir();
-			$image_data = file_get_contents($media['media_url']);
-			$filename = strtolower(pathinfo($media['media_url'], PATHINFO_FILENAME)).".".strtolower(pathinfo($media['media_url'], PATHINFO_EXTENSION));
+			$image_data = file_get_contents($media->media_url);
+			$filename = strtolower(pathinfo($media->media_url, PATHINFO_FILENAME)).".".strtolower(pathinfo($media->media_url, PATHINFO_EXTENSION));
 			if(wp_mkdir_p($upload_dir['path']))
 				$file = $upload_dir['path'] . '/' . $filename;
 			else
@@ -522,7 +533,7 @@ function dg_tw_insert_attachments($medias,$post_id) {
  * Manual publish
  */
 function dg_tw_manual_publish() {
-	global $wpdb;
+	global $wpdb,$connection;
 	
 	$tweet_id = $_REQUEST['id'];
 	$query = $_REQUEST['query'];
@@ -532,11 +543,15 @@ function dg_tw_manual_publish() {
 		die();
 	}
 	
-	$dg_tw_url_compose = "https://api.twitter.com/1/statuses/show.json?id=".$tweet_id."&include_entities=true";
-	$dg_tw_data = dg_tw_curl_file_get_contents($dg_tw_url_compose);
-	$dg_tw_data= json_decode($dg_tw_data, true);
+	$parameters = array(
+		'id' => $tweet_id,
+		'include_entities' => true
+	);
+		
+	$dg_tw_data = $connection->get('statuses/show', $parameters);
+
 	
-	if(isset($dg_tw_data['text']) && empty($dg_tw_data['text'])) {
+	if(isset($dg_tw_data->text) && empty($dg_tw_data->text)) {
 		echo "nofound";
 		die();
 	}

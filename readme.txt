@@ -58,6 +58,20 @@ Want more functionality or some modifications? Ok tell me wath you want and i tr
 Copy the plugin into the wordpress directory ( wp-content/plugins/ )
 Activate plugin from admin control panel
 
+Create your twitter application here:
+https://dev.twitter.com/apps/new
+
+Once you have created you need to pick tookens from the app panel and configure this plugin with these informations:
+* Consumer key
+* Consumer secret
+
+And these (generated clicking (one time) on the button "Create my access token" on the application admin panel):
+* Access token
+* Access token secret
+
+All these data can be found on the application admin panel under the tab "OAuth tool".
+If not configured correctly this plugin DOES NOT work.
+
 This plugin create new menu under Settings ( Settings -> Twitter To WP )
 Follow the description in order to configure the plugin
 
@@ -69,6 +83,9 @@ Follow the description in order to configure the plugin
 
 
 == Changelog ==
+
+= 1.0 =
+* Twitter api 1.1 (fiuuuf this hard work make me satisfied)
 
 = 0.6.4.* =
 * fatal error fixed

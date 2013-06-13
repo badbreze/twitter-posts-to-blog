@@ -10,6 +10,42 @@
 			<tbody>
 				<tr valign="top">
 					<td scope="row">
+						<b>Consumer key:</b>
+					</td>
+					<td>
+						<span class="description">Your twitter application Consumer key</span><br/>
+						<input type="text" size="60" name="dg_tw_access_key" class="regular-text" value="<?php echo $dg_tw_ft['access_key']; ?>">
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
+						<b>Consumer secret:</b>
+					</td>
+					<td>
+						<span class="description">Your twitter application Consumer secret</span><br/>
+						<input type="text" size="60" name="dg_tw_access_secret" class="regular-text" value="<?php echo $dg_tw_ft['access_secret']; ?>">
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
+						<b>Access token:</b>
+					</td>
+					<td>
+						<span class="description">Your twitter user token</span><br/>
+						<input type="text" size="60" name="dg_tw_access_token" class="regular-text" value="<?php echo $dg_tw_ft['access_token']; ?>">
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
+						<b>Consumer secret:</b>
+					</td>
+					<td>
+						<span class="description">Your twitter user token secret</span><br/>
+						<input type="text" size="60" name="dg_tw_access_token_secret" class="regular-text" value="<?php echo $dg_tw_ft['access_token_secret']; ?>">
+					</td>
+				</tr>
+				<tr valign="top">
+					<td scope="row">
 						<b>Capabilities:</b>
 					</td>
 					<td>

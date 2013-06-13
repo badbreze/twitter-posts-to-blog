@@ -9,12 +9,22 @@
 			exit;
 		}
 		
+		if($tokens_error) {
+			echo "You need to configure tokens in the plugin settings page";
+			exit;
+		}
+		
 		foreach($dg_tw_queryes as $query) {
-			$dg_tw_url_compose = "http://search.twitter.com/search.json?q=".urlencode($query['value'])."&since_id=".$query['last_id']."&include_entities=1&rpp=".$dg_tw_ft['ipp'];
-			$dg_tw_data = dg_tw_curl_file_get_contents($dg_tw_url_compose);
-			$dg_tw_data= json_decode($dg_tw_data, true);
+			$parameters = array(
+				'q' => urlencode($query['value']),
+				'since_id' => $query['last_id'],
+				'include_entities' => true,
+				'count' => $dg_tw_ft['ipp']
+			);
 			
-			$dg_result = array_reverse($dg_tw_data['results']);
+			$dg_tw_data = $connection->get('search/tweets', $parameters);
+			
+			$dg_result = array_reverse($dg_tw_data->statuses);
 			
 			echo "<h3>".$query['value']."</h3>";
 			?>
@@ -37,21 +47,21 @@
 				<tbody id="the-list">
 					<?php
 						foreach($dg_result as $item) {
-							if(dg_tw_iswhite($item['text'])) {
-								$content = dg_tw_regexText( $item['text'] );
+							if(dg_tw_iswhite($item->text)) {
+								$content = dg_tw_regexText( $item->text );
 								?>
 								<tr id="post-190" class="post-190 type-post status-publish format-standard hentry alternate iedit author-self" valign="top">
 									<td scope="row">
-										<b><?php echo $item['from_user_name']; ?></b>
+										<b><?php echo $item->user->screen_name; ?></b>
 									</td>
 									<td scope="row">
 										<?php echo $content; ?>
 									</td>
 									<td scope="row">
-										<?php echo $item['text']; ?>
+										<?php echo $item->text; ?>
 									</td>
 									<td scope="row">
-										<button type="button" class="manual_publish" data-query="<?php echo $query['value']; ?>" data-pid="<?php echo $item['id_str']; ?>">Publish</button>
+										<button type="button" class="manual_publish" data-query="<?php echo $query['value']; ?>" data-pid="<?php echo $item->id_str; ?>">Publish</button>
 									</td>
 								</tr>
 								<?php
