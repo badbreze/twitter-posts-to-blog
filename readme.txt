@@ -61,11 +61,11 @@ Activate plugin from admin control panel
 Create your twitter application here:
 https://dev.twitter.com/apps/new
 
-Once you have created you need to pick tookens from the app panel and configure this plugin with these informations:
+= Once you have created you need to pick tookens from the app panel and configure this plugin with these informations: =
 * Consumer key
 * Consumer secret
 
-And these (generated clicking (one time) on the button "Create my access token" on the application admin panel):
+= And these (generated clicking (one time) on the button "Create my access token" on the application admin panel): =
 * Access token
 * Access token secret
 
