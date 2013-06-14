@@ -84,8 +84,9 @@ Follow the description in order to configure the plugin
 
 == Changelog ==
 
-= 1.0.1 =
+= 1.0.* =
 * Fix syntax error
+* Bug fixes
 
 = 1.0 =
 * Twitter api 1.1 (fiuuuf this hard work make me satisfied)

@@ -22,16 +22,15 @@ function dg_tw_load_next_items() {
 
 		if(count($dg_tw_data->statuses)) {
 			foreach($dg_tw_data->statuses as $single_status) {
-				$status = $dg_tw_data->statuses;
+				$status = $single_status;
 			}
 			
-			$dg_tw_queryes[urlencode($query['value'])]['last_id'] = $status['id_str'];
+			$dg_tw_queryes[urlencode($query['value'])]['last_id'] = $status->id_str;
 			update_option('dg_tw_queryes',$dg_tw_queryes);
 			$dg_tw_queryes = get_option('dg_tw_queryes');
 		}
 
-		$dg_result = array_reverse($dg_tw_data->statuses);
-		foreach($dg_result as $item) {
+		foreach($dg_tw_data->statuses as $item) {
 			if(dg_tw_iswhite($item->text)) {
 				dg_tw_publish_tweet($item,$query);
 			} //iswhite
