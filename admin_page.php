@@ -37,7 +37,7 @@
 				</tr>
 				<tr valign="top">
 					<td scope="row">
-						<b>Consumer secret:</b>
+						<b>Access token secret:</b>
 					</td>
 					<td>
 						<span class="description">Your twitter user token secret</span><br/>
