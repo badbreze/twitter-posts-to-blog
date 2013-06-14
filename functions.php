@@ -21,7 +21,11 @@ function dg_tw_load_next_items() {
 		$dg_tw_data = $connection->get('search/tweets', $parameters);
 
 		if(count($dg_tw_data->statuses)) {
-			$dg_tw_queryes[urlencode($query['value'])]['last_id'] = $dg_tw_data->statuses[0]['id_str'];
+			foreach($dg_tw_data->statuses as $single_status) {
+				$status = $dg_tw_data->statuses;
+			}
+			
+			$dg_tw_queryes[urlencode($query['value'])]['last_id'] = $status['id_str'];
 			update_option('dg_tw_queryes',$dg_tw_queryes);
 			$dg_tw_queryes = get_option('dg_tw_queryes');
 		}
