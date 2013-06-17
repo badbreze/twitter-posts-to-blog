@@ -16,7 +16,7 @@
 		
 		foreach($dg_tw_queryes as $query) {
 			$parameters = array(
-				'q' => urlencode($query['value']),
+				'q' => $query['value'],
 				'since_id' => $query['last_id'],
 				'include_entities' => true,
 				'count' => $dg_tw_ft['ipp']
