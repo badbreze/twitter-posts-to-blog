@@ -468,6 +468,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 					$str= preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$tweet->text);
 					$str = dg_tw_regexText($str);
 					$post_content .= '<p>'.$str.'</p>';
+					$post_title = substr($str,0,$dg_tw_ft['maxtitle']);
 				}
 					
 				$post_content .= '</div>';
@@ -475,6 +476,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 				$update_post = array();
 				$update_post['ID'] = $dg_tw_this_post;
 				$update_post['post_content'] = $post_content;
+				$update_post['post_title'] = $post_title;
 				
 				wp_update_post( $update_post );
 			}
