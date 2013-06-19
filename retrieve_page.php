@@ -24,8 +24,6 @@
 			
 			$dg_tw_data = $connection->get('search/tweets', $parameters);
 			
-			$dg_result = array_reverse($dg_tw_data->statuses);
-			
 			echo "<h3>".$query['value']."</h3>";
 			?>
 			<table class="wp-list-table widefat fixed posts" cellspacing="0">
@@ -46,7 +44,7 @@
 				
 				<tbody id="the-list">
 					<?php
-						foreach($dg_result as $item) {
+						foreach($dg_tw_data->statuses as $item) {
 							if(dg_tw_iswhite($item->text)) {
 								$content = dg_tw_regexText( $item->text );
 								?>
