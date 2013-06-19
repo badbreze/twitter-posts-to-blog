@@ -80,6 +80,7 @@ Follow the description in order to configure the plugin
 
 1. Configuration panel.
 2. List items matching configuration and alow to pubblish mannualy.
+3. --
 
 
 == Changelog ==
