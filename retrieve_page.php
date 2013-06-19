@@ -45,6 +45,12 @@
 				<tbody id="the-list">
 					<?php
 						foreach($dg_tw_data->statuses as $item) {
+							if($dg_tw_ft['exclude_retweets'] && isset($item->retweeted_status))
+								continue;
+								
+							if($dg_tw_ft['exclude_no_images'] && !count($item->entities->media))
+								continue;
+							
 							if(dg_tw_iswhite($item->text)) {
 								$content = dg_tw_regexText( $item->text );
 								?>

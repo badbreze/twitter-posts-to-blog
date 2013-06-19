@@ -3,7 +3,7 @@
 	<h2>Twitter To Wordpress Autopost</h2>
 	<h3>Autopost params</h3>
 	
-	<form method="post" action="#">
+	<form method="post">
 		<input type="hidden" name="dg_tw_data_update" value="yes" />
 		
 		<table class="form-table">
@@ -195,11 +195,14 @@
 				</tr>
 				<tr valign="top">
 					<td scope="row">
-						<b>Words blacklist:</b>
+						<b>Post Exclusions:</b>
 					</td>
 					<td>
-						<span class="description">Does not post tweets with these words:</span><br/>
-						<input type="text" size="60" name="dg_tw_badwords" class="regular-text" value="<?php echo $dg_tw_ft['badwords']; ?>">
+						<i>(this may publish less items each time the cron run)</i><br/>
+						<input type="checkbox" name="dg_tw_exclude_retweets" <?php if( $dg_tw_ft['exclude_retweets'] ) echo 'checked'; ?> />
+						<span class="description">Exclude retweets</span><br/>
+						<input type="checkbox" name="dg_tw_exclude_no_images" <?php if( $dg_tw_ft['exclude_no_images'] ) echo 'checked'; ?> />
+						<span class="description">Exclude if no images</span>
 					</td>
 				</tr>
 				<tr valign="top">

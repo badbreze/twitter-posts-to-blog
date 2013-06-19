@@ -20,6 +20,7 @@ function dg_tw_load_next_items() {
 		
 		$dg_tw_data = $connection->get('search/tweets', $parameters);
 
+		//Set the last tweet id
 		if(count($dg_tw_data->statuses)) {
 			$status = end($dg_tw_data->statuses);
 			
@@ -29,6 +30,12 @@ function dg_tw_load_next_items() {
 		}
 
 		foreach($dg_tw_data->statuses as $item) {
+			if($dg_tw_ft['exclude_retweets'] && isset($item->retweeted_status))
+				continue;
+			
+			if($dg_tw_ft['exclude_no_images'] && !count($item->entities->media))
+				continue;
+			
 			if(dg_tw_iswhite($item->text)) {
 				dg_tw_publish_tweet($item,$query);
 			} //iswhite
@@ -358,7 +365,9 @@ function dg_tw_options() {
 		$now_ft['maxtitle'] = $_POST['dg_tw_maxtitle'];
 		$now_ft['badwords'] = $_POST['dg_tw_badwords'];
 		$now_ft['notags'] = isset($_POST['dg_tw_notags']) ? true : false;
-		$now_ft['noreplies'] = isset($_POST['dg_tw_noreplies']) ? true : false; 		
+		$now_ft['noreplies'] = isset($_POST['dg_tw_noreplies']) ? true : false; 	
+		$now_ft['exclude_retweets'] = isset($_POST['dg_tw_exclude_retweets']) ? true : false;
+		$now_ft['exclude_no_images'] = isset($_POST['dg_tw_exclude_no_images']) ? true : false;
 		
 		update_option('dg_tw_ft',$now_ft);
 		$dg_tw_ft = get_option('dg_tw_ft');
@@ -450,6 +459,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 			add_post_meta($dg_tw_this_post, 'dg_tw_query', $query_string);
 			add_post_meta($dg_tw_this_post, 'dg_tw_id', $tweet->id_str);
 			add_post_meta($dg_tw_this_post, 'dg_tw_author', $username);
+			add_post_meta($dg_tw_this_post, 'dg_tw_author_avatar', $tweet->user->profile_image_url);
 	
 			// add image as post preview
 			set_post_thumbnail( $dg_tw_this_post, end($attaches_id) );

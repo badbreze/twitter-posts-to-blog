@@ -84,6 +84,14 @@ Follow the description in order to configure the plugin
 
 == Changelog ==
 
+= What Next =
+* Single post with multiple tweets (pbassham)
+* Custom post title/content formatting (Sweet)
+
+= 1.1 =
+* Tweet exclusion by retweet
+* Bug fixes
+
 = 1.0.* =
 * Fix syntax error
 * Bug fixes
