@@ -88,6 +88,10 @@ Follow the description in order to configure the plugin
 * Single post with multiple tweets (pbassham)
 * Custom post title/content formatting (Sweet)
 
+= 1.1.* =
+* Bug fixes
+* Special thanks to polle
+
 = 1.1 =
 * Tweet exclusion by retweet
 * Bug fixes

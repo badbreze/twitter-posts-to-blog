@@ -37,7 +37,7 @@ function dg_tw_load_next_items() {
 				continue;
 			
 			if(dg_tw_iswhite($item->text)) {
-				dg_tw_publish_tweet($item,$query);
+				dg_tw_publish_tweet($item,$query['value']);
 			} //iswhite
 		}
 	}
