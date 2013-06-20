@@ -10,37 +10,16 @@
 			<tbody>
 				<tr valign="top">
 					<td scope="row">
-						<b>Consumer key:</b>
+						<b>Twitter app settings:</b>
 					</td>
 					<td>
-						<span class="description">Your twitter application Consumer key</span><br/>
-						<input type="text" size="60" name="dg_tw_access_key" class="regular-text" value="<?php echo $dg_tw_ft['access_key']; ?>">
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Consumer secret:</b>
-					</td>
-					<td>
-						<span class="description">Your twitter application Consumer secret</span><br/>
-						<input type="text" size="60" name="dg_tw_access_secret" class="regular-text" value="<?php echo $dg_tw_ft['access_secret']; ?>">
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Access token:</b>
-					</td>
-					<td>
-						<span class="description">Your twitter user token</span><br/>
-						<input type="text" size="60" name="dg_tw_access_token" class="regular-text" value="<?php echo $dg_tw_ft['access_token']; ?>">
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Access token secret:</b>
-					</td>
-					<td>
-						<span class="description">Your twitter user token secret</span><br/>
+						<span class="description">Consumer key:</span><br/>
+						<input type="text" size="60" name="dg_tw_access_key" class="regular-text" value="<?php echo $dg_tw_ft['access_key']; ?>"><br/><br/>
+						<span class="description">Consumer secret:</span><br/>
+						<input type="text" size="60" name="dg_tw_access_secret" class="regular-text" value="<?php echo $dg_tw_ft['access_secret']; ?>"><br/><br/>
+						<span class="description">Access token:</span><br/>
+						<input type="text" size="60" name="dg_tw_access_token" class="regular-text" value="<?php echo $dg_tw_ft['access_token']; ?>"><br/><br/>
+						<span class="description">Access token secret:</span><br/>
 						<input type="text" size="60" name="dg_tw_access_token_secret" class="regular-text" value="<?php echo $dg_tw_ft['access_token_secret']; ?>">
 					</td>
 				</tr>
@@ -80,14 +59,30 @@
 				</tr>
 				<tr valign="top">
 					<td scope="row">
-						<b>Publish status:</b>
+						<b>Publish settings:</b>
 					</td>
 					<td>
-						<span class="description">Choose how the plugin create articles: published or draft</span><br/>
+						<span class="description">Post status: published or draft</span><br/>
 						<select name="dg_tw_publish_selected">
 							<option value="publish"<?php if ($dg_tw_publish === 'publish') echo ' selected=selected'; ?>>Published</option>
 							<option value="draft"<?php if ($dg_tw_publish === 'draft') echo ' selected=selected'; ?>>Draft</option>
-						</select>
+						</select><br/><br/>
+						<span class="description">Post author:</span><br/>
+						<?php
+							$args = array(
+									'orderby'                 => 'display_name',
+									'order'                   => 'ASC',
+									'multi'                   => false,
+									'show'                    => 'display_name',
+									'echo'                    => true,
+									'selected'                => $dg_tw_ft['author'],
+									'include_selected'        => true,
+									'name'                    => 'dg_tw_author',
+									'blog_id'                 => $GLOBALS['blog_id']
+							);
+
+							wp_dropdown_users( $args );
+						?>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -166,9 +161,11 @@
 				</tr>
 				<tr valign="top">
 					<td scope="row">
-						<b>Max Title Length:</b>
+						<b>Title Settings:</b>
 					</td>
 					<td>
+						<span class="description">Title formatting: (eg. %tweet%,%author% )</span><br/>
+						<input type="text" size="60" name="dg_tw_title_format" class="regular-text" value="<?php echo $dg_tw_ft['title_format']; ?>"><br/>
 						<span class="description">Set the maximum length in characters of the title;</span><br/>
 						<input type="text" size="60" name="dg_tw_maxtitle" class="regular-text" value="<?php echo $dg_tw_ft['maxtitle']; ?>">
 					</td>

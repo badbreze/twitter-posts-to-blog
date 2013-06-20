@@ -92,7 +92,7 @@ function dg_add_menu_item() {
 	$privilege = get_option('dg_tw_ft');
 	
 	add_menu_page( 'Twitter To WP', 'Twitter To WP', $privilege['privileges'], 'dg_tw_admin_menu', 'dg_tw_drawpage', '', 3);
-	add_submenu_page( 'dg_tw_admin_menu', 'Next Items', 'Next items', $privilege['privileges'], 'dg_tw_retrieve_menu', 'dg_tw_drawpage_retrieve' );
+	add_submenu_page( 'dg_tw_admin_menu', 'Manual Posting', 'Manual Posting', $privilege['privileges'], 'dg_tw_retrieve_menu', 'dg_tw_drawpage_retrieve' );
 	
 	wp_register_style( "twitter-posts-to-blog-css",  plugins_url('css/twitter-posts-to-blog.css', __FILE__), false, '1.0.0');
 	
@@ -260,6 +260,8 @@ function dg_tw_activation() {
 			'text'=>true,
 			'img_size'=>'bigger',
 			'ipp'=>25,
+			'author'=>0,
+			'title_format'=>'Tweet from %tweet%',
 			'privileges'=>'activate_plugins',
 			'badwords'=>'',
 			'maxtitle'=>'60'));
@@ -359,10 +361,12 @@ function dg_tw_options() {
 		$now_ft['access_token_secret'] = $_POST['dg_tw_access_token_secret'];
 		$now_ft['ui'] = (int) $_POST['dg_tw_ft_ui'];
 		$now_ft['text'] = (int) $_POST['dg_tw_ft_text'];
+		$now_ft['author'] = (int) $_POST['dg_tw_author'];
 		$now_ft['img_size'] = $_POST['dg_tw_ft_size'];
 		$now_ft['ipp'] = $_POST['dg_tw_ipp'];
 		$now_ft['privileges'] = $_POST['dg_tw_privileges'];
 		$now_ft['maxtitle'] = $_POST['dg_tw_maxtitle'];
+		$now_ft['title_format'] = $_POST['dg_tw_title_format'];
 		$now_ft['badwords'] = $_POST['dg_tw_badwords'];
 		$now_ft['notags'] = isset($_POST['dg_tw_notags']) ? true : false;
 		$now_ft['noreplies'] = isset($_POST['dg_tw_noreplies']) ? true : false; 	
@@ -419,17 +423,13 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 	
 	$time = strtotime($tweet->created_at);
 	
-	$attaches = array();
-	
-	$post_content = "";
-	
-	$tweet_title = substr($tweet->text,0,$dg_tw_ft['maxtitle']);
+	$tweet_title = filter_title($tweet);
 	$post_tags = htmlspecialchars($dg_tw_tags.','.$current_query['tag']);
 	
 	if(!count($postid)) {
 		$post = array(
-				'post_author'    => 0,
-				'post_content'   => $post_content,
+				'post_author'    => $dg_tw_ft['author'],
+				'post_content'   => $tweet->text,
 				'post_name'      => dg_tw_slug($tweet_title),
 				'post_status'    => strval($dg_tw_publish),
 				'post_title'     => $tweet_title,
@@ -442,30 +442,33 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 		);
 		
 		$dg_tw_this_post = wp_insert_post( $post, true );
+		
 		if($dg_tw_this_post) {
+			/*INSERT ATTACHMENTS*/
 			$attaches_id = array();
 			
 			if( isset($tweet->entities->media) ) {
 				$attaches_id = dg_tw_insert_attachments($tweet->entities->media,$dg_tw_this_post);
 			}
 			
+			// add image as post preview
+			set_post_thumbnail( $dg_tw_this_post, end($attaches_id) );
+			/*INSERT ATTACHMENTS*/
+			
+			/*POST METAS*/
 			$username = (isset($tweet->user->display_name) && !empty($tweet->user->display_name)) ? $tweet->user->display_name : $tweet->user->name;
-			
 			$query_string = urlencode($current_query['value']);
-			
-			if($query != false)
-				$query_string = $query;
+			$query_string = ($query != false) ? $query : $query_string;
 	
 			add_post_meta($dg_tw_this_post, 'dg_tw_query', $query_string);
 			add_post_meta($dg_tw_this_post, 'dg_tw_id', $tweet->id_str);
 			add_post_meta($dg_tw_this_post, 'dg_tw_author', $username);
 			add_post_meta($dg_tw_this_post, 'dg_tw_author_avatar', $tweet->user->profile_image_url);
-	
-			// add image as post preview
-			set_post_thumbnail( $dg_tw_this_post, end($attaches_id) );
-	
+			/*END POST METAS*/
+
+			/*FILTER TEXT*/
 			if($dg_tw_ft['ui'] || $dg_tw_ft['text']) {
-				$post_content = '<div class="twitter-post">';
+				$post_content = '<span class="twitter-post">';
 			
 				if($dg_tw_ft['ui']) {
 					foreach($attaches_id as $attach)
@@ -473,13 +476,18 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 				}
 					
 				if($dg_tw_ft['text']) {
-					$str= preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$tweet->text);
 					$str = dg_tw_regexText($str);
+					$tweet->text = $str;
+					
+					$str = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$tweet->text);
+					$str = preg_replace('|@(\w+)|', '<a href="http://twitter.com/$1">@$1</a>', $str);
+					$str = preg_replace('|#(\w+)|', '<a href="http://search.twitter.com/search?q=%23$1">#$1</a>', $str);
+					
 					$post_content .= '<p>'.$str.'</p>';
-					$post_title = substr($str,0,$dg_tw_ft['maxtitle']);
+					$post_title = filter_title($tweet);
 				}
 					
-				$post_content .= '</div>';
+				$post_content .= '</span>';
 				
 				$update_post = array();
 				$update_post['ID'] = $dg_tw_this_post;
@@ -488,6 +496,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 				
 				wp_update_post( $update_post );
 			}
+			/*END FILTER TEXT*/
 		}
 	} else {
 		return "already";
@@ -506,6 +515,21 @@ function dg_tw_regexText($string){
 		$string = preg_replace('/#[\\d\\w]+/','',$string); 										
 	}
 	return $string;
+}
+
+function filter_title($tweet) {
+	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
+	
+	//$result = $tweet->text;
+	$result = (empty($dg_tw_ft['title_format'])) ? $tweet->text : $dg_tw_ft['title_format'];
+	$username = (isset($tweet->user->screen_name) && !empty($tweet->user->screen_name)) ? $tweet->user->screen_name : $tweet->user->name;
+	
+	$result = str_replace('%tweet%',$tweet->text,$result);
+	$result = str_replace('%author%',$username,$result);
+	
+	$result = substr($result,0,$dg_tw_ft['maxtitle']);
+	
+	return $result;
 }
 
 /*

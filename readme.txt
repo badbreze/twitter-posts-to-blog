@@ -87,7 +87,12 @@ Follow the description in order to configure the plugin
 
 = What Next =
 * Single post with multiple tweets (pbassham)
-* Custom post title/content formatting (Sweet)
+* Custom post content formatting (Sweet)
+
+= 1.2 =
+* Custom title formatting (Sweet)
+* Custom author
+* Hashtags and Mentions clickable (thanks to Mike)
 
 = 1.1.* =
 * Bug fixes
