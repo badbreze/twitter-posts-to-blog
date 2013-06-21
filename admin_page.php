@@ -43,17 +43,64 @@
 					<td>
 						<span class="description">Choose how much time must pass before load new items, use "never" to disable</span><br/>
 						<select name="dg_tw_time_selected">
-							<option value="never"<?php if ($dg_tw_time === 'never') echo ' selected=selected'; ?>>never</option>
-							<option value="dg_tw_oneminute"<?php if ($dg_tw_time === 'dg_tw_oneminute') echo ' selected=selected'; ?>>every minute</option>
-							<option value="dg_tw_fiveminutes"<?php if ($dg_tw_time === 'dg_tw_fiveminutes') echo ' selected=selected'; ?>>every 5 minutes</option>
-							<option value="dg_tw_tenminutes"<?php if ($dg_tw_time === 'dg_tw_tenminutes') echo ' selected=selected'; ?>>every 10 minutes</option>
-							<option value="dg_tw_twentynminutes"<?php if ($dg_tw_time === 'dg_tw_twentynminutes') echo ' selected=selected'; ?>>every 20 minutes</option>
-							<option value="dg_tw_twicehourly"<?php if ($dg_tw_time === 'dg_tw_twicehourly') echo ' selected=selected'; ?>>every 30 minutes</option>
-							<option value="hourly"<?php if ($dg_tw_time === 'hourly') echo ' selected=selected'; ?>>hourly</option>
-							<option value="twicedaily"<?php if ($dg_tw_time === 'twicedaily') echo ' selected=selected'; ?>>twice a day</option>
-							<option value="daily"<?php if ($dg_tw_time === 'daily') echo ' selected=selected'; ?>>daily</option>
-							<option value="dg_tw_weekly"<?php if ($dg_tw_time === 'dg_tw_weekly') echo ' selected=selected'; ?>>weekly</option>
-							<option value="dg_tw_monthly"<?php if ($dg_tw_time === 'dg_tw_monthly') echo ' selected=selected'; ?>>monthly</option>
+							<option value="never"<?php if ($dg_tw_time['run'] === 'never') echo ' selected=selected'; ?>>never</option>
+							<option value="dg_tw_oneminute"<?php if ($dg_tw_time['run'] === 'dg_tw_oneminute') echo ' selected=selected'; ?>>every minute</option>
+							<option value="dg_tw_fiveminutes"<?php if ($dg_tw_time['run'] === 'dg_tw_fiveminutes') echo ' selected=selected'; ?>>every 5 minutes</option>
+							<option value="dg_tw_tenminutes"<?php if ($dg_tw_time['run'] === 'dg_tw_tenminutes') echo ' selected=selected'; ?>>every 10 minutes</option>
+							<option value="dg_tw_twentynminutes"<?php if ($dg_tw_time['run'] === 'dg_tw_twentynminutes') echo ' selected=selected'; ?>>every 20 minutes</option>
+							<option value="dg_tw_twicehourly"<?php if ($dg_tw_time['run'] === 'dg_tw_twicehourly') echo ' selected=selected'; ?>>every 30 minutes</option>
+							<option value="hourly"<?php if ($dg_tw_time['run'] === 'hourly') echo ' selected=selected'; ?>>hourly</option>
+							<option value="twicedaily"<?php if ($dg_tw_time['run'] === 'twicedaily') echo ' selected=selected'; ?>>twice a day</option>
+							<option value="daily"<?php if ($dg_tw_time['run'] === 'daily') echo ' selected=selected'; ?>>daily</option>
+							<option value="dg_tw_weekly"<?php if ($dg_tw_time['run'] === 'dg_tw_weekly') echo ' selected=selected'; ?>>weekly</option>
+							<option value="dg_tw_monthly"<?php if ($dg_tw_time['run'] === 'dg_tw_monthly') echo ' selected=selected'; ?>>monthly</option>
+						</select><br/><br/>
+						<span class="description">Choose the cycle time (this is the start date be carefuly)</span><br/>
+						Day of the month: 
+						<select name="dg_tw_time_month">
+							<optgroup label="Day of the Month">
+								<?php
+									for($i = 1; $i <= 31; $i++) {
+										$selected = (isset($dg_tw_time['start']['month']) && $dg_tw_time['start']['month'] == $i) ? "selected" : "";
+										echo '<option '.$selected.' value="'.$i.'">'.$i.'</option>';
+									}
+								?>
+							</optgroup>
+						</select><br/>
+						Day of the week: 
+						<select name="dg_tw_time_week">
+							<optgroup label="Day of the Week">
+								<?php
+									$array_week = array("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday");
+									
+									foreach($array_week as $day) {
+										$selected = (isset($dg_tw_time['start']['week']) && $dg_tw_time['start']['week'] == $day) ? "selected" : "";
+										echo '<option '.$selected.' value="'.$day.'">'.$day.'</option>'; 
+									}
+								?>
+							</optgroup>
+						</select><br/>
+						Hour: 
+						<select name="dg_tw_time_hour">
+							<optgroup label="Hour">
+								<?php
+									for($i = 0; $i <= 23; $i++) {
+										$selected = (isset($dg_tw_time['start']['hour']) &&$dg_tw_time['start']['hour'] == $i) ? "selected" : "";
+										echo '<option '.$selected.' value="'.$i.'">'.$i.'</option>';
+									}
+								?>
+							</optgroup>
+						</select><br/>
+						Minute: 
+						<select name="dg_tw_time_minute">
+							<optgroup label="Minute">
+								<?php
+									for($i = 1; $i <= 59; $i++) {
+										$selected = (isset($dg_tw_time['start']['minute']) &&$dg_tw_time['start']['minute'] == $i) ? "selected" : "";
+										echo '<option '.$selected.' value="'.$i.'">'.$i.'</option>';
+									}
+								?>
+							</optgroup>
 						</select>
 					</td>
 				</tr>

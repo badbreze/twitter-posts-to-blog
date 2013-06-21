@@ -88,6 +88,9 @@ Follow the description in order to configure the plugin
 = What Next =
 * Custom post content formatting (Sweet)
 
+= 1.3.* =
+* Fix duplicates when you post multiple tweets in single post
+
 = 1.3 =
 * Single post with multiple tweets (pbassham)
 

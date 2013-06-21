@@ -11,6 +11,12 @@ function dg_tw_load_next_items() {
 		return;
 	}
 	
+	$dg_tw_exclusions = get_option('dg_tw_exclusions');
+	
+	if(empty($dg_tw_exclusions)) {
+		$dg_tw_exclusions = array();
+	}
+	
 	$mega_tweet = array();
 
 	foreach($dg_tw_queryes as $query) {
@@ -43,18 +49,22 @@ function dg_tw_load_next_items() {
 				if(dg_tw_iswhite($item->text)) {
 					dg_tw_publish_tweet($item,$query['value']);
 				} //iswhite
-			} else {
+			} elseif(!in_array($item->id_str,$dg_tw_exclusions)) {
 				$mega_tweet[] = array(
 						'text'=>$item->text,
 						'author'=> (isset($item->user->display_name))? $item->user->display_name : $item->user->name,
 						'id'=>$item->id_str
 				);
+				
+				$dg_tw_exclusions[] = $item->id_str;
 			}
 		}
 	}
 	
 	if(!empty($mega_tweet)) {
 		dg_tw_publish_mega_tweet($mega_tweet);
+		
+		update_option('dg_tw_exclusions',$dg_tw_exclusions);
 	}
 }
 
@@ -127,7 +137,7 @@ function dg_tw_drawpage() {
  * Call admin page for this plugin
  */
 function dg_tw_drawpage_retrieve() {
-	global $dg_tw_queryes,$dg_tw_time, $dg_tw_publish, $dg_tw_ft, $dg_tw_tags, $dg_tw_cats,$connection,$tokens_error;
+	global $dg_tw_queryes, $dg_tw_publish, $dg_tw_ft, $dg_tw_tags, $dg_tw_cats,$connection,$tokens_error;
 	
 	require_once('retrieve_page.php');
 }
@@ -183,7 +193,7 @@ function dg_tw_slug($str) {
  * Check if there is blacklisted words in the text of the tweet
  */
 function dg_tw_iswhite($text) {
-	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
+	global $dg_tw_queryes, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 	
 	if(empty($dg_tw_ft['badwords']))
 		return true;
@@ -266,7 +276,7 @@ function dg_tw_activation() {
 	}
 	
 	if(!$dg_tw_time) {
-		update_option('dg_tw_time','never');
+		update_option('dg_tw_time',array('run'=>'never'));
 	}
 	
 	if(!$dg_tw_ft) {
@@ -283,9 +293,9 @@ function dg_tw_activation() {
 			'maxtitle'=>'60'));
 	}
 	
-	if ( !wp_next_scheduled( 'dg_tw_event_start' ) && $dg_tw_time && $dg_tw_time != "never") {
+	if ( !wp_next_scheduled( 'dg_tw_event_start' ) && $dg_tw_time && $dg_tw_time['run'] != "never") {
 		$recurrences = wp_get_schedules();
-		wp_schedule_event( time()+$recurrences[$dg_tw_time]['interval'], $dg_tw_time, 'dg_tw_event_start');
+		wp_schedule_event( time()+$recurrences[$dg_tw_time['run']]['interval'], $dg_tw_time['run'], 'dg_tw_event_start');
 	}
 }
 
@@ -353,17 +363,41 @@ function dg_tw_options() {
 		 * UPDATE CRON TIME
 		 * if condition to dont slowdown the cron manager proccess
 		 */
-		if($_POST['dg_tw_time_selected'] != $dg_tw_time) {
-			update_option('dg_tw_time',$_POST['dg_tw_time_selected']);
+		if(isset($_POST['dg_tw_time_selected'])) {
+			$current_date = getdate();
+			
+			$start_data = array(
+					'month' => $_POST['dg_tw_time_month'],
+					'week' => $_POST['dg_tw_time_week'],
+					'hour' => $_POST['dg_tw_time_hour'],
+					'minute' => $_POST['dg_tw_time_minute'],
+			);
+			
+			$time_settings = array(
+				'run'=>$_POST['dg_tw_time_selected'],
+				'start'=>$start_data
+			);
+			
+			update_option('dg_tw_time',$time_settings);
+			
 			$dg_tw_time = get_option('dg_tw_time');
-	
 			$timestamp = wp_next_scheduled( 'dg_tw_event_start' );
 			wp_clear_scheduled_hook( 'dg_tw_event_start' );
 			wp_unschedule_event($timestamp, 'dg_tw_event_start');
 	
 			if ( !wp_next_scheduled( 'dg_tw_event_start' ) ) {
 				$recurrences = wp_get_schedules();
-				wp_schedule_event( time()+$recurrences[$dg_tw_time]['interval'], $dg_tw_time, 'dg_tw_event_start');
+				
+				if($_POST['dg_tw_time_selected'] == 'dg_tw_monthly') {
+					$when_start = strtotime($current_date["year"].'/'.$current_date["mon"].'/'.$_POST["dg_tw_time_month"].' '.$start_data["hour"].':'.$start_data["minute"].':00');
+					wp_schedule_event( $when_start, $dg_tw_time['run'], 'dg_tw_event_start');
+				} elseif($_POST['dg_tw_time_selected'] == 'dg_tw_weekly') {
+					$when_start = strtotime($current_date["year"].' '.$current_date["month"].' '.$_POST["dg_tw_time_week"].' '.$start_data["hour"].':'.$start_data["minute"].':00');
+					wp_schedule_event( $when_start, $dg_tw_time['run'], 'dg_tw_event_start');
+				} elseif($_POST['dg_tw_time_selected'] != 'never') {
+					$when_start = strtotime($current_date['year'].'/'.$current_date['mon'].'/'.$current_date['day'].' '.$start_data['hour'].':'.$start_data['minute'].':00');
+					wp_schedule_event( $when_start, $dg_tw_time['run'], 'dg_tw_event_start');
+				}
 			}
 		}
 	
@@ -419,7 +453,7 @@ function dg_tw_options() {
  * Create post from tweet
  */
 function dg_tw_publish_tweet($tweet,$query = false) {
-	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
+	global $dg_tw_queryes, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 	
 	$current_query = '';
 	
@@ -526,7 +560,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
  * Create post from tweet
  */
 function dg_tw_publish_mega_tweet($tweets) {
-	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
+	global $dg_tw_queryes, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 	
 	$content = '<ul id="dg_tw_list_tweets">';
 	
@@ -573,7 +607,7 @@ function dg_tw_regexText($string){
 }
 
 function filter_title($tweet) {
-	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
+	global $dg_tw_queryes, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 	
 	//$result = $tweet->text;
 	$result = (empty($dg_tw_ft['title_format'])) ? $tweet->text : $dg_tw_ft['title_format'];
