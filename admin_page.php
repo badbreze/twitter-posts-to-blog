@@ -14,13 +14,13 @@
 					</td>
 					<td>
 						<span class="description">Consumer key:</span><br/>
-						<input type="text" size="60" name="dg_tw_access_key" class="regular-text" value="<?php echo $dg_tw_ft['access_key']; ?>"><br/><br/>
+						<input type="text" size="60" name="dg_tw_access_key" class="regular-text" value="<?php echo @$dg_tw_ft['access_key']; ?>"><br/><br/>
 						<span class="description">Consumer secret:</span><br/>
-						<input type="text" size="60" name="dg_tw_access_secret" class="regular-text" value="<?php echo $dg_tw_ft['access_secret']; ?>"><br/><br/>
+						<input type="text" size="60" name="dg_tw_access_secret" class="regular-text" value="<?php echo @$dg_tw_ft['access_secret']; ?>"><br/><br/>
 						<span class="description">Access token:</span><br/>
-						<input type="text" size="60" name="dg_tw_access_token" class="regular-text" value="<?php echo $dg_tw_ft['access_token']; ?>"><br/><br/>
+						<input type="text" size="60" name="dg_tw_access_token" class="regular-text" value="<?php echo @$dg_tw_ft['access_token']; ?>"><br/><br/>
 						<span class="description">Access token secret:</span><br/>
-						<input type="text" size="60" name="dg_tw_access_token_secret" class="regular-text" value="<?php echo $dg_tw_ft['access_token_secret']; ?>">
+						<input type="text" size="60" name="dg_tw_access_token_secret" class="regular-text" value="<?php echo @$dg_tw_ft['access_token_secret']; ?>">
 					</td>
 				</tr>
 				<tr valign="top">
@@ -66,6 +66,11 @@
 						<select name="dg_tw_publish_selected">
 							<option value="publish"<?php if ($dg_tw_publish === 'publish') echo ' selected=selected'; ?>>Published</option>
 							<option value="draft"<?php if ($dg_tw_publish === 'draft') echo ' selected=selected'; ?>>Draft</option>
+						</select><br/><br/>
+						<span class="description">Post method</span><br/>
+						<select name="dg_tw_method">
+							<option value="multiple" <?php if ($dg_tw_ft['method'] === 'multiple') echo 'selected=selected'; ?>>One post per tweet</option>
+							<option value="single" <?php if ($dg_tw_ft['method'] === 'single') echo 'selected=selected'; ?>>All tweets in one post</option>
 						</select><br/><br/>
 						<span class="description">Post author:</span><br/>
 						<?php
@@ -184,9 +189,9 @@
 						<b>Post Modifications:</b>
 					</td>
 					<td>
-						<input type="checkbox" name="dg_tw_notags" <?php if( $dg_tw_ft['notags'] ) echo 'checked'; ?> />
+						<input type="checkbox" name="dg_tw_notags" <?php if( !empty($dg_tw_ft['notags']) ) echo 'checked'; ?> />
 						<span class="description">Remove all hashtags from posts</span><br/>
-						<input type="checkbox" name="dg_tw_noreplies" <?php if( $dg_tw_ft['noreplies'] ) echo 'checked'; ?> />
+						<input type="checkbox" name="dg_tw_noreplies" <?php if( !empty($dg_tw_ft['noreplies']) ) echo 'checked'; ?> />
 						<span class="description">Remove all @replies from posts (removes retweet "RT @user:" text as well)</span>
 					</td>
 				</tr>
@@ -196,9 +201,9 @@
 					</td>
 					<td>
 						<i>(this may publish less items each time the cron run)</i><br/>
-						<input type="checkbox" name="dg_tw_exclude_retweets" <?php if( $dg_tw_ft['exclude_retweets'] ) echo 'checked'; ?> />
+						<input type="checkbox" name="dg_tw_exclude_retweets" <?php if( !empty($dg_tw_ft['exclude_retweets']) ) echo 'checked'; ?> />
 						<span class="description">Exclude retweets</span><br/>
-						<input type="checkbox" name="dg_tw_exclude_no_images" <?php if( $dg_tw_ft['exclude_no_images'] ) echo 'checked'; ?> />
+						<input type="checkbox" name="dg_tw_exclude_no_images" <?php if( !empty($dg_tw_ft['exclude_no_images']) ) echo 'checked'; ?> />
 						<span class="description">Exclude if no images</span>
 					</td>
 				</tr>

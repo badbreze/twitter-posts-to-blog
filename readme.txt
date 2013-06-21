@@ -86,8 +86,10 @@ Follow the description in order to configure the plugin
 == Changelog ==
 
 = What Next =
-* Single post with multiple tweets (pbassham)
 * Custom post content formatting (Sweet)
+
+= 1.3 =
+* Single post with multiple tweets (pbassham)
 
 = 1.2 =
 * Custom title formatting (Sweet)

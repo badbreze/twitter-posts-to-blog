@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL);
 /*
  * SETUP THE CRON
 */
@@ -9,6 +10,8 @@ function dg_tw_load_next_items() {
 		error_log('The DG Twitter to blog plugin require CURL libraries');
 		return;
 	}
+	
+	$mega_tweet = array();
 
 	foreach($dg_tw_queryes as $query) {
 		$parameters = array(
@@ -36,10 +39,22 @@ function dg_tw_load_next_items() {
 			if($dg_tw_ft['exclude_no_images'] && !count($item->entities->media))
 				continue;
 			
-			if(dg_tw_iswhite($item->text)) {
-				dg_tw_publish_tweet($item,$query['value']);
-			} //iswhite
+			if(!isset($dg_tw_ft['method']) || $dg_tw_ft['method'] == 'multiple') {
+				if(dg_tw_iswhite($item->text)) {
+					dg_tw_publish_tweet($item,$query['value']);
+				} //iswhite
+			} else {
+				$mega_tweet[] = array(
+						'text'=>$item->text,
+						'author'=> (isset($item->user->display_name))? $item->user->display_name : $item->user->name,
+						'id'=>$item->id_str
+				);
+			}
 		}
+	}
+	
+	if(!empty($mega_tweet)) {
+		dg_tw_publish_mega_tweet($mega_tweet);
 	}
 }
 
@@ -259,6 +274,7 @@ function dg_tw_activation() {
 			'ui'=>true,
 			'text'=>true,
 			'img_size'=>'bigger',
+			'method'=>'single',
 			'ipp'=>25,
 			'author'=>0,
 			'title_format'=>'Tweet from %tweet%',
@@ -317,7 +333,7 @@ function dg_tw_options() {
 		/*
 		 * Each query string verified to ensure there is no duplicate and save last id
 		 */
-		if(is_array($_POST['dg_tw_item_query'])) {
+		if(isset($_POST['dg_tw_item_query']) && is_array($_POST['dg_tw_item_query'])) {
 			foreach($_POST['dg_tw_item_query'] as $item_query) {
 				if(isset($dg_tw_queryes[urlencode($item_query['value'])])) {
 					if($dg_tw_queryes[urlencode($item_query['value'])]['tag'] != $item_query['tag']) {
@@ -362,6 +378,7 @@ function dg_tw_options() {
 		$now_ft['ui'] = (int) $_POST['dg_tw_ft_ui'];
 		$now_ft['text'] = (int) $_POST['dg_tw_ft_text'];
 		$now_ft['author'] = (int) $_POST['dg_tw_author'];
+		$now_ft['method'] = $_POST['dg_tw_method'];
 		$now_ft['img_size'] = $_POST['dg_tw_ft_size'];
 		$now_ft['ipp'] = $_POST['dg_tw_ipp'];
 		$now_ft['privileges'] = $_POST['dg_tw_privileges'];
@@ -479,7 +496,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 					$str = dg_tw_regexText($str);
 					$tweet->text = $str;
 					
-					$str = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$tweet->text);
+					$str = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$str);
 					$str = preg_replace('|@(\w+)|', '<a href="http://twitter.com/$1">@$1</a>', $str);
 					$str = preg_replace('|#(\w+)|', '<a href="http://search.twitter.com/search?q=%23$1">#$1</a>', $str);
 					
@@ -501,6 +518,44 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 	} else {
 		return "already";
 	}
+	
+	return 'true';
+}
+
+/*
+ * Create post from tweet
+ */
+function dg_tw_publish_mega_tweet($tweets) {
+	global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
+	
+	$content = '<ul id="dg_tw_list_tweets">';
+	
+	foreach($tweets as $tweet) {
+		$str = dg_tw_regexText($tweet['text']);
+		$str = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$str);
+		$str = preg_replace('|@(\w+)|', '<a href="http://twitter.com/$1">@$1</a>', $str);
+		$str = preg_replace('|#(\w+)|', '<a href="http://search.twitter.com/search?q=%23$1">#$1</a>', $str);
+		
+		$content .= '<li class="single_tweet">'.$str.'</li>';
+	}
+
+	$content .= '</ul>';
+
+	$tweet_title = (empty($dg_tw_ft['title_format'])) ? "Periodically tweets" : $dg_tw_ft['title_format'];
+	
+	$post = array(
+			'post_author'    => $dg_tw_ft['author'],
+			'post_content'   => $content,
+			'post_name'      => dg_tw_slug($tweet_title),
+			'post_status'    => strval($dg_tw_publish),
+			'post_title'     => $tweet_title,
+			'post_category'  => $dg_tw_cats,
+			'tags_input'     => $dg_tw_tags,
+			'post_type'      => 'post',
+			'post_status'    => strval($dg_tw_publish)
+	);
+	
+	$dg_tw_this_post = wp_insert_post( $post, true );
 	
 	return 'true';
 }
