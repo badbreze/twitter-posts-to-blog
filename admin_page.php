@@ -129,7 +129,7 @@
 									'multi'                   => false,
 									'show'                    => 'display_name',
 									'echo'                    => true,
-									'selected'                => $dg_tw_ft['author'],
+									'selected'                => isset($dg_tw_ft['author'])? $dg_tw_ft['author'] : null,
 									'include_selected'        => true,
 									'name'                    => 'dg_tw_author',
 									'blog_id'                 => $GLOBALS['blog_id']
@@ -219,7 +219,7 @@
 					</td>
 					<td>
 						<span class="description">Title formatting: (eg. %tweet%,%author% )</span><br/>
-						<input type="text" size="60" name="dg_tw_title_format" class="regular-text" value="<?php echo $dg_tw_ft['title_format']; ?>"><br/><br/>
+						<input type="text" size="60" name="dg_tw_title_format" class="regular-text" value="<?php echo isset( $dg_tw_ft['title_format'] ) ? $dg_tw_ft['title_format'] : ''; ?>"><br/><br/>
 						
 						<span class="description">Set the maximum length in characters of the title;</span><br/>
 						<input type="text" size="60" name="dg_tw_maxtitle" class="regular-text" value="<?php echo $dg_tw_ft['maxtitle']; ?>">
