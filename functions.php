@@ -119,9 +119,8 @@ function dg_add_menu_item() {
 	add_menu_page( 'Twitter To WP', 'Twitter To WP', $privilege['privileges'], 'dg_tw_admin_menu', 'dg_tw_drawpage', '', 3);
 	add_submenu_page( 'dg_tw_admin_menu', 'Manual Posting', 'Manual Posting', $privilege['privileges'], 'dg_tw_retrieve_menu', 'dg_tw_drawpage_retrieve' );
 	
-	wp_register_style( "twitter-posts-to-blog-css",  plugins_url('css/twitter-posts-to-blog.css', __FILE__), false, '1.0.0');
-	
-	wp_enqueue_style( "twitter-posts-to-blog-css");
+	wp_enqueue_script( "twitter-posts-to-blog-js",plugins_url('js/twitter-posts-to-blog.js', __FILE__),array('jquery'));
+	wp_enqueue_style( "twitter-posts-to-blog-css", plugins_url('css/twitter-posts-to-blog.css', __FILE__), false, '1.0.0');
 }
 
 /*
@@ -395,7 +394,7 @@ function dg_tw_options() {
 					$when_start = strtotime($current_date["year"].' '.$current_date["month"].' '.$_POST["dg_tw_time_week"].' '.$start_data["hour"].':'.$start_data["minute"].':00');
 					wp_schedule_event( $when_start, $dg_tw_time['run'], 'dg_tw_event_start');
 				} elseif($_POST['dg_tw_time_selected'] != 'never') {
-					$when_start = strtotime($current_date['year'].'/'.$current_date['mon'].'/'.$current_date['day'].' '.$start_data['hour'].':'.$start_data['minute'].':00');
+					$when_start = strtotime($current_date['year'].'/'.$current_date['mon'].'/'.$current_date['mday'].' '.$start_data['hour'].':'.$start_data['minute'].':00');
 					wp_schedule_event( $when_start, $dg_tw_time['run'], 'dg_tw_event_start');
 				}
 			}

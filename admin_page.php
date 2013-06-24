@@ -42,7 +42,7 @@
 					</td>
 					<td>
 						<span class="description">Choose how much time must pass before load new items, use "never" to disable</span><br/>
-						<select name="dg_tw_time_selected">
+						<select name="dg_tw_time_selected" id="dg_tw_time_selected">
 							<option value="never"<?php if ($dg_tw_time['run'] === 'never') echo ' selected=selected'; ?>>never</option>
 							<option value="dg_tw_oneminute"<?php if ($dg_tw_time['run'] === 'dg_tw_oneminute') echo ' selected=selected'; ?>>every minute</option>
 							<option value="dg_tw_fiveminutes"<?php if ($dg_tw_time['run'] === 'dg_tw_fiveminutes') echo ' selected=selected'; ?>>every 5 minutes</option>
@@ -55,53 +55,55 @@
 							<option value="dg_tw_weekly"<?php if ($dg_tw_time['run'] === 'dg_tw_weekly') echo ' selected=selected'; ?>>weekly</option>
 							<option value="dg_tw_monthly"<?php if ($dg_tw_time['run'] === 'dg_tw_monthly') echo ' selected=selected'; ?>>monthly</option>
 						</select><br/><br/>
-						<span class="description">Choose the cycle time (this is the start date be carefuly)</span><br/>
-						Day of the month: 
-						<select name="dg_tw_time_month">
-							<optgroup label="Day of the Month">
-								<?php
-									for($i = 1; $i <= 31; $i++) {
-										$selected = (isset($dg_tw_time['start']['month']) && $dg_tw_time['start']['month'] == $i) ? "selected" : "";
-										echo '<option '.$selected.' value="'.$i.'">'.$i.'</option>';
-									}
-								?>
-							</optgroup>
-						</select><br/>
-						Day of the week: 
-						<select name="dg_tw_time_week">
-							<optgroup label="Day of the Week">
-								<?php
-									$array_week = array("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday");
-									
-									foreach($array_week as $day) {
-										$selected = (isset($dg_tw_time['start']['week']) && $dg_tw_time['start']['week'] == $day) ? "selected" : "";
-										echo '<option '.$selected.' value="'.$day.'">'.$day.'</option>'; 
-									}
-								?>
-							</optgroup>
-						</select><br/>
-						Hour: 
-						<select name="dg_tw_time_hour">
-							<optgroup label="Hour">
-								<?php
-									for($i = 0; $i <= 23; $i++) {
-										$selected = (isset($dg_tw_time['start']['hour']) &&$dg_tw_time['start']['hour'] == $i) ? "selected" : "";
-										echo '<option '.$selected.' value="'.$i.'">'.$i.'</option>';
-									}
-								?>
-							</optgroup>
-						</select><br/>
-						Minute: 
-						<select name="dg_tw_time_minute">
-							<optgroup label="Minute">
-								<?php
-									for($i = 1; $i <= 59; $i++) {
-										$selected = (isset($dg_tw_time['start']['minute']) &&$dg_tw_time['start']['minute'] == $i) ? "selected" : "";
-										echo '<option '.$selected.' value="'.$i.'">'.$i.'</option>';
-									}
-								?>
-							</optgroup>
-						</select>
+						<div id="dg_tw_cycle_selectors">
+							<span class="description">Choose the cycle time (this is the start date be carefuly)</span><br/>
+							Day of the month: 
+							<select name="dg_tw_time_month">
+								<optgroup label="Day of the Month">
+									<?php
+										for($i = 1; $i <= 31; $i++) {
+											$selected = (isset($dg_tw_time['start']['month']) && $dg_tw_time['start']['month'] == $i) ? "selected" : "";
+											echo '<option '.$selected.' value="'.$i.'">'.$i.'</option>';
+										}
+									?>
+								</optgroup>
+							</select><br/>
+							Day of the week: 
+							<select name="dg_tw_time_week">
+								<optgroup label="Day of the Week">
+									<?php
+										$array_week = array("Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday");
+										
+										foreach($array_week as $day) {
+											$selected = (isset($dg_tw_time['start']['week']) && $dg_tw_time['start']['week'] == $day) ? "selected" : "";
+											echo '<option '.$selected.' value="'.$day.'">'.$day.'</option>'; 
+										}
+									?>
+								</optgroup>
+							</select><br/>
+							Hour: 
+							<select name="dg_tw_time_hour">
+								<optgroup label="Hour">
+									<?php
+										for($i = 0; $i <= 23; $i++) {
+											$selected = (isset($dg_tw_time['start']['hour']) &&$dg_tw_time['start']['hour'] == $i) ? "selected" : "";
+											echo '<option '.$selected.' value="'.$i.'">'.$i.'</option>';
+										}
+									?>
+								</optgroup>
+							</select><br/>
+							Minute: 
+							<select name="dg_tw_time_minute">
+								<optgroup label="Minute">
+									<?php
+										for($i = 1; $i <= 59; $i++) {
+											$selected = (isset($dg_tw_time['start']['minute']) &&$dg_tw_time['start']['minute'] == $i) ? "selected" : "";
+											echo '<option '.$selected.' value="'.$i.'">'.$i.'</option>';
+										}
+									?>
+								</optgroup>
+							</select>
+						</div>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -217,7 +219,8 @@
 					</td>
 					<td>
 						<span class="description">Title formatting: (eg. %tweet%,%author% )</span><br/>
-						<input type="text" size="60" name="dg_tw_title_format" class="regular-text" value="<?php echo $dg_tw_ft['title_format']; ?>"><br/>
+						<input type="text" size="60" name="dg_tw_title_format" class="regular-text" value="<?php echo $dg_tw_ft['title_format']; ?>"><br/><br/>
+						
 						<span class="description">Set the maximum length in characters of the title;</span><br/>
 						<input type="text" size="60" name="dg_tw_maxtitle" class="regular-text" value="<?php echo $dg_tw_ft['maxtitle']; ?>">
 					</td>
@@ -261,7 +264,7 @@
 					<td>
 						<span class="description">You can add more item by click the ADD button below</span><br/>
 						<input type="text" id="dg_tw_add_title" size="60" name="dg_tw_query" class="regular-text" value=""> 
-									<input type="button" id="dg_tw_add_element" name="add_feed" value="Add" class="button-primary">
+						<input type="button" id="dg_tw_add_element" name="add_feed" value="Add" class="button-primary">
 					</td>
 				</tr>
 				<tr valign="top">
@@ -287,16 +290,3 @@
 		</p>
 	</form>
 </div>
-<script type="text/javascript">
-	jQuery('#dg_tw_add_element').click(function() {
-		if(jQuery('#dg_tw_add_title').val().length != 0) {
-			jQuery('#dg_tw_elements_selected').append('<p style="text-align:left;padding:5px;"><input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"><input type="text" size="20" class="regular-text" name="dg_tw_item_query['+jQuery('#dg_tw_add_title').val()+'][value]" value="'+jQuery('#dg_tw_add_title').val()+'">&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="20" name="dg_tw_item_query['+jQuery('#dg_tw_add_title').val()+'][tag]" value="'+jQuery('#dg_tw_add_title').val()+'"></span></p>');
-			jQuery('#dg_tw_add_title').attr('value','')
-		} else {
-			alert('Fill the query string box!');
-		}
-	});
-	jQuery('.dg_tw_button_remove').live('click',function() {
-		jQuery(this).parent().remove();
-	});
-</script>
