@@ -90,6 +90,7 @@ Follow the description in order to configure the plugin
 
 = 1.3.* =
 * Fix duplicates when you post multiple tweets in single post
+* Other fixes
 
 = 1.3 =
 * Single post with multiple tweets (pbassham)

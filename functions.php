@@ -284,7 +284,7 @@ function dg_tw_activation() {
 			'ui'=>true,
 			'text'=>true,
 			'img_size'=>'bigger',
-			'method'=>'single',
+			'method'=>'multiple',
 			'ipp'=>25,
 			'author'=>0,
 			'title_format'=>'Tweet from %tweet%',
@@ -367,10 +367,10 @@ function dg_tw_options() {
 			$current_date = getdate();
 			
 			$start_data = array(
-					'month' => $_POST['dg_tw_time_month'],
-					'week' => $_POST['dg_tw_time_week'],
-					'hour' => $_POST['dg_tw_time_hour'],
-					'minute' => $_POST['dg_tw_time_minute'],
+					'month' => (isset($_POST['dg_tw_time_month'])) ? $_POST['dg_tw_time_month'] : 1,
+					'week' => (isset($_POST['dg_tw_time_week'])) ? $_POST['dg_tw_time_week'] : 'Monday',
+					'hour' => (isset($_POST['dg_tw_time_hour'])) ? $_POST['dg_tw_time_hour'] : 1,
+					'minute' => (isset($_POST['dg_tw_time_minute'])) ? $_POST['dg_tw_time_minute'] : 1
 			);
 			
 			$time_settings = array(
@@ -527,7 +527,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 				}
 					
 				if($dg_tw_ft['text']) {
-					$str = dg_tw_regexText($str);
+					$str = dg_tw_regexText($tweet->text);
 					$tweet->text = $str;
 					
 					$str = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$str);
@@ -612,7 +612,7 @@ function filter_title($tweet) {
 	//$result = $tweet->text;
 	$result = (empty($dg_tw_ft['title_format'])) ? $tweet->text : $dg_tw_ft['title_format'];
 	$username = (isset($tweet->user->screen_name) && !empty($tweet->user->screen_name)) ? $tweet->user->screen_name : $tweet->user->name;
-	
+	error_log($tweet->text);error_log("AOOOOOOOOOO\n");
 	$result = str_replace('%tweet%',$tweet->text,$result);
 	$result = str_replace('%author%',$username,$result);
 	
