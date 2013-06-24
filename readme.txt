@@ -79,7 +79,7 @@ Follow the description in order to configure the plugin
 == Screenshots ==
 
 1. Configuration panel.
-2. List items matching configuration and alow to pubblish mannualy.
+2. List items matching configuration and alow to publish manually.
 3. Twitter app configuration panel
 
 
@@ -93,6 +93,7 @@ Follow the description in order to configure the plugin
 
 = 1.3.* =
 * Fix duplicates when you post multiple tweets in single post
+* Cleared up various warning messages when indexes were missing 
 * Other fixes
 
 = 1.3 =
