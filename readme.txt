@@ -96,6 +96,7 @@ Follow the description in order to configure the plugin
 * Fix duplicates when you post multiple tweets in single post
 * Cleared up various warning messages when indexes were missing 
 * Fix the main loop take only the first query string
+* Fix post meta with query string
 * Other fixes
 
 = 1.3 =

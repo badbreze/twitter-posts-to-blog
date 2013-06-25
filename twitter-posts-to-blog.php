@@ -2,7 +2,7 @@
 /*
 Plugin Name: Twitter posts to Blog
 Description: Post twetts to your blog
-Version: 1.3.8
+Version: 1.3.9
 Author: Damian Gomez
 */
 date_default_timezone_set('UTC');

@@ -506,7 +506,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 			/*POST METAS*/
 			$username = (isset($tweet->user->display_name) && !empty($tweet->user->display_name)) ? $tweet->user->display_name : $tweet->user->name;
 			$query_string = urlencode($current_query['value']);
-			$query_string = ($query != false) ? $query : $query_string;
+			$query_string = ($query != false) ? $query['value'] : $query_string;
 	
 			add_post_meta($dg_tw_this_post, 'dg_tw_query', $query_string);
 			add_post_meta($dg_tw_this_post, 'dg_tw_id', $tweet->id_str);
