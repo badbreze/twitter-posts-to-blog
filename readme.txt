@@ -90,10 +90,12 @@ Follow the description in order to configure the plugin
 * @replies exclusion
 * Biweekly time
 * Timestamp in side of tweets (single post multiple tweets)
+* Content formatting (Sweet)
 
 = 1.3.* =
 * Fix duplicates when you post multiple tweets in single post
 * Cleared up various warning messages when indexes were missing 
+* Fix the main loop take only the first query string
 * Other fixes
 
 = 1.3 =

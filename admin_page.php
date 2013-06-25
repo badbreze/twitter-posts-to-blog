@@ -81,29 +81,29 @@
 									?>
 								</optgroup>
 							</select><br/>
-							Hour: 
-							<select name="dg_tw_time_hour">
-								<optgroup label="Hour">
-									<?php
-										for($i = 0; $i <= 23; $i++) {
-											$selected = (isset($dg_tw_time['start']['hour']) &&$dg_tw_time['start']['hour'] == $i) ? "selected" : "";
-											echo '<option '.$selected.' value="'.$i.'">'.$i.'</option>';
-										}
-									?>
-								</optgroup>
-							</select><br/>
-							Minute: 
-							<select name="dg_tw_time_minute">
-								<optgroup label="Minute">
-									<?php
-										for($i = 1; $i <= 59; $i++) {
-											$selected = (isset($dg_tw_time['start']['minute']) &&$dg_tw_time['start']['minute'] == $i) ? "selected" : "";
-											echo '<option '.$selected.' value="'.$i.'">'.$i.'</option>';
-										}
-									?>
-								</optgroup>
-							</select>
 						</div>
+						
+						Time: 
+						<select name="dg_tw_time_hour">
+							<optgroup label="Hour">
+								<?php
+									for($i = 0; $i <= 23; $i++) {
+										$selected = (isset($dg_tw_time['start']['hour']) &&$dg_tw_time['start']['hour'] == $i) ? "selected" : "";
+										echo '<option '.$selected.' value="'.$i.'">'.$i.'</option>';
+									}
+								?>
+							</optgroup>
+						</select>&nbsp;:&nbsp;
+						<select name="dg_tw_time_minute">
+							<optgroup label="Minute">
+								<?php
+									for($i = 1; $i <= 59; $i++) {
+										$selected = (isset($dg_tw_time['start']['minute']) &&$dg_tw_time['start']['minute'] == $i) ? "selected" : "";
+										echo '<option '.$selected.' value="'.$i.'">'.$i.'</option>';
+									}
+								?>
+							</optgroup>
+						</select>
 					</td>
 				</tr>
 				<tr valign="top">

@@ -19,7 +19,7 @@ function dg_tw_load_next_items() {
 	
 	$mega_tweet = array();
 
-	foreach($dg_tw_queryes as $query) {
+	foreach($dg_tw_queryes as $slug=>$query) {
 		$parameters = array(
 				'q' => $query['value'],
 				'since_id' => $query['last_id'],
@@ -27,6 +27,7 @@ function dg_tw_load_next_items() {
 				'count' => $dg_tw_ft['ipp']
 		);
 		
+		error_log('Loop query string \n');
 		$dg_tw_data = $connection->get('search/tweets', $parameters);
 
 		//Set the last tweet id
@@ -38,7 +39,7 @@ function dg_tw_load_next_items() {
 			$dg_tw_queryes = get_option('dg_tw_queryes');
 		}
 
-		foreach($dg_tw_data->statuses as $item) {
+		foreach($dg_tw_data->statuses as $key=>$item) {
 			if($dg_tw_ft['exclude_retweets'] && isset($item->retweeted_status))
 				continue;
 			
@@ -47,12 +48,12 @@ function dg_tw_load_next_items() {
 			
 			if(!isset($dg_tw_ft['method']) || $dg_tw_ft['method'] == 'multiple') {
 				if(dg_tw_iswhite($item->text)) {
-					dg_tw_publish_tweet($item,$query['value']);
+					$result = dg_tw_publish_tweet($item,$query['value']);
 				} //iswhite
 			} elseif(!in_array($item->id_str,$dg_tw_exclusions)) {
 				$mega_tweet[] = array(
 						'text'=>$item->text,
-						'author'=> (isset($item->user->display_name))? $item->user->display_name : $item->user->name,
+						'author'=> isset($item->user->display_name) ? $item->user->display_name : $item->user->name,
 						'id'=>$item->id_str
 				);
 				
@@ -100,6 +101,11 @@ function dg_tw_schedule($schedules) {
 	$schedules['dg_tw_weekly'] = array(
 			'interval'=> 604800,
 			'display'=> __('Once Every 7 Days')
+	);
+
+	$schedules['dg_tw_weekly'] = array(
+			'interval'=> 1209600,
+			'display'=> __('Once Every 14 Days')
 	);
 
 	$schedules['dg_tw_monthly'] = array(
@@ -454,15 +460,7 @@ function dg_tw_options() {
 function dg_tw_publish_tweet($tweet,$query = false) {
 	global $dg_tw_queryes, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 	
-	$current_query = '';
-	
-	if(!is_array($query)) {
-		foreach($dg_tw_queryes as $single_query)
-			if($single_query['value'] == $query)
-				$current_query = $single_query;
-	} else {
-		$current_query = $query;
-	}
+	$current_query = ($query != false) ? $query : array('tag'=>'','value'=>'');
 	
 	$querystr = "SELECT *
 					FROM $wpdb->postmeta
@@ -552,7 +550,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 		return "already";
 	}
 	
-	return 'true';
+	return "true";
 }
 
 /*
@@ -611,7 +609,7 @@ function filter_title($tweet) {
 	//$result = $tweet->text;
 	$result = (empty($dg_tw_ft['title_format'])) ? $tweet->text : $dg_tw_ft['title_format'];
 	$username = (isset($tweet->user->screen_name) && !empty($tweet->user->screen_name)) ? $tweet->user->screen_name : $tweet->user->name;
-	error_log($tweet->text);error_log("AOOOOOOOOOO\n");
+	
 	$result = str_replace('%tweet%',$tweet->text,$result);
 	$result = str_replace('%author%',$username,$result);
 	
