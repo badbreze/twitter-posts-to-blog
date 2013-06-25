@@ -97,6 +97,7 @@ Follow the description in order to configure the plugin
 * Cleared up various warning messages when indexes were missing 
 * Fix the main loop take only the first query string
 * Fix post meta with query string
+* Check all fields in admin page
 * Other fixes
 
 = 1.3 =

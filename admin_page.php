@@ -30,9 +30,9 @@
 					<td>
 						<span class="description">Who can see this page and change settings:</span><br/>
 						<select name="dg_tw_privileges">
-							<option value="activate_plugins"<?php if ($dg_tw_ft['privileges'] === 'activate_plugins') echo ' selected=selected'; ?>>Administrator</option>
-							<option value="delete_pages"<?php if ($dg_tw_ft['privileges'] === 'delete_pages') echo ' selected=selected'; ?>>Editor</option>
-							<option value="delete_posts"<?php if ($dg_tw_ft['privileges'] === 'delete_posts') echo ' selected=selected'; ?>>Author</option>
+							<option value="activate_plugins"<?php if (isset($dg_tw_ft['privileges']) && $dg_tw_ft['privileges'] === 'activate_plugins') echo ' selected=selected'; ?>>Administrator</option>
+							<option value="delete_pages"<?php if (isset($dg_tw_ft['privileges']) && $dg_tw_ft['privileges'] === 'delete_pages') echo ' selected=selected'; ?>>Editor</option>
+							<option value="delete_posts"<?php if (isset($dg_tw_ft['privileges']) && $dg_tw_ft['privileges'] === 'delete_posts') echo ' selected=selected'; ?>>Author</option>
 						</select>
 					</td>
 				</tr>
@@ -43,17 +43,17 @@
 					<td>
 						<span class="description">Choose how much time must pass before load new items, use "never" to disable</span><br/>
 						<select name="dg_tw_time_selected" id="dg_tw_time_selected">
-							<option value="never"<?php if ($dg_tw_time['run'] === 'never') echo ' selected=selected'; ?>>never</option>
-							<option value="dg_tw_oneminute"<?php if ($dg_tw_time['run'] === 'dg_tw_oneminute') echo ' selected=selected'; ?>>every minute</option>
-							<option value="dg_tw_fiveminutes"<?php if ($dg_tw_time['run'] === 'dg_tw_fiveminutes') echo ' selected=selected'; ?>>every 5 minutes</option>
-							<option value="dg_tw_tenminutes"<?php if ($dg_tw_time['run'] === 'dg_tw_tenminutes') echo ' selected=selected'; ?>>every 10 minutes</option>
-							<option value="dg_tw_twentynminutes"<?php if ($dg_tw_time['run'] === 'dg_tw_twentynminutes') echo ' selected=selected'; ?>>every 20 minutes</option>
-							<option value="dg_tw_twicehourly"<?php if ($dg_tw_time['run'] === 'dg_tw_twicehourly') echo ' selected=selected'; ?>>every 30 minutes</option>
-							<option value="hourly"<?php if ($dg_tw_time['run'] === 'hourly') echo ' selected=selected'; ?>>hourly</option>
-							<option value="twicedaily"<?php if ($dg_tw_time['run'] === 'twicedaily') echo ' selected=selected'; ?>>twice a day</option>
-							<option value="daily"<?php if ($dg_tw_time['run'] === 'daily') echo ' selected=selected'; ?>>daily</option>
-							<option value="dg_tw_weekly"<?php if ($dg_tw_time['run'] === 'dg_tw_weekly') echo ' selected=selected'; ?>>weekly</option>
-							<option value="dg_tw_monthly"<?php if ($dg_tw_time['run'] === 'dg_tw_monthly') echo ' selected=selected'; ?>>monthly</option>
+							<option value="never"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'never') echo ' selected=selected'; ?>>never</option>
+							<option value="dg_tw_oneminute"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_oneminute') echo ' selected=selected'; ?>>every minute</option>
+							<option value="dg_tw_fiveminutes"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_fiveminutes') echo ' selected=selected'; ?>>every 5 minutes</option>
+							<option value="dg_tw_tenminutes"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_tenminutes') echo ' selected=selected'; ?>>every 10 minutes</option>
+							<option value="dg_tw_twentynminutes"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_twentynminutes') echo ' selected=selected'; ?>>every 20 minutes</option>
+							<option value="dg_tw_twicehourly"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_twicehourly') echo ' selected=selected'; ?>>every 30 minutes</option>
+							<option value="hourly"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'hourly') echo ' selected=selected'; ?>>hourly</option>
+							<option value="twicedaily"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'twicedaily') echo ' selected=selected'; ?>>twice a day</option>
+							<option value="daily"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'daily') echo ' selected=selected'; ?>>daily</option>
+							<option value="dg_tw_weekly"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_weekly') echo ' selected=selected'; ?>>weekly</option>
+							<option value="dg_tw_monthly"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_monthly') echo ' selected=selected'; ?>>monthly</option>
 						</select><br/><br/>
 						<div id="dg_tw_cycle_selectors">
 							<span class="description">Choose the cycle time (this is the start date be carefuly)</span><br/>
@@ -118,8 +118,8 @@
 						</select><br/><br/>
 						<span class="description">Post method</span><br/>
 						<select name="dg_tw_method">
-							<option value="multiple" <?php if ($dg_tw_ft['method'] === 'multiple') echo 'selected=selected'; ?>>One post per tweet</option>
-							<option value="single" <?php if ($dg_tw_ft['method'] === 'single') echo 'selected=selected'; ?>>All tweets in one post</option>
+							<option value="multiple" <?php if (isset($dg_tw_ft['method']) && $dg_tw_ft['method'] === 'multiple') echo 'selected=selected'; ?>>One post per tweet</option>
+							<option value="single" <?php if (isset($dg_tw_ft['method']) && $dg_tw_ft['method'] === 'single') echo 'selected=selected'; ?>>All tweets in one post</option>
 						</select><br/><br/>
 						<span class="description">Post author:</span><br/>
 						<?php
@@ -129,7 +129,7 @@
 									'multi'                   => false,
 									'show'                    => 'display_name',
 									'echo'                    => true,
-									'selected'                => isset($dg_tw_ft['author'])? $dg_tw_ft['author'] : null,
+									'selected'                => isset($dg_tw_ft['author']) ? $dg_tw_ft['author'] : null,
 									'include_selected'        => true,
 									'name'                    => 'dg_tw_author',
 									'blog_id'                 => $GLOBALS['blog_id']
@@ -175,7 +175,7 @@
 						<b>Body images:</b>
 					</td>
 					<td>
-						<input type="checkbox" name="dg_tw_ft_ui" value="1" <?php if ($dg_tw_ft['ui']) echo ' checked=checked'; ?>/>
+						<input type="checkbox" name="dg_tw_ft_ui" value="1" <?php if (isset($dg_tw_ft['ui']) && $dg_tw_ft['ui']) echo ' checked=checked'; ?>/>
 						&nbsp;
 						<span class="description">Insert user image in body</span><br/>
 					</td>
@@ -185,7 +185,7 @@
 						<b>Body text:</b>
 					</td>
 					<td>
-						<input type="checkbox" name="dg_tw_ft_text" value="1" <?php if ($dg_tw_ft['text']) echo ' checked=checked'; ?>/>
+						<input type="checkbox" name="dg_tw_ft_text" value="1" <?php if (isset($dg_tw_ft['text']) && $dg_tw_ft['text']) echo ' checked=checked'; ?>/>
 						&nbsp;
 						<span class="description">Insert tweet text in body</span><br/>
 					</td>
@@ -197,10 +197,10 @@
 					<td>
 						<span class="description">Select user image size:</span><br/>
 						<select name="dg_tw_ft_size">
-							<option value="original"<?php if ($dg_tw_ft['img_size'] === 'original') echo ' selected=selected'; ?>>Original</option>
-							<option value="mini"<?php if ($dg_tw_ft['img_size'] === 'mini') echo ' selected=selected'; ?>>Mini - 24px by 24px</option>
-							<option value="normal"<?php if ($dg_tw_ft['img_size'] === 'normal') echo ' selected=selected'; ?>>Normal - 48px by 48px</option>
-							<option value="bigger"<?php if ($dg_tw_ft['img_size'] === 'bigger') echo ' selected=selected'; ?>>Bigger - 73px by 73px</option>
+							<option value="original"<?php if (isset($dg_tw_ft['img_size']) && $dg_tw_ft['img_size'] === 'original') echo ' selected=selected'; ?>>Original</option>
+							<option value="mini"<?php if (isset($dg_tw_ft['img_size']) && $dg_tw_ft['img_size'] === 'mini') echo ' selected=selected'; ?>>Mini - 24px by 24px</option>
+							<option value="normal"<?php if (isset($dg_tw_ft['img_size']) && $dg_tw_ft['img_size'] === 'normal') echo ' selected=selected'; ?>>Normal - 48px by 48px</option>
+							<option value="bigger"<?php if (isset($dg_tw_ft['img_size']) && $dg_tw_ft['img_size'] === 'bigger') echo ' selected=selected'; ?>>Bigger - 73px by 73px</option>
 						</select>
 					</td>
 				</tr>
@@ -210,7 +210,7 @@
 					</td>
 					<td>
 						<span class="description">How many item want to load each time the cron run:</span><br/>
-						<input type="text" size="60" name="dg_tw_ipp" class="regular-text" value="<?php echo $dg_tw_ft['ipp']; ?>">
+						<input type="text" size="60" name="dg_tw_ipp" class="regular-text" value="<?php echo isset($dg_tw_ft['ipp']) ? $dg_tw_ft['ipp'] : ''; ?>">
 					</td>
 				</tr>
 				<tr valign="top">
@@ -222,7 +222,7 @@
 						<input type="text" size="60" name="dg_tw_title_format" class="regular-text" value="<?php echo isset( $dg_tw_ft['title_format'] ) ? $dg_tw_ft['title_format'] : ''; ?>"><br/><br/>
 						
 						<span class="description">Set the maximum length in characters of the title;</span><br/>
-						<input type="text" size="60" name="dg_tw_maxtitle" class="regular-text" value="<?php echo $dg_tw_ft['maxtitle']; ?>">
+						<input type="text" size="60" name="dg_tw_maxtitle" class="regular-text" value="<?php echo isset( $dg_tw_ft['maxtitle'] ) ? $dg_tw_ft['maxtitle'] : ''; ?>">
 					</td>
 				</tr>
 				<tr valign="top">
@@ -231,7 +231,7 @@
 					</td>
 					<td>
 						<span class="description">Does not post tweets with these words:</span><br/>
-						<input type="text" size="60" name="dg_tw_badwords" class="regular-text" value="<?php echo $dg_tw_ft['badwords']; ?>">
+						<input type="text" size="60" name="dg_tw_badwords" class="regular-text" value="<?php echo isset( $dg_tw_ft['badwords'] ) ? $dg_tw_ft['badwords']: ''; ?>">
 					</td>
 				</tr>
 				<tr valign="top">
