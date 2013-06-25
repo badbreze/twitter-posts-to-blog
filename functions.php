@@ -103,7 +103,7 @@ function dg_tw_schedule($schedules) {
 			'display'=> __('Once Every 7 Days')
 	);
 
-	$schedules['dg_tw_weekly'] = array(
+	$schedules['dg_tw_bi_weekly'] = array(
 			'interval'=> 1209600,
 			'display'=> __('Once Every 14 Days')
 	);
