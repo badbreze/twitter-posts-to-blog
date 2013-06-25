@@ -1,5 +1,5 @@
 === Twitter posts to Blog ===
-Contributors: badbreze
+Contributors: badbreze,sforsberg
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QV5Y8ZNVWGEA8
 Tags: twitter, autopost
 Tested up to: 3.6
