@@ -48,7 +48,7 @@ function dg_tw_load_next_items() {
 			
 			if(!isset($dg_tw_ft['method']) || $dg_tw_ft['method'] == 'multiple') {
 				if(dg_tw_iswhite($item->text)) {
-					$result = dg_tw_publish_tweet($item,$query['value']);
+					$result = dg_tw_publish_tweet($item,$query);
 				} //iswhite
 			} elseif(!in_array($item->id_str,$dg_tw_exclusions)) {
 				$mega_tweet[] = array(
@@ -656,10 +656,21 @@ function dg_tw_insert_attachments($medias,$post_id) {
  * Manual publish
  */
 function dg_tw_manual_publish() {
-	global $wpdb,$connection;
+	global $wpdb,$connection,$dg_tw_queryes;
+	
+	if(!$dg_tw_queryes) {
+		$dg_tw_queryes = get_option('dg_tw_queryes');
+	}
 	
 	$tweet_id = $_REQUEST['id'];
-	$query = $_REQUEST['query'];
+	$query = false;
+	
+	foreach($dg_tw_queryes as $single_query) {
+		if($single_query['value'] == $_REQUEST['query']) {
+			$query = $single_query;
+		}
+	}
+	
 	
 	if(empty($tweet_id)) {
 		echo "false";
