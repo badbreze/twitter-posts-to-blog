@@ -98,6 +98,8 @@ Follow the description in order to configure the plugin
 * Fix the main loop take only the first query string
 * Fix post meta with query string
 * Check all fields in admin page
+* Fix hashtags link (polle)
+* Added taget blank (polle)
 * Other fixes
 
 = 1.3 =
