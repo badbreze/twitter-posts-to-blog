@@ -564,8 +564,8 @@ function dg_tw_publish_mega_tweet($tweets) {
 	foreach($tweets as $tweet) {
 		$str = dg_tw_regexText($tweet['text']);
 		$str = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$str);
-		$str = preg_replace('|@(\w+)|', '<a href="http://twitter.com/$1">@$1</a>', $str);
-		$str = preg_replace('|#(\w+)|', '<a href="http://search.twitter.com/search?q=%23$1">#$1</a>', $str);
+		$str = preg_replace('|@(\w+)|', '<a href="http://twitter.com/$1" target="_blank">@$1</a>', $str);
+		$str = preg_replace('|#(\w+)|', '<a href="http://twitter.com/search?q=%23$1" target="_blank">#$1</a>', $str);
 		
 		$content .= '<li class="single_tweet">'.$str.'</li>';
 	}
