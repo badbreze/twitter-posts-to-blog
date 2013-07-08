@@ -56,7 +56,7 @@
 								?>
 								<tr id="post-190" class="post-190 type-post status-publish format-standard hentry alternate iedit author-self" valign="top">
 									<td scope="row">
-										<b><?php echo $item->user->screen_name; ?></b>
+										<b><?php echo $item->user->name; ?></b>
 									</td>
 									<td scope="row">
 										<?php echo $content; ?>

@@ -116,11 +116,13 @@
 							<option value="publish"<?php if ($dg_tw_publish === 'publish') echo ' selected=selected'; ?>>Published</option>
 							<option value="draft"<?php if ($dg_tw_publish === 'draft') echo ' selected=selected'; ?>>Draft</option>
 						</select><br/><br/>
+						
 						<span class="description">Post method</span><br/>
 						<select name="dg_tw_method">
 							<option value="multiple" <?php if (isset($dg_tw_ft['method']) && $dg_tw_ft['method'] === 'multiple') echo 'selected=selected'; ?>>One post per tweet</option>
 							<option value="single" <?php if (isset($dg_tw_ft['method']) && $dg_tw_ft['method'] === 'single') echo 'selected=selected'; ?>>All tweets in one post</option>
 						</select><br/><br/>
+						
 						<span class="description">Post author:</span><br/>
 						<?php
 							$args = array(
@@ -145,7 +147,10 @@
 					</td>
 					<td>
 						<span class="description">Type tags you want append to each tweet (dont use query strings here)</span><br/>
-						<input type="text" size="60" name="dg_tw_tag_tweets" class="regular-text" value="<?php echo $dg_tw_tags; ?>">
+						<input type="text" size="60" name="dg_tw_tag_tweets" class="regular-text" value="<?php echo $dg_tw_tags; ?>"><br/>
+						
+						<input type="checkbox" name="dg_tw_authortag" <?php if( !empty($dg_tw_ft['authortag']) ) echo 'checked'; ?> />
+						<span class="description">Insert the author name as tag</span>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -172,12 +177,24 @@
 				</tr>
 				<tr valign="top">
 					<td scope="row">
-						<b>Body images:</b>
+						<b>Content:</b>
 					</td>
 					<td>
 						<input type="checkbox" name="dg_tw_ft_ui" value="1" <?php if (isset($dg_tw_ft['ui']) && $dg_tw_ft['ui']) echo ' checked=checked'; ?>/>
 						&nbsp;
 						<span class="description">Insert user image in body</span><br/>
+						
+						<input type="checkbox" name="dg_tw_ft_text" value="1" <?php if (isset($dg_tw_ft['text']) && $dg_tw_ft['text']) echo ' checked=checked'; ?>/>
+						&nbsp;
+						<span class="description">Insert tweet text in body</span><br/>
+						
+						<input type="checkbox" name="dg_tw_tweettime" <?php if( !empty($dg_tw_ft['tweettime']) ) echo 'checked'; ?> />
+						&nbsp;
+						<span class="description">Insert the date of the tweet in side of the text (multiple mode only)</span><br/>
+						
+						<input type="checkbox" name="dg_tw_tweetlink" <?php if( !empty($dg_tw_ft['tweetlink']) ) echo 'checked'; ?> />
+						&nbsp;
+						<span class="description">Insert the tweet link in body</span><br/>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -185,9 +202,6 @@
 						<b>Body text:</b>
 					</td>
 					<td>
-						<input type="checkbox" name="dg_tw_ft_text" value="1" <?php if (isset($dg_tw_ft['text']) && $dg_tw_ft['text']) echo ' checked=checked'; ?>/>
-						&nbsp;
-						<span class="description">Insert tweet text in body</span><br/>
 					</td>
 				</tr>
 				<tr valign="top">

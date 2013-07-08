@@ -89,8 +89,12 @@ Follow the description in order to configure the plugin
 * Custom post content formatting (Sweet)
 * @replies exclusion
 * Biweekly time
-* Timestamp in side of tweets (single post multiple tweets)
 * Content formatting (Sweet)
+
+= 1.4 =
+* Tweet author as tag
+* Timestamp in side of tweets (single post multiple tweets)
+* Tweet link in body (thatothergirl)
 
 = 1.3.* =
 * Fix duplicates when you post multiple tweets in single post

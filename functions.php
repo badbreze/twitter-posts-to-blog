@@ -54,7 +54,8 @@ function dg_tw_load_next_items() {
 				$mega_tweet[] = array(
 						'text'=>$item->text,
 						'author'=> isset($item->user->display_name) ? $item->user->display_name : $item->user->name,
-						'id'=>$item->id_str
+						'id'=>$item->id_str,
+						'created_at'=>$item->created_at
 				);
 				
 				$dg_tw_exclusions[] = $item->id_str;
@@ -295,6 +296,7 @@ function dg_tw_activation() {
 			'title_format'=>'Tweet from %tweet%',
 			'privileges'=>'activate_plugins',
 			'badwords'=>'',
+			'tweetlink'=>false,
 			'maxtitle'=>'60'));
 	}
 	
@@ -428,6 +430,9 @@ function dg_tw_options() {
 		$now_ft['noreplies'] = isset($_POST['dg_tw_noreplies']) ? true : false; 	
 		$now_ft['exclude_retweets'] = isset($_POST['dg_tw_exclude_retweets']) ? true : false;
 		$now_ft['exclude_no_images'] = isset($_POST['dg_tw_exclude_no_images']) ? true : false;
+		$now_ft['authortag'] = isset($_POST['dg_tw_authortag']) ? true : false;
+		$now_ft['tweettime'] = isset($_POST['dg_tw_tweettime']) ? true : false;
+		$now_ft['tweetlink'] = isset($_POST['dg_tw_tweetlink']) ? true : false;
 		
 		update_option('dg_tw_ft',$now_ft);
 		$dg_tw_ft = get_option('dg_tw_ft');
@@ -460,8 +465,11 @@ function dg_tw_options() {
 function dg_tw_publish_tweet($tweet,$query = false) {
 	global $dg_tw_queryes, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 	
-	$current_query = ($query != false) ? $query : array('tag'=>'','value'=>'');
+	$username = (isset($tweet->user->display_ame) && !empty($tweet->user->display_name)) ? $tweet->user->display_name : $tweet->user->name;
+	$username = (isset($tweet->user->screen_name) && !empty($tweet->user->screen_name)) ? $tweet->user->screen_name : $username;
 	
+	$current_query = ($query != false) ? $query : array('tag'=>'','value'=>'');
+			
 	$querystr = "SELECT *
 					FROM $wpdb->postmeta
 					WHERE (meta_key = 'dg_tw_id' AND meta_value = '".(int) $tweet->id_str."')
@@ -472,7 +480,8 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 	$time = strtotime($tweet->created_at);
 	
 	$tweet_title = filter_title($tweet);
-	$post_tags = htmlspecialchars($dg_tw_tags.','.$current_query['tag']);
+	$author_tag = ( !empty($dg_tw_ft['authortag']) ) ? ','.$username : '';
+	$post_tags = htmlspecialchars($dg_tw_tags.','.$current_query['tag'].$author_tag);
 	
 	if(!count($postid)) {
 		$post = array(
@@ -485,7 +494,6 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 				'tags_input'     => $post_tags,
 				'post_type'      => 'post',
 				'post_date'      => date('Y-m-d H:i:s', $time),
-				'post_date_gmt'  => gmdate('Y-m-d H:i:s', $time),
 				'post_status'    => strval($dg_tw_publish)
 		);
 		
@@ -504,7 +512,6 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 			/*INSERT ATTACHMENTS*/
 			
 			/*POST METAS*/
-			$username = (isset($tweet->user->display_name) && !empty($tweet->user->display_name)) ? $tweet->user->display_name : $tweet->user->name;
 			$query_string = urlencode($current_query['value']);
 			$query_string = ($query != false) ? $query['value'] : $query_string;
 	
@@ -531,7 +538,8 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 					$str = preg_replace('|@(\w+)|', '<a href="http://twitter.com/$1" target="_blank">@$1</a>', $str);
 					$str = preg_replace('|#(\w+)|', '<a href="http://twitter.com/search?q=%23$1" target="_blank">#$1</a>', $str);
 					
-					$post_content .= '<p>'.$str.'</p>';
+					$tweet_link = ($dg_tw_ft['tweetlink']) ? '<p><a href="https://twitter.com/'.$username.'/status/'.$tweet->id_str.'" target="_blank">https://twitter.com/'.$username.'/status/'.$tweet->id_str.'</a></p>' : '';
+					$post_content .= '<p>'.$str.'</p>'.$tweet_link;
 					$post_title = filter_title($tweet);
 				}
 					
@@ -567,7 +575,8 @@ function dg_tw_publish_mega_tweet($tweets) {
 		$str = preg_replace('|@(\w+)|', '<a href="http://twitter.com/$1" target="_blank">@$1</a>', $str);
 		$str = preg_replace('|#(\w+)|', '<a href="http://twitter.com/search?q=%23$1" target="_blank">#$1</a>', $str);
 		
-		$content .= '<li class="single_tweet">'.$str.'</li>';
+		$time_tweet = (!empty($dg_tw_ft['tweettime'])) ? ' - '.date('Y-m-d H:i:s',strtotime($tweet['created_at'])) : '';
+		$content .= '<li class="single_tweet">'.$str.$time_tweet.'</li>';
 	}
 
 	$content .= '</ul>';
@@ -608,7 +617,9 @@ function filter_title($tweet) {
 	
 	//$result = $tweet->text;
 	$result = (empty($dg_tw_ft['title_format'])) ? $tweet->text : $dg_tw_ft['title_format'];
-	$username = (isset($tweet->user->screen_name) && !empty($tweet->user->screen_name)) ? $tweet->user->screen_name : $tweet->user->name;
+	
+	$username = (isset($tweet->user->display_ame) && !empty($tweet->user->display_ame)) ? $tweet->user->display_ame : $tweet->user->name;
+	$username = (isset($tweet->user->screen_name) && !empty($tweet->user->screen_name)) ? $tweet->user->screen_name : $username;
 	
 	$result = str_replace('%tweet%',$tweet->text,$result);
 	$result = str_replace('%author%',$username,$result);
