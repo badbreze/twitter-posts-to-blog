@@ -1,6 +1,6 @@
 <div class="wrap">
 	<div id="icon-options-general" class="icon32"><br /></div>
-	<h2>Twitter To Wordpress Autopost</h2>
+	<h2>Twitter To WordPress Autopost</h2>
 	<h3>Autopost Next Items</h3>
 	
 	<?php

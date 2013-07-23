@@ -1,6 +1,6 @@
 <div class="wrap">
 	<div id="icon-options-general" class="icon32"><br /></div>
-	<h2>Twitter To Wordpress Autopost</h2>
+	<h2>Twitter To WordPress Autopost</h2>
 	<h3>Autopost params</h3>
 	
 	<form method="post">
@@ -8,6 +8,14 @@
 		
 		<table class="form-table">
 			<tbody>
+				<tr valign="top">
+					<td scope="row">
+						<b>Manual import tweets</b>
+					</td>
+					<td>
+						<button type="button" id="dg_tw_import_now">Import Tweets now!</button>
+					</td>
+				</tr>
 				<tr valign="top">
 					<td scope="row">
 						<b>Twitter app settings:</b>

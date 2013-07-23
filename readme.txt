@@ -55,7 +55,7 @@ Want more functionality or some modifications? Ok tell me wath you want and i tr
 
 
 == Installation ==
-Copy the plugin into the wordpress directory ( wp-content/plugins/ )
+Copy the plugin into the WordPress directory ( wp-content/plugins/ )
 Activate plugin from admin control panel
 
 Create your twitter application here:
@@ -90,9 +90,11 @@ Follow the description in order to configure the plugin
 * @replies exclusion
 * Biweekly time
 * Content formatting (Sweet)
+* Tweet as link
 
 = 1.4.* =
-* Post format support
+* Post format support (BLUHIG)
+* Manual import tweets (Ipstenu)
 
 = 1.4 =
 * Tweet author as tag

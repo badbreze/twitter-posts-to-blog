@@ -20,6 +20,14 @@ jQuery(document).ready(function() {
 		event.preventDefault();
 		jQuery(this).parent().remove();
 	});
+	
+	jQuery('#dg_tw_import_now').on('click',function(event) {
+		jQuery('#dg_tw_import_now').text('Running...');
+		
+		jQuery.post(ajaxurl, {action:'dg_tw_event_start'}, function(response) {
+			jQuery('#dg_tw_import_now').text('Import Tweets now!');
+		});
+	});
 });
 
 function ratio_mode() {
