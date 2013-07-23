@@ -202,7 +202,7 @@
 						<b>Content:</b>
 					</td>
 					<td>
-						<input type="checkbox" name="dg_tw_ft_ui" value="1" <?php if (isset($dg_tw_ft['avatar']) && $dg_tw_ft['avatar']) echo ' checked=checked'; ?>/>
+						<input type="checkbox" name="dg_tw_ft_avatar" value="1" <?php if (isset($dg_tw_ft['avatar']) && $dg_tw_ft['avatar']) echo ' checked=checked'; ?>/>
 						&nbsp;
 						<span class="description">Insert user avatar in body</span><br/>
 						
