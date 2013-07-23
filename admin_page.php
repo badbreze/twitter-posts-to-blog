@@ -202,9 +202,13 @@
 						<b>Content:</b>
 					</td>
 					<td>
+						<input type="checkbox" name="dg_tw_ft_ui" value="1" <?php if (isset($dg_tw_ft['avatar']) && $dg_tw_ft['avatar']) echo ' checked=checked'; ?>/>
+						&nbsp;
+						<span class="description">Insert user avatar in body</span><br/>
+						
 						<input type="checkbox" name="dg_tw_ft_ui" value="1" <?php if (isset($dg_tw_ft['ui']) && $dg_tw_ft['ui']) echo ' checked=checked'; ?>/>
 						&nbsp;
-						<span class="description">Insert user image in body</span><br/>
+						<span class="description">Insert tweet image/s in body</span><br/>
 						
 						<input type="checkbox" name="dg_tw_ft_text" value="1" <?php if (isset($dg_tw_ft['text']) && $dg_tw_ft['text']) echo ' checked=checked'; ?>/>
 						&nbsp;

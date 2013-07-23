@@ -506,7 +506,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 			
 			//Set the format of a post
 			$format = (isset($dg_tw_ft['format'])) ? $dg_tw_ft['format'] : 'standard';
-			set_post_format( $post , $format);
+			set_post_format( $dg_tw_this_post , $format);
 			
 			if( isset($tweet->entities->media) ) {
 				$attaches_id = dg_tw_insert_attachments($tweet->entities->media,$dg_tw_this_post);
