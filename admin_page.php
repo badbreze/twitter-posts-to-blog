@@ -123,6 +123,20 @@
 							<option value="single" <?php if (isset($dg_tw_ft['method']) && $dg_tw_ft['method'] === 'single') echo 'selected=selected'; ?>>All tweets in one post</option>
 						</select><br/><br/>
 						
+						<span class="description">Post format</span><br/>
+						<select name="dg_tw_format">
+							<option value="standard" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'standard') echo 'selected=selected'; ?>>Standard</option>
+							<option value="aside" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'aside') echo 'selected=selected'; ?>>Aside</option>
+							<option value="gallery" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'gallery') echo 'selected=selected'; ?>>Gallery</option>
+							<option value="link" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'link') echo 'selected=selected'; ?>>Link</option>
+							<option value="image" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'image') echo 'selected=selected'; ?>>Image</option>
+							<option value="quote" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'quote') echo 'selected=selected'; ?>>Quote</option>
+							<option value="status" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'status') echo 'selected=selected'; ?>>Status</option>
+							<option value="video" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'video') echo 'selected=selected'; ?>>Video</option>
+							<option value="audio" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'audio') echo 'selected=selected'; ?>>Audio</option>
+							<option value="chat" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'chat') echo 'selected=selected'; ?>>Chat</option>
+						</select><br/><br/>
+						
 						<span class="description">Post author:</span><br/>
 						<?php
 							$args = array(

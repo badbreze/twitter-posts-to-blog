@@ -420,6 +420,7 @@ function dg_tw_options() {
 		$now_ft['text'] = (int) $_POST['dg_tw_ft_text'];
 		$now_ft['author'] = (int) $_POST['dg_tw_author'];
 		$now_ft['method'] = $_POST['dg_tw_method'];
+		$now_ft['format'] = $_POST['dg_tw_format'];
 		$now_ft['img_size'] = $_POST['dg_tw_ft_size'];
 		$now_ft['ipp'] = $_POST['dg_tw_ipp'];
 		$now_ft['privileges'] = $_POST['dg_tw_privileges'];
@@ -502,6 +503,10 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 		if($dg_tw_this_post) {
 			/*INSERT ATTACHMENTS*/
 			$attaches_id = array();
+			
+			//Set the format of a post
+			$format = (isset($dg_tw_ft['format'])) ? $dg_tw_ft['format'] : 'standard';
+			set_post_format( $post , $format);
 			
 			if( isset($tweet->entities->media) ) {
 				$attaches_id = dg_tw_insert_attachments($tweet->entities->media,$dg_tw_this_post);

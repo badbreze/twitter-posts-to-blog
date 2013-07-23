@@ -91,6 +91,9 @@ Follow the description in order to configure the plugin
 * Biweekly time
 * Content formatting (Sweet)
 
+= 1.4.* =
+* Post format support
+
 = 1.4 =
 * Tweet author as tag
 * Timestamp in side of tweets (single post multiple tweets)
