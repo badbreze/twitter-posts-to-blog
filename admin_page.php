@@ -263,6 +263,9 @@
 						
 						<span class="description">Set the maximum length in characters of the title;</span><br/>
 						<input type="text" size="60" name="dg_tw_maxtitle" class="regular-text" value="<?php echo isset( $dg_tw_ft['maxtitle'] ) ? $dg_tw_ft['maxtitle'] : ''; ?>">
+						
+						<input type="checkbox" name="dg_tw_title_remove_url" <?php if( !empty($dg_tw_ft['title_remove_url']) ) echo 'checked'; ?> />
+						<span class="description">Remove urls from the title string</span><br/>
 					</td>
 				</tr>
 				<tr valign="top">

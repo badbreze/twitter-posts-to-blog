@@ -95,6 +95,8 @@ Follow the description in order to configure the plugin
 = 1.4.* =
 * Post format support (BLUHIG)
 * Manual import tweets (Ipstenu)
+* Use P instead of SPAN to avoid some isues (Cibulka)
+* Can remove url from the post title (yfbchelp)
 
 = 1.4 =
 * Tweet author as tag

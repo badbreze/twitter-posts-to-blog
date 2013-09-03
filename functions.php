@@ -293,7 +293,7 @@ function dg_tw_activation() {
 			'method'=>'multiple',
 			'ipp'=>25,
 			'author'=>0,
-			'title_format'=>'Tweet from %tweet%',
+			'title_format'=>'Tweet from %author%',
 			'privileges'=>'activate_plugins',
 			'badwords'=>'',
 			'tweetlink'=>false,
@@ -426,6 +426,7 @@ function dg_tw_options() {
 		$now_ft['privileges'] = $_POST['dg_tw_privileges'];
 		$now_ft['maxtitle'] = $_POST['dg_tw_maxtitle'];
 		$now_ft['title_format'] = $_POST['dg_tw_title_format'];
+		$now_ft['title_remove_url'] = $_POST['dg_tw_title_remove_url'];
 		$now_ft['badwords'] = $_POST['dg_tw_badwords'];
 		$now_ft['notags'] = isset($_POST['dg_tw_notags']) ? true : false;
 		$now_ft['noreplies'] = isset($_POST['dg_tw_noreplies']) ? true : false; 	
@@ -528,7 +529,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 
 			/*FILTER TEXT*/
 			if($dg_tw_ft['ui'] || $dg_tw_ft['text']) {
-				$post_content = '<span class="twitter-post">';
+				$post_content = '<p class="twitter-post">';
 			
 				if($dg_tw_ft['ui']) {
 					foreach($attaches_id as $attach)
@@ -548,7 +549,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 					$post_title = filter_title($tweet);
 				}
 					
-				$post_content .= '</span>';
+				$post_content .= '</p>';
 				
 				$update_post = array();
 				$update_post['ID'] = $dg_tw_this_post;
@@ -628,6 +629,9 @@ function filter_title($tweet) {
 	
 	$result = str_replace('%tweet%',$tweet->text,$result);
 	$result = str_replace('%author%',$username,$result);
+	
+	if($dg_tw_ft['title_remove_url'])
+		$result = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","",$result);
 	
 	$result = substr($result,0,$dg_tw_ft['maxtitle']);
 	
