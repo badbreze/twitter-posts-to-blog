@@ -86,10 +86,8 @@ Follow the description in order to configure the plugin
 == Changelog ==
 
 = What Next =
-* Custom post content formatting (Sweet)
 * @replies exclusion
 * Biweekly time
-* Content formatting (Sweet)
 * Tweet as link
 
 = 1.4.* =
@@ -97,6 +95,8 @@ Follow the description in order to configure the plugin
 * Manual import tweets (Ipstenu)
 * Use P instead of SPAN to avoid some isues (Cibulka)
 * Can remove url from the post title (yfbchelp)
+* Custom post content formatting (Sweet)
+* Use textarea instead of textbox for title and content formatting strings
 
 = 1.4 =
 * Tweet author as tag

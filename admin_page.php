@@ -228,6 +228,8 @@
 						<b>Body text:</b>
 					</td>
 					<td>
+						<span class="description">Body formatting: (eg. %tweet%,%author% )</span><br/>
+						<textarea cols="45" name="dg_tw_body_format"><?php echo isset( $dg_tw_ft['body_format'] ) ? $dg_tw_ft['body_format'] : "<p class='tweet_text'>%tweet%</p>"; ?></textarea><br/><br/>
 					</td>
 				</tr>
 				<tr valign="top">
@@ -259,7 +261,7 @@
 					</td>
 					<td>
 						<span class="description">Title formatting: (eg. %tweet%,%author% )</span><br/>
-						<input type="text" size="60" name="dg_tw_title_format" class="regular-text" value="<?php echo isset( $dg_tw_ft['title_format'] ) ? $dg_tw_ft['title_format'] : ''; ?>"><br/><br/>
+						<textarea cols="45" name="dg_tw_title_format"><?php echo isset( $dg_tw_ft['title_format'] ) ? $dg_tw_ft['title_format'] : 'Tweet from %author%'; ?></textarea><br/><br/>
 						
 						<span class="description">Set the maximum length in characters of the title;</span><br/>
 						<input type="text" size="60" name="dg_tw_maxtitle" class="regular-text" value="<?php echo isset( $dg_tw_ft['maxtitle'] ) ? $dg_tw_ft['maxtitle'] : ''; ?>">
