@@ -480,8 +480,6 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 				
 	$postid = $wpdb->get_results($querystr);
 	
-	$time = strtotime($tweet->created_at);
-	
 	$tweet_title = filter_text($tweet,$dg_tw_ft['title_format'],"",$dg_tw_ft['maxtitle'],$dg_tw_ft['title_remove_url']);
 	$author_tag = ( !empty($dg_tw_ft['authortag']) ) ? ','.$username : '';
 	$post_tags = htmlspecialchars($dg_tw_tags.','.$current_query['tag'].$author_tag);
@@ -496,7 +494,6 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 				'post_category'  => $dg_tw_cats,
 				'tags_input'     => $post_tags,
 				'post_type'      => 'post',
-				'post_date'      => date('Y-m-d H:i:s', $time),
 				'post_status'    => strval($dg_tw_publish)
 		);
 		
