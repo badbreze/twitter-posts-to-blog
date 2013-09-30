@@ -28,6 +28,10 @@ jQuery(document).ready(function() {
 			jQuery('#dg_tw_import_now').text('Import Tweets now!');
 		});
 	});
+	
+	jQuery(function() {
+		jQuery( "#tabs" ).tabs();
+	});
 });
 
 function ratio_mode() {

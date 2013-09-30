@@ -90,6 +90,10 @@ Follow the description in order to configure the plugin
 * Biweekly time
 * Tweet as link
 
+= 1.5.* =
+* New Backend design
+* Users blacklist (acostanza)
+
 = 1.4.* =
 * Post format support (BLUHIG)
 * Manual import tweets (Ipstenu)

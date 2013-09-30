@@ -46,7 +46,7 @@ function dg_tw_load_next_items() {
 				continue;
 			
 			if(!isset($dg_tw_ft['method']) || $dg_tw_ft['method'] == 'multiple') {
-				if(dg_tw_iswhite($item->text)) {
+				if(dg_tw_iswhite($item)) {
 					$result = dg_tw_publish_tweet($item,$query);
 				} //iswhite
 			} elseif(!in_array($item->id_str,$dg_tw_exclusions)) {
@@ -125,7 +125,7 @@ function dg_add_menu_item() {
 	add_menu_page( 'Twitter To WP', 'Twitter To WP', $privilege['privileges'], 'dg_tw_admin_menu', 'dg_tw_drawpage', '', 3);
 	add_submenu_page( 'dg_tw_admin_menu', 'Manual Posting', 'Manual Posting', $privilege['privileges'], 'dg_tw_retrieve_menu', 'dg_tw_drawpage_retrieve' );
 	
-	wp_enqueue_script( "twitter-posts-to-blog-js",plugins_url('js/twitter-posts-to-blog.js', __FILE__),array('jquery'));
+	wp_enqueue_script( "twitter-posts-to-blog-js",plugins_url('js/twitter-posts-to-blog.js', __FILE__),array('jquery','jquery-ui-widget'));
 	wp_enqueue_style( "twitter-posts-to-blog-css", plugins_url('css/twitter-posts-to-blog.css', __FILE__), false, '1.0.0');
 }
 
@@ -197,20 +197,39 @@ function dg_tw_slug($str) {
 /*
  * Check if there is blacklisted words in the text of the tweet
  */
-function dg_tw_iswhite($text) {
+function dg_tw_iswhite($tweet) {
 	global $dg_tw_queryes, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 	
-	if(empty($dg_tw_ft['badwords']))
+	if(empty($dg_tw_ft['badwords']) && empty($dg_tw_ft['baduser']))
 		return true;
 	
-	$exploded = explode(',',$dg_tw_ft['badwords']);
-	
-	foreach($exploded as $word) {
-		if(empty($word))
-			continue;
+	if(!empty($dg_tw_ft['badwords'])) {
+		$exploded = explode(',',$dg_tw_ft['badwords']);
 		
-		if(stristr ($text , $word ))
-			return false;
+		foreach($exploded as $word) {
+			$this_word = trim($word);
+			
+			if(empty($this_word))
+				continue;
+			
+			if(stristr ($tweet->text , $this_word ))
+				return false;
+		}
+	}
+	
+	if(!empty($dg_tw_ft['baduser'])) {
+		$exploded = explode(',',$dg_tw_ft['baduser']);
+	
+		foreach($exploded as $word) {
+			$this_word = trim($word);
+			$username = dg_tw_tweet_user($tweet);
+			
+			if(empty($this_word))
+				continue;
+				
+			if(stristr ($username , $this_word ))
+				return false;
+		}
 	}
 	
 	return true;
@@ -429,6 +448,7 @@ function dg_tw_options() {
 		$now_ft['title_format'] = $_POST['dg_tw_title_format'];
 		$now_ft['title_remove_url'] = $_POST['dg_tw_title_remove_url'];
 		$now_ft['badwords'] = $_POST['dg_tw_badwords'];
+		$now_ft['baduser'] = $_POST['dg_tw_baduser'];
 		$now_ft['notags'] = isset($_POST['dg_tw_notags']) ? true : false;
 		$now_ft['noreplies'] = isset($_POST['dg_tw_noreplies']) ? true : false; 	
 		$now_ft['exclude_retweets'] = isset($_POST['dg_tw_exclude_retweets']) ? true : false;
@@ -468,8 +488,7 @@ function dg_tw_options() {
 function dg_tw_publish_tweet($tweet,$query = false) {
 	global $dg_tw_queryes, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 	
-	$username = (isset($tweet->user->display_ame) && !empty($tweet->user->display_name)) ? $tweet->user->display_name : $tweet->user->name;
-	$username = (isset($tweet->user->screen_name) && !empty($tweet->user->screen_name)) ? $tweet->user->screen_name : $username;
+	$username = dg_tw_tweet_user($tweet);
 	
 	$current_query = ($query != false) ? $query : array('tag'=>'','value'=>'');
 			
@@ -574,6 +593,9 @@ function dg_tw_publish_mega_tweet($tweets) {
 	$content = '<ul id="dg_tw_list_tweets">';
 	
 	foreach($tweets as $tweet) {
+		if(!dg_tw_iswhite($tweet))
+			continue;
+		
 		$str = dg_tw_regexText($tweet['text']);
 		$str = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$str);
 		$str = preg_replace('|@(\w+)|', '<a href="http://twitter.com/$1" target="_blank">@$1</a>', $str);
@@ -713,5 +735,14 @@ function dg_tw_manual_publish() {
 
 	echo $result;
 	die();
+}
+
+
+function dg_tw_tweet_user($tweet) {
+	$username = "";
+	$username = (isset($tweet->user->display_name) && !empty($tweet->user->display_name)) ? $tweet->user->display_name : $tweet->user->name;
+	$username = (isset($tweet->user->screen_name) && !empty($tweet->user->screen_name)) ? $tweet->user->screen_name : $username;
+	
+	return $username;
 }
 ?>

@@ -6,49 +6,278 @@
 	<form method="post">
 		<input type="hidden" name="dg_tw_data_update" value="yes" />
 		
-		<table class="form-table">
-			<tbody>
-				<tr valign="top">
-					<td scope="row">
-						<b>Manual import tweets</b>
-					</td>
-					<td>
-						<button type="button" id="dg_tw_import_now">Import Tweets now!</button>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Twitter app settings:</b>
-					</td>
-					<td>
-						<span class="description">Consumer key:</span><br/>
-						<input type="text" size="60" name="dg_tw_access_key" class="regular-text" value="<?php echo @$dg_tw_ft['access_key']; ?>"><br/><br/>
-						<span class="description">Consumer secret:</span><br/>
-						<input type="text" size="60" name="dg_tw_access_secret" class="regular-text" value="<?php echo @$dg_tw_ft['access_secret']; ?>"><br/><br/>
-						<span class="description">Access token:</span><br/>
-						<input type="text" size="60" name="dg_tw_access_token" class="regular-text" value="<?php echo @$dg_tw_ft['access_token']; ?>"><br/><br/>
-						<span class="description">Access token secret:</span><br/>
-						<input type="text" size="60" name="dg_tw_access_token_secret" class="regular-text" value="<?php echo @$dg_tw_ft['access_token_secret']; ?>">
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Capabilities:</b>
-					</td>
-					<td>
+		<p>
+			<b>Manual import tweets</b>
+		</p>
+		<button type="button" id="dg_tw_import_now">Import Tweets now!</button>
+		<br/><br/>
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">Content selection</a></li>
+				<li><a href="#tabs-2">Post customization</a></li>
+				<li><a href="#tabs-3">Cron Settings</a></li>
+				<li><a href="#tabs-4">App settings</a></li>
+			</ul>
+			<div id="tabs-1" class="dg_tw_tabs">
+				<p>
+					<b>Items at time:</b><br/>
+					<p class="dg_tw_horiz">
+						<span class="description">How many item want to load each time the cron run:</span><br/>
+						<input type="text" size="60" name="dg_tw_ipp" class="regular-text" value="<?php echo isset($dg_tw_ft['ipp']) ? $dg_tw_ft['ipp'] : ''; ?>">
+					</p>
+				<br/>
+				</p>
+				
+				<p>
+					<b>Words blacklist:</b><br/>
+					<p class="dg_tw_horiz">
+						<span class="description">Does not post tweets with these words (separated by comma ","):</span><br/>
+						<input type="text" size="60" name="dg_tw_badwords" class="regular-text" value="<?php echo isset( $dg_tw_ft['badwords'] ) ? $dg_tw_ft['badwords']: ''; ?>">
+					</p>
+				<br/>
+				</p>
+	
+			
+				<p>
+					<b>Users blacklist:</b><br/>
+					<p class="dg_tw_horiz">
+						<span class="description">Does not post tweets of these users (separated by comma ","):</span><br/>
+						<input type="text" size="60" name="dg_tw_baduser" class="regular-text" value="<?php echo isset( $dg_tw_ft['baduser'] ) ? $dg_tw_ft['baduser']: ''; ?>">
+					</p>
+				<br/>
+				</p>
+	
+			
+				<p>
+					<b>Post Modifications:</b><br/>
+					<p class="dg_tw_horiz">
+						<input type="checkbox" name="dg_tw_notags" <?php if( !empty($dg_tw_ft['notags']) ) echo 'checked'; ?> />
+						<span class="description">Remove all hashtags from posts</span><br/>
+						<input type="checkbox" name="dg_tw_noreplies" <?php if( !empty($dg_tw_ft['noreplies']) ) echo 'checked'; ?> />
+						<span class="description">Remove all @replies from posts (removes retweet "RT @user:" text as well)</span>
+					</p>
+				<br/>
+				</p>
+				
+				<p>
+					<b>Post Exclusions:</b><br/>
+					<i>(this may publish less items each time the cron run)</i><br/>
+					<p class="dg_tw_horiz">
+						<input type="checkbox" name="dg_tw_exclude_retweets" <?php if( !empty($dg_tw_ft['exclude_retweets']) ) echo 'checked'; ?> />
+						<span class="description">Exclude retweets</span><br/>
+						<input type="checkbox" name="dg_tw_exclude_no_images" <?php if( !empty($dg_tw_ft['exclude_no_images']) ) echo 'checked'; ?> />
+						<span class="description">Exclude if no images</span>
+					</p>
+				<br/>
+				</p>
+			
+				<p>
+					<b>Your search queryes</b><br/>
+					<p class="dg_tw_horiz">
+						<span class="description">You can add more item by click the ADD button below</span><br/>
+						<input type="text" id="dg_tw_add_title" size="60" name="dg_tw_query" class="regular-text" value=""> 
+						<input type="button" id="dg_tw_add_element" name="add_feed" value="Add" class="button-primary">
+					</p>
+				<br/>
+				</p>
+				
+				<p>
+					<span class="description">Current queryes</span><br/>
+					<p class="dg_tw_horiz">
+						<div id="dg_tw_elements_selected">
+							<?php if(!empty($dg_tw_queryes)) foreach($dg_tw_queryes as $query_element) { ?>
+								<p style="text-align:left;padding:5px;">
+									<input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"> 
+									<input type="text" size="20" class="regular-text" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][value]" value="<?php echo $query_element['value']; ?>">
+									&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="20" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][tag]" value="<?php echo $query_element['tag']; ?>">
+									<span> - Last id: <a target="_blank" href="https://twitter.com/search?q=<?php echo urlencode($query_element['value']); ?>&since_id=<?php echo $query_element['last_id']; ?>"><?php echo $query_element['last_id']; ?></a></span> 
+								</p>
+							<?php } ?>
+						</div>
+					</p>
+				</p>
+				<br/>
+			</div>
+			
+			<div id="tabs-2" class="dg_tw_tabs">
+				<p>
+					<b>Publish settings:</b><br/>
+					<p class="dg_tw_horiz">
+						<span class="description">Post status: published or draft</span><br/>
+						<select name="dg_tw_publish_selected">
+							<option value="publish"<?php if ($dg_tw_publish === 'publish') echo ' selected=selected'; ?>>Published</option>
+							<option value="draft"<?php if ($dg_tw_publish === 'draft') echo ' selected=selected'; ?>>Draft</option>
+						</select><br/><br/>
+						
+						<span class="description">Post method</span><br/>
+						<select name="dg_tw_method">
+							<option value="multiple" <?php if (isset($dg_tw_ft['method']) && $dg_tw_ft['method'] === 'multiple') echo 'selected=selected'; ?>>One post per tweet</option>
+							<option value="single" <?php if (isset($dg_tw_ft['method']) && $dg_tw_ft['method'] === 'single') echo 'selected=selected'; ?>>All tweets in one post</option>
+						</select><br/><br/>
+						
+						<span class="description">Post format</span><br/>
+						<select name="dg_tw_format">
+							<option value="standard" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'standard') echo 'selected=selected'; ?>>Standard</option>
+							<option value="aside" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'aside') echo 'selected=selected'; ?>>Aside</option>
+							<option value="gallery" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'gallery') echo 'selected=selected'; ?>>Gallery</option>
+							<option value="link" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'link') echo 'selected=selected'; ?>>Link</option>
+							<option value="image" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'image') echo 'selected=selected'; ?>>Image</option>
+							<option value="quote" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'quote') echo 'selected=selected'; ?>>Quote</option>
+							<option value="status" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'status') echo 'selected=selected'; ?>>Status</option>
+							<option value="video" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'video') echo 'selected=selected'; ?>>Video</option>
+							<option value="audio" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'audio') echo 'selected=selected'; ?>>Audio</option>
+							<option value="chat" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'chat') echo 'selected=selected'; ?>>Chat</option>
+						</select><br/><br/>
+						
+						<span class="description">Post author:</span><br/>
+						<?php
+							$args = array(
+									'orderby'                 => 'display_name',
+									'order'                   => 'ASC',
+									'multi'                   => false,
+									'show'                    => 'display_name',
+									'echo'                    => true,
+									'selected'                => isset($dg_tw_ft['author']) ? $dg_tw_ft['author'] : null,
+									'include_selected'        => true,
+									'name'                    => 'dg_tw_author',
+									'blog_id'                 => $GLOBALS['blog_id']
+							);
+		
+							wp_dropdown_users( $args );
+						?>
+					</p>
+					<br/>
+				</p>
+			
+	
+			
+				<p>
+					<b>Post tags:</b><br/>
+					<p class="dg_tw_horiz">
+						<span class="description">Type tags you want append to each tweet (dont use query strings here)</span><br/>
+						<input type="text" size="60" name="dg_tw_tag_tweets" class="regular-text" value="<?php echo $dg_tw_tags; ?>"><br/>
+						
+						<input type="checkbox" name="dg_tw_authortag" <?php if( !empty($dg_tw_ft['authortag']) ) echo 'checked'; ?> />
+						<span class="description">Insert the author name as tag</span>
+					</p>
+					<br/>
+				</p>
+			
+	
+			
+				<p>
+					<b>Post category:</b><br/>
+					<p class="dg_tw_horiz">
+						<span class="description">Select categories for tweets</span><br/>
+						<ul class="list:category categorychecklist form-no-clear">
+							<?php
+								$selected_cats = $dg_tw_cats;
+								wp_terms_checklist(0,
+													array(
+														'taxonomy' => 'category',
+														'descendants_and_self' => 0,
+														'selected_cats' => $selected_cats,
+														'popular_cats' => false,
+														'walker' => null,
+														'checked_ontop' => false
+								));
+							?>
+						</ul>
+					</p>
+					<br/>
+				</p>
+			
+	
+			
+				<p>
+					<b>Content:</b><br/>
+					<p class="dg_tw_horiz">
+						<input type="checkbox" name="dg_tw_ft_avatar" value="1" <?php if (isset($dg_tw_ft['avatar']) && $dg_tw_ft['avatar']) echo ' checked=checked'; ?>/>
+						&nbsp;
+						<span class="description">Insert user avatar in body</span><br/>
+						
+						<input type="checkbox" name="dg_tw_ft_ui" value="1" <?php if (isset($dg_tw_ft['ui']) && $dg_tw_ft['ui']) echo ' checked=checked'; ?>/>
+						&nbsp;
+						<span class="description">Insert tweet image/s in body</span><br/>
+						
+						<input type="checkbox" name="dg_tw_ft_text" value="1" <?php if (isset($dg_tw_ft['text']) && $dg_tw_ft['text']) echo ' checked=checked'; ?>/>
+						&nbsp;
+						<span class="description">Insert tweet text in body</span><br/>
+						
+						<input type="checkbox" name="dg_tw_tweettime" <?php if( !empty($dg_tw_ft['tweettime']) ) echo 'checked'; ?> />
+						&nbsp;
+						<span class="description">Insert the date of the tweet in side of the text (multiple mode only)</span><br/>
+						
+						<input type="checkbox" name="dg_tw_tweetlink" <?php if( !empty($dg_tw_ft['tweetlink']) ) echo 'checked'; ?> />
+						&nbsp;
+						<span class="description">Insert the tweet link in body</span><br/>
+					</p>
+					<br/>
+				</p>
+			
+	
+			
+				<p>
+					<b>Body text:</b><br/>
+					<p class="dg_tw_horiz">
+						<span class="description">Body formatting: (eg. %tweet%,%author% )</span><br/>
+						<textarea cols="45" name="dg_tw_body_format"><?php echo isset( $dg_tw_ft['body_format'] ) ? $dg_tw_ft['body_format'] : "<p class='tweet_text'>%tweet%</p>"; ?></textarea><br/><br/>
+					</p>
+					<br/>
+				</p>
+			
+	
+			
+				<p>
+					<b>Image size:</b><br/>
+					<p class="dg_tw_horiz">
+						<span class="description">Select user image size:</span><br/>
+						<select name="dg_tw_ft_size">
+							<option value="original"<?php if (isset($dg_tw_ft['img_size']) && $dg_tw_ft['img_size'] === 'original') echo ' selected=selected'; ?>>Original</option>
+							<option value="mini"<?php if (isset($dg_tw_ft['img_size']) && $dg_tw_ft['img_size'] === 'mini') echo ' selected=selected'; ?>>Mini - 24px by 24px</option>
+							<option value="normal"<?php if (isset($dg_tw_ft['img_size']) && $dg_tw_ft['img_size'] === 'normal') echo ' selected=selected'; ?>>Normal - 48px by 48px</option>
+							<option value="bigger"<?php if (isset($dg_tw_ft['img_size']) && $dg_tw_ft['img_size'] === 'bigger') echo ' selected=selected'; ?>>Bigger - 73px by 73px</option>
+						</select>
+					</p>
+					<br/>
+				</p>
+			
+	
+			
+				<p>
+					<b>Title Settings:</b><br/>
+					<p class="dg_tw_horiz">
+						<span class="description">Title formatting: (eg. %tweet%,%author% )</span><br/>
+						<textarea cols="45" name="dg_tw_title_format"><?php echo isset( $dg_tw_ft['title_format'] ) ? $dg_tw_ft['title_format'] : 'Tweet from %author%'; ?></textarea><br/><br/>
+						
+						<span class="description">Set the maximum length in characters of the title;</span><br/>
+						<input type="text" size="60" name="dg_tw_maxtitle" class="regular-text" value="<?php echo isset( $dg_tw_ft['maxtitle'] ) ? $dg_tw_ft['maxtitle'] : ''; ?>">
+						
+						<input type="checkbox" name="dg_tw_title_remove_url" <?php if( !empty($dg_tw_ft['title_remove_url']) ) echo 'checked'; ?> />
+						<br/>
+						<span class="description">Remove urls from the title string</span><br/>
+					</p>
+					<br/>
+				</p>
+			</div>
+			
+			<div id="tabs-3" class="dg_tw_tabs">
+				<p>
+					<b>Capabilities:</b><br/>
+					<p class="dg_tw_horiz">
 						<span class="description">Who can see this page and change settings:</span><br/>
 						<select name="dg_tw_privileges">
 							<option value="activate_plugins"<?php if (isset($dg_tw_ft['privileges']) && $dg_tw_ft['privileges'] === 'activate_plugins') echo ' selected=selected'; ?>>Administrator</option>
 							<option value="delete_pages"<?php if (isset($dg_tw_ft['privileges']) && $dg_tw_ft['privileges'] === 'delete_pages') echo ' selected=selected'; ?>>Editor</option>
 							<option value="delete_posts"<?php if (isset($dg_tw_ft['privileges']) && $dg_tw_ft['privileges'] === 'delete_posts') echo ' selected=selected'; ?>>Author</option>
 						</select>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row" style="width:23%;">
-						<b>Cron time:</b>
-					</td>
-					<td>
+					</p>
+					<br/>
+				</p>
+			
+				<p style="width:23%;">
+					<b>Cron time:</b><br/>
+					<p class="dg_tw_horiz">
 						<span class="description">Choose how much time must pass before load new items, use "never" to disable</span><br/>
 						<select name="dg_tw_time_selected" id="dg_tw_time_selected">
 							<option value="never"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'never') echo ' selected=selected'; ?>>never</option>
@@ -112,224 +341,32 @@
 								?>
 							</optgroup>
 						</select>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Publish settings:</b>
-					</td>
-					<td>
-						<span class="description">Post status: published or draft</span><br/>
-						<select name="dg_tw_publish_selected">
-							<option value="publish"<?php if ($dg_tw_publish === 'publish') echo ' selected=selected'; ?>>Published</option>
-							<option value="draft"<?php if ($dg_tw_publish === 'draft') echo ' selected=selected'; ?>>Draft</option>
-						</select><br/><br/>
-						
-						<span class="description">Post method</span><br/>
-						<select name="dg_tw_method">
-							<option value="multiple" <?php if (isset($dg_tw_ft['method']) && $dg_tw_ft['method'] === 'multiple') echo 'selected=selected'; ?>>One post per tweet</option>
-							<option value="single" <?php if (isset($dg_tw_ft['method']) && $dg_tw_ft['method'] === 'single') echo 'selected=selected'; ?>>All tweets in one post</option>
-						</select><br/><br/>
-						
-						<span class="description">Post format</span><br/>
-						<select name="dg_tw_format">
-							<option value="standard" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'standard') echo 'selected=selected'; ?>>Standard</option>
-							<option value="aside" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'aside') echo 'selected=selected'; ?>>Aside</option>
-							<option value="gallery" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'gallery') echo 'selected=selected'; ?>>Gallery</option>
-							<option value="link" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'link') echo 'selected=selected'; ?>>Link</option>
-							<option value="image" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'image') echo 'selected=selected'; ?>>Image</option>
-							<option value="quote" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'quote') echo 'selected=selected'; ?>>Quote</option>
-							<option value="status" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'status') echo 'selected=selected'; ?>>Status</option>
-							<option value="video" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'video') echo 'selected=selected'; ?>>Video</option>
-							<option value="audio" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'audio') echo 'selected=selected'; ?>>Audio</option>
-							<option value="chat" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'chat') echo 'selected=selected'; ?>>Chat</option>
-						</select><br/><br/>
-						
-						<span class="description">Post author:</span><br/>
-						<?php
-							$args = array(
-									'orderby'                 => 'display_name',
-									'order'                   => 'ASC',
-									'multi'                   => false,
-									'show'                    => 'display_name',
-									'echo'                    => true,
-									'selected'                => isset($dg_tw_ft['author']) ? $dg_tw_ft['author'] : null,
-									'include_selected'        => true,
-									'name'                    => 'dg_tw_author',
-									'blog_id'                 => $GLOBALS['blog_id']
-							);
-
-							wp_dropdown_users( $args );
-						?>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Post tags:</b>
-					</td>
-					<td>
-						<span class="description">Type tags you want append to each tweet (dont use query strings here)</span><br/>
-						<input type="text" size="60" name="dg_tw_tag_tweets" class="regular-text" value="<?php echo $dg_tw_tags; ?>"><br/>
-						
-						<input type="checkbox" name="dg_tw_authortag" <?php if( !empty($dg_tw_ft['authortag']) ) echo 'checked'; ?> />
-						<span class="description">Insert the author name as tag</span>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Post category:</b>
-					</td>
-					<td>
-						<span class="description">Select categories for tweets</span><br/>
-						<ul class="list:category categorychecklist form-no-clear">					
-							<?php
-								$selected_cats = $dg_tw_cats;
-								wp_terms_checklist(0,
-													array(
-														'taxonomy' => 'category',
-														'descendants_and_self' => 0,
-														'selected_cats' => $selected_cats,
-														'popular_cats' => false,
-														'walker' => null,
-														'checked_ontop' => false
-								));
-							?>
-						</ul>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Content:</b>
-					</td>
-					<td>
-						<input type="checkbox" name="dg_tw_ft_avatar" value="1" <?php if (isset($dg_tw_ft['avatar']) && $dg_tw_ft['avatar']) echo ' checked=checked'; ?>/>
-						&nbsp;
-						<span class="description">Insert user avatar in body</span><br/>
-						
-						<input type="checkbox" name="dg_tw_ft_ui" value="1" <?php if (isset($dg_tw_ft['ui']) && $dg_tw_ft['ui']) echo ' checked=checked'; ?>/>
-						&nbsp;
-						<span class="description">Insert tweet image/s in body</span><br/>
-						
-						<input type="checkbox" name="dg_tw_ft_text" value="1" <?php if (isset($dg_tw_ft['text']) && $dg_tw_ft['text']) echo ' checked=checked'; ?>/>
-						&nbsp;
-						<span class="description">Insert tweet text in body</span><br/>
-						
-						<input type="checkbox" name="dg_tw_tweettime" <?php if( !empty($dg_tw_ft['tweettime']) ) echo 'checked'; ?> />
-						&nbsp;
-						<span class="description">Insert the date of the tweet in side of the text (multiple mode only)</span><br/>
-						
-						<input type="checkbox" name="dg_tw_tweetlink" <?php if( !empty($dg_tw_ft['tweetlink']) ) echo 'checked'; ?> />
-						&nbsp;
-						<span class="description">Insert the tweet link in body</span><br/>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Body text:</b>
-					</td>
-					<td>
-						<span class="description">Body formatting: (eg. %tweet%,%author% )</span><br/>
-						<textarea cols="45" name="dg_tw_body_format"><?php echo isset( $dg_tw_ft['body_format'] ) ? $dg_tw_ft['body_format'] : "<p class='tweet_text'>%tweet%</p>"; ?></textarea><br/><br/>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Image size:</b>
-					</td>
-					<td>
-						<span class="description">Select user image size:</span><br/>
-						<select name="dg_tw_ft_size">
-							<option value="original"<?php if (isset($dg_tw_ft['img_size']) && $dg_tw_ft['img_size'] === 'original') echo ' selected=selected'; ?>>Original</option>
-							<option value="mini"<?php if (isset($dg_tw_ft['img_size']) && $dg_tw_ft['img_size'] === 'mini') echo ' selected=selected'; ?>>Mini - 24px by 24px</option>
-							<option value="normal"<?php if (isset($dg_tw_ft['img_size']) && $dg_tw_ft['img_size'] === 'normal') echo ' selected=selected'; ?>>Normal - 48px by 48px</option>
-							<option value="bigger"<?php if (isset($dg_tw_ft['img_size']) && $dg_tw_ft['img_size'] === 'bigger') echo ' selected=selected'; ?>>Bigger - 73px by 73px</option>
-						</select>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Items at time:</b>
-					</td>
-					<td>
-						<span class="description">How many item want to load each time the cron run:</span><br/>
-						<input type="text" size="60" name="dg_tw_ipp" class="regular-text" value="<?php echo isset($dg_tw_ft['ipp']) ? $dg_tw_ft['ipp'] : ''; ?>">
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Title Settings:</b>
-					</td>
-					<td>
-						<span class="description">Title formatting: (eg. %tweet%,%author% )</span><br/>
-						<textarea cols="45" name="dg_tw_title_format"><?php echo isset( $dg_tw_ft['title_format'] ) ? $dg_tw_ft['title_format'] : 'Tweet from %author%'; ?></textarea><br/><br/>
-						
-						<span class="description">Set the maximum length in characters of the title;</span><br/>
-						<input type="text" size="60" name="dg_tw_maxtitle" class="regular-text" value="<?php echo isset( $dg_tw_ft['maxtitle'] ) ? $dg_tw_ft['maxtitle'] : ''; ?>">
-						
-						<input type="checkbox" name="dg_tw_title_remove_url" <?php if( !empty($dg_tw_ft['title_remove_url']) ) echo 'checked'; ?> />
-						<span class="description">Remove urls from the title string</span><br/>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Words blacklist:</b>
-					</td>
-					<td>
-						<span class="description">Does not post tweets with these words:</span><br/>
-						<input type="text" size="60" name="dg_tw_badwords" class="regular-text" value="<?php echo isset( $dg_tw_ft['badwords'] ) ? $dg_tw_ft['badwords']: ''; ?>">
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Post Modifications:</b>
-					</td>
-					<td>
-						<input type="checkbox" name="dg_tw_notags" <?php if( !empty($dg_tw_ft['notags']) ) echo 'checked'; ?> />
-						<span class="description">Remove all hashtags from posts</span><br/>
-						<input type="checkbox" name="dg_tw_noreplies" <?php if( !empty($dg_tw_ft['noreplies']) ) echo 'checked'; ?> />
-						<span class="description">Remove all @replies from posts (removes retweet "RT @user:" text as well)</span>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Post Exclusions:</b>
-					</td>
-					<td>
-						<i>(this may publish less items each time the cron run)</i><br/>
-						<input type="checkbox" name="dg_tw_exclude_retweets" <?php if( !empty($dg_tw_ft['exclude_retweets']) ) echo 'checked'; ?> />
-						<span class="description">Exclude retweets</span><br/>
-						<input type="checkbox" name="dg_tw_exclude_no_images" <?php if( !empty($dg_tw_ft['exclude_no_images']) ) echo 'checked'; ?> />
-						<span class="description">Exclude if no images</span>
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row">
-						<b>Your search queryes</b>
-					</td>
-					<td>
-						<span class="description">You can add more item by click the ADD button below</span><br/>
-						<input type="text" id="dg_tw_add_title" size="60" name="dg_tw_query" class="regular-text" value=""> 
-						<input type="button" id="dg_tw_add_element" name="add_feed" value="Add" class="button-primary">
-					</td>
-				</tr>
-				<tr valign="top">
-					<td scope="row"></td>
-					<td>
-						<span class="description">Current queryes</span><br/>
-						<div id="dg_tw_elements_selected">
-							<?php if(!empty($dg_tw_queryes)) foreach($dg_tw_queryes as $query_element) { ?>
-								<p style="text-align:left;padding:5px;">
-									<input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"> 
-									<input type="text" size="20" class="regular-text" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][value]" value="<?php echo $query_element['value']; ?>">
-									&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="20" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][tag]" value="<?php echo $query_element['tag']; ?>">
-									<span> - Last id: <a target="_blank" href="https://twitter.com/search?q=<?php echo urlencode($query_element['value']); ?>&since_id=<?php echo $query_element['last_id']; ?>"><?php echo $query_element['last_id']; ?></a></span> 
-								</p>
-							<?php } ?>
-						</div>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+					</p>
+					<br/>
+				</p>
+			</div>
+			
+			<div id="tabs-4" class="dg_tw_tabs">
+				<p>
+					<b>Twitter app settings:</b><br/>
+					<p class="dg_tw_horiz">
+						<span class="description">Consumer key:</span><br/>
+						<input type="text" size="60" name="dg_tw_access_key" class="regular-text" value="<?php echo @$dg_tw_ft['access_key']; ?>"><br/><br/>
+						<span class="description">Consumer secret:</span><br/>
+						<input type="text" size="60" name="dg_tw_access_secret" class="regular-text" value="<?php echo @$dg_tw_ft['access_secret']; ?>"><br/><br/>
+						<span class="description">Access token:</span><br/>
+						<input type="text" size="60" name="dg_tw_access_token" class="regular-text" value="<?php echo @$dg_tw_ft['access_token']; ?>"><br/><br/>
+						<span class="description">Access token secret:</span><br/>
+						<input type="text" size="60" name="dg_tw_access_token_secret" class="regular-text" value="<?php echo @$dg_tw_ft['access_token_secret']; ?>">
+					</p>
+					<br/>
+				</p>
+			</div>
+		</div>
+				
+		
+				
+					
 		<p class="submit">
 			<input type="submit" value="Save settings" class="button-primary" id="submit" name="submit"/>
 		</p>
