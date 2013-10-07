@@ -29,9 +29,14 @@ Good work with this plugin.
 * Words blacklist: insert unwanted words to the blacklist (comma separated) tweets with choosed words will be ignored
 * Your search queryes: here you can add or remove terms for tweets import, here the query samples
 
+Built by <a href="//twitter.com/iwafer">@iWafer</a> / <a rel="author" href="https://plus.google.com/111606514487113936457">Damian Gomez</a>
+
 For my projects see http://www.divenock.com/progetti/
 
-= Example Finds tweets... =
+= Limitations =
+* Twitter api has some limitations, one of this is the last week limitation for Standard Search Api
+
+= Examples To Finds tweets... =
 * twitter search - containing both "twitter" and "search". This is the default operator
 * "happy hour" - containing the exact phrase "happy hour"
 * love OR hate - containing either "love" or "hate" (or both)
