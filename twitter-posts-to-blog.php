@@ -2,12 +2,10 @@
 /*
 Plugin Name: Twitter posts to Blog
 Description: Post twetts to your blog
-Version: 1.5
+Version: 1.5.1
 Author: Damian Gomez
 */
 
-//require_once 'libs/tmhOAuth/tmhOAuth.php';
-//require_once 'libs/tmhOAuth/tmhUtilities.php';
 require_once 'libs/twitteroauth/twitteroauth.php';
 require_once 'functions.php';
 

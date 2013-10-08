@@ -98,6 +98,7 @@ Follow the description in order to configure the plugin
 = 1.5.* =
 * New Backend design
 * Users blacklist (acostanza)
+* Manage twitter errors in manual posting page
 
 = 1.4.* =
 * Post format support (BLUHIG)

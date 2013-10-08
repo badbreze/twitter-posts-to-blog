@@ -24,73 +24,85 @@
 			
 			$dg_tw_data = $connection->get('search/tweets', $parameters);
 			
-			echo "<h3>".$query['value']."</h3>";
-			?>
-			<table class="wp-list-table widefat fixed posts" cellspacing="0">
-				<thead>
-					<th scope="col" style="width: 20%;" id="title" class="manage-column sortable desc" style="">
-						<span>Author</span>
-					</th>
-					<th scope="col" id="title" class="manage-column column-title sortable desc" style="">
-						<span>Post Content</span>
-					</th>
-					<th scope="col" id="title" class="manage-column column-title sortable desc" style="">
-						<span>Original Content</span>
-					</th>
-					<th scope="col" id="title" style="width: 10%;" class="manage-column column-title sortable desc" style="">
-						<span>Publish</span>
-					</th>
-				</thead>
+			if(isset($dg_tw_data->errors) && count($dg_tw_data->errors)) {
+				$error = current($dg_tw_data->errors);
 				
-				<tbody id="the-list">
-					<?php
-						foreach($dg_tw_data->statuses as $item) {
-							if( isset($dg_tw_ft['exclude_retweets']) && $dg_tw_ft['exclude_retweets'] && isset($item->retweeted_status))
-								continue;
+				echo "<h1>ERROR! Check your twitter app configuration</h1>";
+				echo "<h2>Info: <i>".$error->message."</i></h2>";
+				break;
+			}
+			
+			
+			if(isset($dg_tw_data->statuses)) {
+				echo "<h3>".$query['value']."</h3>";
+				
+				?>
+				<table class="wp-list-table widefat fixed posts" cellspacing="0">
+					<thead>
+						<th scope="col" style="width: 20%;" id="title" class="manage-column sortable desc" style="">
+							<span>Author</span>
+						</th>
+						<th scope="col" id="title" class="manage-column column-title sortable desc" style="">
+							<span>Post Content</span>
+						</th>
+						<th scope="col" id="title" class="manage-column column-title sortable desc" style="">
+							<span>Original Content</span>
+						</th>
+						<th scope="col" id="title" style="width: 10%;" class="manage-column column-title sortable desc" style="">
+							<span>Publish</span>
+						</th>
+					</thead>
+					
+					<tbody id="the-list">
+						<?php
+							foreach($dg_tw_data->statuses as $item) {
+								if( isset($dg_tw_ft['exclude_retweets']) && $dg_tw_ft['exclude_retweets'] && isset($item->retweeted_status))
+									continue;
+									
+								if( isset( $dg_tw_ft['exclude_no_images'] ) && $dg_tw_ft['exclude_no_images'] && !count($item->entities->media))
+									continue;
 								
-							if( isset( $dg_tw_ft['exclude_no_images'] ) && $dg_tw_ft['exclude_no_images'] && !count($item->entities->media))
-								continue;
-							
-							if(dg_tw_iswhite($item->text)) {
-								$content = dg_tw_regexText( $item->text );
-								?>
-								<tr id="post-190" class="post-190 type-post status-publish format-standard hentry alternate iedit author-self" valign="top">
-									<td scope="row">
-										<b><?php echo $item->user->name; ?></b>
-									</td>
-									<td scope="row">
-										<?php echo $content; ?>
-									</td>
-									<td scope="row">
-										<?php echo $item->text; ?>
-									</td>
-									<td scope="row">
-										<button type="button" class="manual_publish" data-query="<?php echo $query['value']; ?>" data-pid="<?php echo $item->id_str; ?>">Publish</button>
-									</td>
-								</tr>
-								<?php
+								if(dg_tw_iswhite($item->text)) {
+									$content = dg_tw_regexText( $item->text );
+									?>
+									<tr id="post-190" class="post-190 type-post status-publish format-standard hentry alternate iedit author-self" valign="top">
+										<td scope="row">
+											<b><?php echo $item->user->name; ?></b>
+										</td>
+										<td scope="row">
+											<?php echo $content; ?>
+										</td>
+										<td scope="row">
+											<?php echo $item->text; ?>
+										</td>
+										<td scope="row">
+											<button type="button" class="manual_publish" data-query="<?php echo $query['value']; ?>" data-pid="<?php echo $item->id_str; ?>">Publish</button>
+										</td>
+									</tr>
+									<?php
+								}
 							}
-						}
-					?>
-				</tbody>
-				
-				<tfoot>
-					<th scope="col" style="width: 20%;" id="title" class="manage-column sortable desc" style="">
-						<span>Author</span>
-					</th>
-					<th scope="col" id="title" class="manage-column column-title sortable desc" style="">
-						<span>Post Content</span>
-					</th>
-					<th scope="col" id="title" class="manage-column column-title sortable desc" style="">
-						<span>Original Content</span>
-					</th>
-					<th scope="col" id="title" style="width: 10%;" class="manage-column column-title sortable desc" style="">
-						<span>Publish</span>
-					</th>
-				</tfoot>
-			</table>
-			<br><br><br>
-			<?php
+						?>
+					</tbody>
+					
+					<tfoot>
+						<th scope="col" style="width: 20%;" id="title" class="manage-column sortable desc" style="">
+							<span>Author</span>
+						</th>
+						<th scope="col" id="title" class="manage-column column-title sortable desc" style="">
+							<span>Post Content</span>
+						</th>
+						<th scope="col" id="title" class="manage-column column-title sortable desc" style="">
+							<span>Original Content</span>
+						</th>
+						<th scope="col" id="title" style="width: 10%;" class="manage-column column-title sortable desc" style="">
+							<span>Publish</span>
+						</th>
+					</tfoot>
+				</table>
+				<br><br><br>
+				<?php
+			}
 		}
 	?>
 </div>
