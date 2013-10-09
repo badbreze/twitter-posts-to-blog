@@ -26,6 +26,8 @@ function dg_tw_load_next_items() {
 				'count' => $dg_tw_ft['ipp']
 		);
 		
+		$count = 0;
+		
 		error_log('Loop query string \n');
 		$dg_tw_data = $connection->get('search/tweets', $parameters);
 
@@ -39,6 +41,8 @@ function dg_tw_load_next_items() {
 		}
 
 		foreach($dg_tw_data->statuses as $key=>$item) {
+			$count++;
+			
 			if($dg_tw_ft['exclude_retweets'] && isset($item->retweeted_status))
 				continue;
 			
@@ -59,6 +63,9 @@ function dg_tw_load_next_items() {
 				
 				$dg_tw_exclusions[] = $item->id_str;
 			}
+			
+			if($count == $dg_tw_ft['ipp'])
+				break;
 		}
 	}
 	

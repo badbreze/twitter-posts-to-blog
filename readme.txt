@@ -101,6 +101,7 @@ Follow the description in order to configure the plugin
 * Manage twitter errors in manual posting page
 * Fix title 0 length (Kiezkicker)
 * Fix body and title format (Kiezkicker)
+* Fix item limitation on import
 
 = 1.4.* =
 * Post format support (BLUHIG)
