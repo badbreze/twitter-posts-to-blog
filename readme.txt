@@ -81,6 +81,36 @@ This plugin create new menu under Settings ( Settings -> Twitter To WP )
 Follow the description in order to configure the plugin
 
 
+== Frequently Asked Questions ==
+
+= I don't understand the utility of this plugin. Can you explain me what's mean? =
+
+This plugin periodicaly pick tweets from tag,username or some text like this: 
+https://twitter.com/search?q=%40iWafer&src=typd and for each tweet create one post in your blog.
+
+= Where do I select the category,tags,content it will post to? =
+
+In plugin settings page there is a tab called "Post customization" where you can choose those 
+and more options for each tweet post this plugin publish
+
+= Can i exclude tweets with unwanted words/authors? =
+
+Yes you can exclude authors or words from the main configuration tab of the plugin
+
+= How work the title/body formatting =
+
+Formatting is easy to use, you can choose what you want to see in every post you publish, for egsample, you can set as title something 
+like this:
+* Tweet from %author%
+
+and the body content like this:
+* <img src="%avatar_url%" alt="%author%"/> %author%: %tweet%. <a href="/">Back to Home</a>
+
+And your tweet result is something like:
+* Tweet from iWafer
+* [IMAGE] iWafer: @divenock hello friend im the #best. Back to Home
+
+
 == Screenshots ==
 
 1. Configuration panel.
