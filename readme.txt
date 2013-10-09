@@ -102,7 +102,7 @@ Yes you can exclude authors or words from the main configuration tab of the plug
 Formatting is easy to use, you can choose what you want to see in every post you publish, for egsample, you can set as title something 
 like this:
 
-*   "Code" Tweet from %author%
+`Tweet from %author%`
 
 and the body content like this:
 
@@ -110,8 +110,8 @@ and the body content like this:
 
 And your tweet result is something like:
 
-`Tweet from iWafer`
-`[IMAGE] iWafer: @divenock hello friend im the #best. Back to Home`
+`Tweet from iWafer
+[IMAGE] iWafer: @divenock hello friend im the #best. Back to Home`
 
 
 == Screenshots ==
