@@ -217,7 +217,7 @@
 				<p>
 					<b>Body text:</b><br/>
 					<p class="dg_tw_horiz">
-						<span class="description">Body formatting: (eg. %tweet%,%author%,%avatar_url% )</span><br/>
+						<span class="description">Body formatting: (eg. %tweet%,%author%,%avatar_url%,%tweet_url% )</span><br/>
 						<textarea cols="45" name="dg_tw_body_format"><?php echo isset( $dg_tw_ft['body_format'] ) ? $dg_tw_ft['body_format'] : "<p class='tweet_text'>%tweet%</p>"; ?></textarea><br/><br/>
 					</p>
 					<br/>
@@ -244,7 +244,7 @@
 				<p>
 					<b>Title Settings:</b><br/>
 					<p class="dg_tw_horiz">
-						<span class="description">Title formatting: (eg. %tweet%,%author% )</span><br/>
+						<span class="description">Title formatting: (eg. %tweet%,%author%,%avatar_url%,%tweet_url% )</span><br/>
 						<textarea cols="45" name="dg_tw_title_format"><?php echo isset( $dg_tw_ft['title_format'] ) ? $dg_tw_ft['title_format'] : 'Tweet from %author%'; ?></textarea><br/><br/>
 						
 						<span class="description">Set the maximum length in characters of the title;</span><br/>

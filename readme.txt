@@ -102,6 +102,7 @@ Follow the description in order to configure the plugin
 * Fix title 0 length (Kiezkicker)
 * Fix body and title format (Kiezkicker)
 * Fix item limitation on import
+* Add tweet url to formats (Kiezkicker)
 
 = 1.4.* =
 * Post format support (BLUHIG)

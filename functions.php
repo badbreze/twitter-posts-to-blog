@@ -653,10 +653,12 @@ function filter_text($tweet,$format="",$content="",$limit=-1,$remove_url=false) 
 	
 	$username = (isset($tweet->user->display_ame) && !empty($tweet->user->display_ame)) ? $tweet->user->display_ame : $tweet->user->name;
 	$username = (isset($tweet->user->screen_name) && !empty($tweet->user->screen_name)) ? $tweet->user->screen_name : $username;
+	$tweet_url = 'https://twitter.com/'.$username.'/status/'.$tweet->id_str;
 	
 	$result = str_replace('%tweet%',$text,$result);
 	$result = str_replace('%author%',$username,$result);
 	$result = str_replace('%avatar_url%',$tweet->user->profile_image_url,$result);
+	$result = str_replace('%tweet_url%',$tweet_url,$result);
 	
 	if($remove_url)
 		$result = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","",$result);
