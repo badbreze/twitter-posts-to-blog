@@ -440,12 +440,12 @@ function dg_tw_options() {
 		$now_ft['author'] = (int) $_POST['dg_tw_author'];
 		$now_ft['method'] = $_POST['dg_tw_method'];
 		$now_ft['format'] = $_POST['dg_tw_format'];
-		$now_ft['body_format'] = $_POST['dg_tw_body_format'];
+		$now_ft['body_format'] = stripslashes($_POST['dg_tw_body_format']);
 		$now_ft['img_size'] = $_POST['dg_tw_ft_size'];
 		$now_ft['ipp'] = $_POST['dg_tw_ipp'];
 		$now_ft['privileges'] = $_POST['dg_tw_privileges'];
 		$now_ft['maxtitle'] = $_POST['dg_tw_maxtitle'];
-		$now_ft['title_format'] = $_POST['dg_tw_title_format'];
+		$now_ft['title_format'] = stripslashes($_POST['dg_tw_title_format']);
 		$now_ft['title_remove_url'] = $_POST['dg_tw_title_remove_url'];
 		$now_ft['badwords'] = $_POST['dg_tw_badwords'];
 		$now_ft['baduser'] = $_POST['dg_tw_baduser'];
@@ -638,7 +638,7 @@ function dg_tw_regexText($string){
 	return $string;
 }
 
-function filter_text($tweet,$format="",$content="",$limit=false,$remove_url=false) {
+function filter_text($tweet,$format="",$content="",$limit=-1,$remove_url=false) {
 	global $dg_tw_queryes, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 	
 	$text = ($content == "") ? $tweet->text : $content;
@@ -649,11 +649,12 @@ function filter_text($tweet,$format="",$content="",$limit=false,$remove_url=fals
 	
 	$result = str_replace('%tweet%',$text,$result);
 	$result = str_replace('%author%',$username,$result);
+	$result = str_replace('%avatar_url%',$tweet->user->profile_image_url,$result);
 	
 	if($remove_url)
 		$result = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","",$result);
 	
-	if($limit != false)
+	if($limit != -1)
 		$result = substr($result,0,$limit);
 	
 	return $result;

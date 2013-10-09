@@ -1,15 +1,8 @@
 <div class="wrap">
-	<div id="icon-options-general" class="icon32"><br /></div>
-	<h2>Twitter To WordPress Autopost</h2>
-	<h3>Autopost params</h3>
-	
 	<form method="post">
 		<input type="hidden" name="dg_tw_data_update" value="yes" />
 		
-		<p>
-			<b>Manual import tweets</b>
-		</p>
-		<button type="button" id="dg_tw_import_now">Import Tweets now!</button>
+		<button type="button" class="button-primary" id="dg_tw_import_now">Import Tweets now!</button>
 		<br/><br/>
 		<div id="tabs">
 			<ul>
@@ -76,6 +69,13 @@
 					<p class="dg_tw_horiz">
 						<span class="description">You can add more item by click the ADD button below</span><br/>
 						<input type="text" id="dg_tw_add_title" size="60" name="dg_tw_query" class="regular-text" value=""> 
+						<select id="dg_tw_query_method" disabled="disabled">
+							<option value="search/tweets" selected="selected">Standard</option>
+							<option value="statuses/user_timeline">User timeline (screen_name)</option>
+							<option value="statuses/retweets/">Retweets of id (tweet_id)</option>
+							<option value="favorites/list">User favorites (screen_name)</option>
+							<option value="lists/statuses">Lists (list_id or slug of list)</option>
+						</select>
 						<input type="button" id="dg_tw_add_element" name="add_feed" value="Add" class="button-primary">
 					</p>
 				<br/>
@@ -90,7 +90,8 @@
 									<input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"> 
 									<input type="text" size="20" class="regular-text" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][value]" value="<?php echo $query_element['value']; ?>">
 									&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="20" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][tag]" value="<?php echo $query_element['tag']; ?>">
-									<span> - Last id: <a target="_blank" href="https://twitter.com/search?q=<?php echo urlencode($query_element['value']); ?>&since_id=<?php echo $query_element['last_id']; ?>"><?php echo $query_element['last_id']; ?></a></span> 
+									&nbsp;&nbsp;&nbsp;method:&nbsp;<input type="text" size="20" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][method]" value="<?php echo $query_element['method']; ?>" disabled="disabled">
+									<span> - <a target="_blank" href="https://twitter.com/search?q=<?php echo urlencode($query_element['value']); ?>&since_id=<?php echo $query_element['last_id']; ?>">From last</a></span> 
 								</p>
 							<?php } ?>
 						</div>
@@ -192,10 +193,6 @@
 				<p>
 					<b>Content:</b><br/>
 					<p class="dg_tw_horiz">
-						<input type="checkbox" name="dg_tw_ft_avatar" value="1" <?php if (isset($dg_tw_ft['avatar']) && $dg_tw_ft['avatar']) echo ' checked=checked'; ?>/>
-						&nbsp;
-						<span class="description">Insert user avatar in body</span><br/>
-						
 						<input type="checkbox" name="dg_tw_ft_ui" value="1" <?php if (isset($dg_tw_ft['ui']) && $dg_tw_ft['ui']) echo ' checked=checked'; ?>/>
 						&nbsp;
 						<span class="description">Insert tweet image/s in body</span><br/>
@@ -220,7 +217,7 @@
 				<p>
 					<b>Body text:</b><br/>
 					<p class="dg_tw_horiz">
-						<span class="description">Body formatting: (eg. %tweet%,%author% )</span><br/>
+						<span class="description">Body formatting: (eg. %tweet%,%author%,%avatar_url% )</span><br/>
 						<textarea cols="45" name="dg_tw_body_format"><?php echo isset( $dg_tw_ft['body_format'] ) ? $dg_tw_ft['body_format'] : "<p class='tweet_text'>%tweet%</p>"; ?></textarea><br/><br/>
 					</p>
 					<br/>

@@ -99,6 +99,8 @@ Follow the description in order to configure the plugin
 * New Backend design
 * Users blacklist (acostanza)
 * Manage twitter errors in manual posting page
+* Fix title 0 length (Kiezkicker)
+* Fix body and title format (Kiezkicker)
 
 = 1.4.* =
 * Post format support (BLUHIG)
