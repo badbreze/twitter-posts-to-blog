@@ -113,6 +113,13 @@ And your tweet result is something like:
 `Tweet from iWafer
 [IMAGE] iWafer: @divenock hello friend im the #best. Back to Home`
 
+This is the list of codes you can use in the formatting fields
+
+`%tweet% The text of the tweet
+%author% The author name of this tweet
+%avatar_url% An url to the author avatar for this tweet
+%tweet_url% Url of this tweet in twitter.com`
+
 
 == Screenshots ==
 
