@@ -143,6 +143,8 @@ This is the list of codes you can use in the formatting fields
 * Fix body and title format (Kiezkicker)
 * Fix item limitation on import
 * Add tweet url to formats (Kiezkicker)
+* Fix some designs
+* Fix target blank (thanks to Kiezkicker)
 
 = 1.4.* =
 * Post format support (BLUHIG)

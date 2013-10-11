@@ -132,8 +132,9 @@ function dg_add_menu_item() {
 	add_menu_page( 'Twitter To WP', 'Twitter To WP', $privilege['privileges'], 'dg_tw_admin_menu', 'dg_tw_drawpage', '', 3);
 	add_submenu_page( 'dg_tw_admin_menu', 'Manual Posting', 'Manual Posting', $privilege['privileges'], 'dg_tw_retrieve_menu', 'dg_tw_drawpage_retrieve' );
 	
-	wp_enqueue_script( "twitter-posts-to-blog-js",plugins_url('js/twitter-posts-to-blog.js', __FILE__),array('jquery','jquery-ui-widget'));
+	wp_enqueue_script( "twitter-posts-to-blog-js",plugins_url('js/twitter-posts-to-blog.js', __FILE__),array('jquery','jquery-ui-core','jquery-ui-tabs'));
 	wp_enqueue_style( "twitter-posts-to-blog-css", plugins_url('css/twitter-posts-to-blog.css', __FILE__), false, '1.0.0');
+	wp_enqueue_style( "twitter-posts-to-blog-css-ui", plugins_url('css/twitter-posts-to-blog-ui.css', __FILE__), false, '1.0.0');
 }
 
 /*
@@ -564,12 +565,12 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 					$str = dg_tw_regexText($tweet->text);
 					$tweet->text = $str;
 					
-					$str = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$str);
+					$str = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"_blank\">\\0</a>",$str);
 					$str = preg_replace('|@(\w+)|', '<a href="http://twitter.com/$1" target="_blank">@$1</a>', $str);
 					$str = preg_replace('|#(\w+)|', '<a href="http://twitter.com/search?q=%23$1" target="_blank">#$1</a>', $str);
 					
-					$tweet_link = ($dg_tw_ft['tweetlink']) ? '<p><a href="https://twitter.com/'.$username.'/status/'.$tweet->id_str.'" target="_blank">https://twitter.com/'.$username.'/status/'.$tweet->id_str.'</a></p>' : '';
-					$tweet_content .= '<p>'.$str.'</p>'.$tweet_link;
+					$tweet_link = ($dg_tw_ft['tweetlink']) ? '<a href="https://twitter.com/'.$username.'/status/'.$tweet->id_str.'" target="_blank">https://twitter.com/'.$username.'/status/'.$tweet->id_str.'</a> ' : '';
+					$tweet_content .= $str.' '.$tweet_link;
 					$post_title = filter_text($tweet,$dg_tw_ft['title_format'],"",$dg_tw_ft['maxtitle'],$dg_tw_ft['title_remove_url']);
 				}
 					
@@ -604,7 +605,7 @@ function dg_tw_publish_mega_tweet($tweets) {
 			continue;
 		
 		$str = dg_tw_regexText($tweet['text']);
-		$str = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"blank\">\\0</a>",$str);
+		$str = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"_blank\">\\0</a>",$str);
 		$str = preg_replace('|@(\w+)|', '<a href="http://twitter.com/$1" target="_blank">@$1</a>', $str);
 		$str = preg_replace('|#(\w+)|', '<a href="http://twitter.com/search?q=%23$1" target="_blank">#$1</a>', $str);
 		
