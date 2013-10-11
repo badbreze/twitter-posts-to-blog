@@ -118,7 +118,28 @@ This is the list of codes you can use in the formatting fields
 `%tweet% The text of the tweet
 %author% The author name of this tweet
 %avatar_url% An url to the author avatar for this tweet
-%tweet_url% Url of this tweet in twitter.com`
+%tweet_url% Url of this tweet in twitter.com
+%tweet_images% An html block of all images in the tweet`
+
+= How can i filter for tweets with images =
+
+You can search tweets with images using this filter in your query string
+
+`filter:images`
+
+Or you can exclude images with the same filter but with a - in front of it
+`-filter:images`
+
+= How can i filter for tweets with Mentions or Replies =
+
+You can search replies or mentions using these filters in your query string
+
+`filter:mentions
+filter:replies`
+
+Or you can exclude replies with the same filters but with a - in front of it
+`-filter:mentions
+-filter:replies`
 
 
 == Screenshots ==
@@ -134,6 +155,10 @@ This is the list of codes you can use in the formatting fields
 * @replies exclusion
 * Biweekly time
 * Tweet as link
+
+= 1.6 =
+* Removed uneeded options, you can use filters in query string
+* Added %tweet_images% shortcode for post content
 
 = 1.5.* =
 * New Backend design

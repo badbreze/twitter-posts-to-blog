@@ -80,44 +80,9 @@ function dg_tw_load_next_items() {
  * Add cron times
  */
 function dg_tw_schedule($schedules) {
-	$schedules['dg_tw_oneminute'] = array(
-			'interval'=> 60,
-			'display'=> __('Once Every Minute')
-	);
-
-	$schedules['dg_tw_fiveminutes'] = array(
-			'interval'=> 300,
-			'display'=> __('Once Every 5 Minutes')
-	);
-
-	$schedules['dg_tw_tenminutes'] = array(
-			'interval'=> 600,
-			'display'=> __('Once Every 10 Minutes')
-	);
-
-	$schedules['dg_tw_twentynminutes'] = array(
-			'interval'=> 1200,
-			'display'=> __('Once Every 20 Minutes')
-	);
-
-	$schedules['dg_tw_twicehourly'] = array(
-			'interval'=> 1800,
-			'display'=> __('Once Every 30 Minutes')
-	);
-
-	$schedules['dg_tw_weekly'] = array(
-			'interval'=> 604800,
-			'display'=> __('Once Every 7 Days')
-	);
-
 	$schedules['dg_tw_bi_weekly'] = array(
 			'interval'=> 1209600,
-			'display'=> __('Once Every 14 Days')
-	);
-
-	$schedules['dg_tw_monthly'] = array(
-			'interval'=> 2592000,
-			'display'=> __('Once Every 30 Days')
+			'display'=> __('Twice weekly')
 	);
 
 	return $schedules;
@@ -313,8 +278,6 @@ function dg_tw_activation() {
 	
 	if(!$dg_tw_ft) {
 		update_option('dg_tw_ft',array(
-			'ui'=>true,
-			'text'=>true,
 			'body_format','<p class="tweet_text">%tweet%</p>',
 			'img_size'=>'bigger',
 			'method'=>'multiple',
@@ -443,8 +406,7 @@ function dg_tw_options() {
 		$now_ft['access_secret'] = $_POST['dg_tw_access_secret'];
 		$now_ft['access_token'] = $_POST['dg_tw_access_token'];
 		$now_ft['access_token_secret'] = $_POST['dg_tw_access_token_secret'];
-		$now_ft['ui'] = (int) $_POST['dg_tw_ft_ui'];
-		$now_ft['text'] = (int) $_POST['dg_tw_ft_text'];
+		
 		$now_ft['author'] = (int) $_POST['dg_tw_author'];
 		$now_ft['method'] = $_POST['dg_tw_method'];
 		$now_ft['format'] = $_POST['dg_tw_format'];
@@ -462,8 +424,10 @@ function dg_tw_options() {
 		$now_ft['exclude_retweets'] = isset($_POST['dg_tw_exclude_retweets']) ? true : false;
 		$now_ft['exclude_no_images'] = isset($_POST['dg_tw_exclude_no_images']) ? true : false;
 		$now_ft['authortag'] = isset($_POST['dg_tw_authortag']) ? true : false;
-		$now_ft['tweettime'] = isset($_POST['dg_tw_tweettime']) ? true : false;
-		$now_ft['tweetlink'] = isset($_POST['dg_tw_tweetlink']) ? true : false;
+		
+		$now_ft['link_hashtag'] = isset($_POST['dg_tw_link_hashtag']) ? true : false;
+		$now_ft['link_mentions'] = isset($_POST['dg_tw_link_mentions']) ? true : false;
+		$now_ft['link_urls'] = isset($_POST['dg_tw_link_urls']) ? true : false;
 		
 		update_option('dg_tw_ft',$now_ft);
 		$dg_tw_ft = get_option('dg_tw_ft');
@@ -527,20 +491,12 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 		$dg_tw_this_post = wp_insert_post( $post, true );
 		
 		if($dg_tw_this_post) {
-			/*INSERT ATTACHMENTS*/
-			$attaches_id = array();
+			$tweet_content = dg_tw_regexText($tweet->text);
+			$tweet->text = $tweet_content;
 			
 			//Set the format of a post
 			$format = (isset($dg_tw_ft['format'])) ? $dg_tw_ft['format'] : 'standard';
 			set_post_format( $dg_tw_this_post , $format);
-			
-			if( isset($tweet->entities->media) ) {
-				$attaches_id = dg_tw_insert_attachments($tweet->entities->media,$dg_tw_this_post);
-			}
-			
-			// add image as post preview
-			set_post_thumbnail( $dg_tw_this_post, end($attaches_id) );
-			/*INSERT ATTACHMENTS*/
 			
 			/*POST METAS*/
 			$query_string = urlencode($current_query['value']);
@@ -551,39 +507,36 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 			add_post_meta($dg_tw_this_post, 'dg_tw_author', $username);
 			add_post_meta($dg_tw_this_post, 'dg_tw_author_avatar', $tweet->user->profile_image_url);
 			/*END POST METAS*/
-
-			/*FILTER TEXT*/
-			if($dg_tw_ft['ui'] || $dg_tw_ft['text']) {
-				$tweet_content = '';
-			
-				if($dg_tw_ft['ui']) {
-					foreach($attaches_id as $attach)
-						$tweet_content .= '<img src="'.wp_get_attachment_url($attach).'" alt="'.dg_tw_slug($tweet->text).'" align="baseline" border="0" />&nbsp;';
-				}
-					
-				if($dg_tw_ft['text']) {
-					$str = dg_tw_regexText($tweet->text);
-					$tweet->text = $str;
-					
-					$str = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"_blank\">\\0</a>",$str);
-					$str = preg_replace('|@(\w+)|', '<a href="http://twitter.com/$1" target="_blank">@$1</a>', $str);
-					$str = preg_replace('|#(\w+)|', '<a href="http://twitter.com/search?q=%23$1" target="_blank">#$1</a>', $str);
-					
-					$tweet_link = ($dg_tw_ft['tweetlink']) ? '<a href="https://twitter.com/'.$username.'/status/'.$tweet->id_str.'" target="_blank">https://twitter.com/'.$username.'/status/'.$tweet->id_str.'</a> ' : '';
-					$tweet_content .= $str.' '.$tweet_link;
-					$post_title = filter_text($tweet,$dg_tw_ft['title_format'],"",$dg_tw_ft['maxtitle'],$dg_tw_ft['title_remove_url']);
-				}
-					
-				$post_content = filter_text($tweet,$dg_tw_ft['body_format'],$tweet_content);
-				
-				$update_post = array();
-				$update_post['ID'] = $dg_tw_this_post;
-				$update_post['post_content'] = $post_content;
-				$update_post['post_title'] = $post_title;
-				
-				wp_update_post( $update_post );
+		
+			if($dg_tw_ft['link_urls']) {
+				$tweet_content = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","<a href=\"\\0\" target=\"_blank\">\\0</a>",$tweet_content);
 			}
-			/*END FILTER TEXT*/
+				
+			if($dg_tw_ft['link_mentions']) {
+				$tweet_content = preg_replace('|@(\w+)|', '<a href="http://twitter.com/$1" target="_blank">@$1</a>', $tweet_content);
+			}
+			
+			if($dg_tw_ft['link_hashtag']) {
+				$tweet_content = preg_replace('|#(\w+)|', '<a href="http://twitter.com/search?q=%23$1" target="_blank">#$1</a>', $tweet_content);
+			}
+			
+			$post_title = filter_text($tweet,$dg_tw_ft['title_format'],"",$dg_tw_ft['maxtitle'],$dg_tw_ft['title_remove_url']);
+				
+			$post_content = filter_text($tweet,$dg_tw_ft['body_format'],$tweet_content);
+			
+			if(strstr($post_content,'%tweet_images%')) {
+				$images_html = dg_tw_put_attachments($dg_tw_this_post,$tweet);
+				
+				$post_content = str_replace('%tweet_images%',$images_html,$post_content);
+			}
+			
+			$update_post = array();
+			$update_post['ID'] = $dg_tw_this_post;
+			$update_post['post_content'] = $post_content;
+			$update_post['post_title'] = $post_title;
+			
+			wp_update_post( $update_post );
+				
 		}
 	} else {
 		return "already";
@@ -668,6 +621,25 @@ function filter_text($tweet,$format="",$content="",$limit=-1,$remove_url=false) 
 		$result = substr($result,0,$limit);
 	
 	return $result;
+}
+
+function dg_tw_put_attachments($dg_tw_this_post,$tweet) {
+	$attaches_id = array();
+	$return = "";
+	
+	if( isset($tweet->entities->media) ) {
+		$attaches_id = dg_tw_insert_attachments($tweet->entities->media,$dg_tw_this_post);
+	}
+	
+	set_post_thumbnail( $dg_tw_this_post, end($attaches_id) );
+	
+	foreach($attaches_id as $attach) {
+		$url = wp_get_attachment_url($attach);
+		
+		$return .= '<img data-id="'.$attach.'" src="'.$url.'" alt="'.htmlentities(dg_tw_slug($tweet->text)).'" align="baseline" border="0" />&nbsp;';
+	}
+	
+	return $return;
 }
 
 /*

@@ -53,18 +53,6 @@
 				</p>
 				
 				<p>
-					<b>Post Exclusions:</b><br/>
-					<i>(this may publish less items each time the cron run)</i><br/>
-					<p class="dg_tw_horiz">
-						<input type="checkbox" name="dg_tw_exclude_retweets" <?php if( !empty($dg_tw_ft['exclude_retweets']) ) echo 'checked'; ?> />
-						<span class="description">Exclude retweets</span><br/>
-						<input type="checkbox" name="dg_tw_exclude_no_images" <?php if( !empty($dg_tw_ft['exclude_no_images']) ) echo 'checked'; ?> />
-						<span class="description">Exclude if no images</span>
-					</p>
-				<br/>
-				</p>
-			
-				<p>
 					<b>Your search queryes</b><br/>
 					<p class="dg_tw_horiz">
 						<span class="description">You can add more item by click the ADD button below</span><br/>
@@ -169,7 +157,6 @@
 				<p>
 					<b>Post category:</b><br/>
 					<p class="dg_tw_horiz">
-						<span class="description">Select categories for tweets</span><br/>
 						<ul class="list:category categorychecklist form-no-clear">
 							<?php
 								$selected_cats = $dg_tw_cats;
@@ -193,21 +180,17 @@
 				<p>
 					<b>Content:</b><br/>
 					<p class="dg_tw_horiz">
-						<input type="checkbox" name="dg_tw_ft_ui" value="1" <?php if (isset($dg_tw_ft['ui']) && $dg_tw_ft['ui']) echo ' checked=checked'; ?>/>
+						<input type="checkbox" name="dg_tw_link_hashtag" value="1" <?php if( !empty($dg_tw_ft['link_hashtag']) ) echo 'checked'; ?> />
 						&nbsp;
-						<span class="description">Insert tweet image/s in body</span><br/>
+						<span class="description">Make hasktag linked</span><br/>
 						
-						<input type="checkbox" name="dg_tw_ft_text" value="1" <?php if (isset($dg_tw_ft['text']) && $dg_tw_ft['text']) echo ' checked=checked'; ?>/>
+						<input type="checkbox" name="dg_tw_link_mentions" <?php if( !empty($dg_tw_ft['link_mentions']) ) echo 'checked'; ?> />
 						&nbsp;
-						<span class="description">Insert tweet text in body</span><br/>
+						<span class="description">Make mentions linked</span><br/>
 						
-						<input type="checkbox" name="dg_tw_tweettime" <?php if( !empty($dg_tw_ft['tweettime']) ) echo 'checked'; ?> />
+						<input type="checkbox" name="dg_tw_link_urls" <?php if( !empty($dg_tw_ft['link_urls']) ) echo 'checked'; ?> />
 						&nbsp;
-						<span class="description">Insert the date of the tweet in side of the text (multiple mode only)</span><br/>
-						
-						<input type="checkbox" name="dg_tw_tweetlink" <?php if( !empty($dg_tw_ft['tweetlink']) ) echo 'checked'; ?> />
-						&nbsp;
-						<span class="description">Insert the tweet link in body</span><br/>
+						<span class="description">Make urls linked</span><br/>
 					</p>
 					<br/>
 				</p>
@@ -215,10 +198,12 @@
 	
 			
 				<p>
-					<b>Body text:</b><br/>
+					<b>Body structure:</b><br/>
 					<p class="dg_tw_horiz">
-						<span class="description">Body formatting: (eg. %tweet%,%author%,%avatar_url%,%tweet_url% )</span><br/>
-						<textarea cols="45" name="dg_tw_body_format"><?php echo isset( $dg_tw_ft['body_format'] ) ? $dg_tw_ft['body_format'] : "<p class='tweet_text'>%tweet%</p>"; ?></textarea><br/><br/>
+						<textarea cols="45" name="dg_tw_body_format"><?php echo isset( $dg_tw_ft['body_format'] ) ? $dg_tw_ft['body_format'] : "<p class='tweet_text'>%tweet%</p>"; ?></textarea>
+						<br/>
+						<span class="description">Shortcodes: %tweet% %author% %avatar_url% %tweet_url% %tweet_images%</span>
+						<br/><br/>
 					</p>
 					<br/>
 				</p>
@@ -244,14 +229,15 @@
 				<p>
 					<b>Title Settings:</b><br/>
 					<p class="dg_tw_horiz">
-						<span class="description">Title formatting: (eg. %tweet%,%author%,%avatar_url%,%tweet_url% )</span><br/>
-						<textarea cols="45" name="dg_tw_title_format"><?php echo isset( $dg_tw_ft['title_format'] ) ? $dg_tw_ft['title_format'] : 'Tweet from %author%'; ?></textarea><br/><br/>
-						
+						<span class="description">Title structure</span><br/>
+						<textarea cols="45" name="dg_tw_title_format"><?php echo isset( $dg_tw_ft['title_format'] ) ? $dg_tw_ft['title_format'] : 'Tweet from %author%'; ?></textarea>
+						<br/>
+						<span class="description">Shortcodes: %tweet% %author% %avatar_url% %tweet_url%</span>
+						<br/><br/>
 						<span class="description">Set the maximum length in characters of the title;</span><br/>
 						<input type="text" size="60" name="dg_tw_maxtitle" class="regular-text" value="<?php echo isset( $dg_tw_ft['maxtitle'] ) ? $dg_tw_ft['maxtitle'] : ''; ?>">
-						
-						<input type="checkbox" name="dg_tw_title_remove_url" <?php if( !empty($dg_tw_ft['title_remove_url']) ) echo 'checked'; ?> />
 						<br/>
+						<input type="checkbox" name="dg_tw_title_remove_url" <?php if( !empty($dg_tw_ft['title_remove_url']) ) echo 'checked'; ?> />
 						<span class="description">Remove urls from the title string</span><br/>
 					</p>
 					<br/>
