@@ -80,9 +80,44 @@ function dg_tw_load_next_items() {
  * Add cron times
  */
 function dg_tw_schedule($schedules) {
+	$schedules['dg_tw_oneminute'] = array(
+			'interval'=> 60,
+			'display'=> __('Once Every Minute')
+	);
+
+	$schedules['dg_tw_fiveminutes'] = array(
+			'interval'=> 300,
+			'display'=> __('Once Every 5 Minutes')
+	);
+
+	$schedules['dg_tw_tenminutes'] = array(
+			'interval'=> 600,
+			'display'=> __('Once Every 10 Minutes')
+	);
+
+	$schedules['dg_tw_twentynminutes'] = array(
+			'interval'=> 1200,
+			'display'=> __('Once Every 20 Minutes')
+	);
+
+	$schedules['dg_tw_twicehourly'] = array(
+			'interval'=> 1800,
+			'display'=> __('Once Every 30 Minutes')
+	);
+
+	$schedules['dg_tw_weekly'] = array(
+			'interval'=> 604800,
+			'display'=> __('Once Every 7 Days')
+	);
+
 	$schedules['dg_tw_bi_weekly'] = array(
 			'interval'=> 1209600,
-			'display'=> __('Twice weekly')
+			'display'=> __('Once Every 14 Days')
+	);
+
+	$schedules['dg_tw_monthly'] = array(
+			'interval'=> 2592000,
+			'display'=> __('Once Every 30 Days')
 	);
 
 	return $schedules;
@@ -94,7 +129,7 @@ function dg_tw_schedule($schedules) {
 function dg_add_menu_item() {
 	$privilege = get_option('dg_tw_ft');
 	
-	add_menu_page( 'Twitter To WP', 'Twitter To WP', $privilege['privileges'], 'dg_tw_admin_menu', 'dg_tw_drawpage', '', 3);
+	add_menu_page( 'Twitter To WP', 'Twitter To WP', $privilege['privileges'], 'dg_tw_admin_menu', 'dg_tw_drawpage', '', NULL);
 	add_submenu_page( 'dg_tw_admin_menu', 'Manual Posting', 'Manual Posting', $privilege['privileges'], 'dg_tw_retrieve_menu', 'dg_tw_drawpage_retrieve' );
 	
 	wp_enqueue_script( "twitter-posts-to-blog-js",plugins_url('js/twitter-posts-to-blog.js', __FILE__),array('jquery','jquery-ui-core','jquery-ui-tabs'));
@@ -416,7 +451,7 @@ function dg_tw_options() {
 		$now_ft['privileges'] = $_POST['dg_tw_privileges'];
 		$now_ft['maxtitle'] = $_POST['dg_tw_maxtitle'];
 		$now_ft['title_format'] = stripslashes($_POST['dg_tw_title_format']);
-		$now_ft['title_remove_url'] = $_POST['dg_tw_title_remove_url'];
+		$now_ft['title_remove_url'] = isset($_POST['dg_tw_title_remove_url']) ? true : false;
 		$now_ft['badwords'] = $_POST['dg_tw_badwords'];
 		$now_ft['baduser'] = $_POST['dg_tw_baduser'];
 		$now_ft['notags'] = isset($_POST['dg_tw_notags']) ? true : false;

@@ -78,7 +78,7 @@
 									<input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"> 
 									<input type="text" size="20" class="regular-text" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][value]" value="<?php echo $query_element['value']; ?>">
 									&nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="20" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][tag]" value="<?php echo $query_element['tag']; ?>">
-									&nbsp;&nbsp;&nbsp;method:&nbsp;<input type="text" size="20" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][method]" value="<?php echo $query_element['method']; ?>" disabled="disabled">
+									&nbsp;&nbsp;&nbsp;method:&nbsp;<input type="text" size="20" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][method]" value="<?php echo 'method'; ?>" disabled="disabled">
 									<span> - <a target="_blank" href="https://twitter.com/search?q=<?php echo urlencode($query_element['value']); ?>&since_id=<?php echo $query_element['last_id']; ?>">From last</a></span> 
 								</p>
 							<?php } ?>
@@ -264,16 +264,14 @@
 						<span class="description">Choose how much time must pass before load new items, use "never" to disable</span><br/>
 						<select name="dg_tw_time_selected" id="dg_tw_time_selected">
 							<option value="never"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'never') echo ' selected=selected'; ?>>never</option>
-							<option value="dg_tw_oneminute"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_oneminute') echo ' selected=selected'; ?>>every minute</option>
-							<option value="dg_tw_fiveminutes"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_fiveminutes') echo ' selected=selected'; ?>>every 5 minutes</option>
-							<option value="dg_tw_tenminutes"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_tenminutes') echo ' selected=selected'; ?>>every 10 minutes</option>
-							<option value="dg_tw_twentynminutes"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_twentynminutes') echo ' selected=selected'; ?>>every 20 minutes</option>
-							<option value="dg_tw_twicehourly"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_twicehourly') echo ' selected=selected'; ?>>every 30 minutes</option>
-							<option value="hourly"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'hourly') echo ' selected=selected'; ?>>hourly</option>
-							<option value="twicedaily"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'twicedaily') echo ' selected=selected'; ?>>twice a day</option>
-							<option value="daily"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'daily') echo ' selected=selected'; ?>>daily</option>
-							<option value="dg_tw_weekly"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_weekly') echo ' selected=selected'; ?>>weekly</option>
-							<option value="dg_tw_monthly"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] === 'dg_tw_monthly') echo ' selected=selected'; ?>>monthly</option>
+							
+							<?php
+								$recurrences = wp_get_schedules();
+								
+								foreach($recurrences as $slug=>$recurrence) { ?>
+									<option value="<?php echo $slug; ?>"<?php if ( isset($dg_tw_time['run']) && $dg_tw_time['run'] == $slug) echo ' selected=selected'; ?>><?php echo $recurrence['display']; ?></option>
+								<?php }
+							?>
 						</select><br/><br/>
 						<div id="dg_tw_cycle_selectors">
 							<span class="description">Choose the cycle time (this is the start date be carefuly)</span><br/>

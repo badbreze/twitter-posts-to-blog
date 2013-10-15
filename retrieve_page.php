@@ -49,6 +49,9 @@
 							<span>Original Content</span>
 						</th>
 						<th scope="col" id="title" style="width: 10%;" class="manage-column column-title sortable desc" style="">
+							<span>Tweet Time</span>
+						</th>
+						<th scope="col" id="title" style="width: 10%;" class="manage-column column-title sortable desc" style="">
 							<span>Publish</span>
 						</th>
 					</thead>
@@ -76,6 +79,9 @@
 											<?php echo $item->text; ?>
 										</td>
 										<td scope="row">
+											<?php echo $item->created_at; ?>
+										</td>
+										<td scope="row">
 											<button type="button" class="manual_publish" data-query="<?php echo $query['value']; ?>" data-pid="<?php echo $item->id_str; ?>">Publish</button>
 										</td>
 									</tr>
@@ -94,6 +100,9 @@
 						</th>
 						<th scope="col" id="title" class="manage-column column-title sortable desc" style="">
 							<span>Original Content</span>
+						</th>
+						<th scope="col" id="title" style="width: 10%;" class="manage-column column-title sortable desc" style="">
+							<span>Tweet Time</span>
 						</th>
 						<th scope="col" id="title" style="width: 10%;" class="manage-column column-title sortable desc" style="">
 							<span>Publish</span>

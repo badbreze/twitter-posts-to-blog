@@ -152,13 +152,14 @@ Or you can exclude replies with the same filters but with a - in front of it
 == Changelog ==
 
 = What Next =
-* @replies exclusion
-* Biweekly time
 * Tweet as link
 
-= 1.6 =
+= 1.6.* =
 * Removed uneeded options, you can use filters in query string
 * Added %tweet_images% shortcode for post content
+* Revert times and some fix
+* Tweet time in retreive page (danswhc)
+* Plugin menu order set to AUTO
 
 = 1.5.* =
 * New Backend design
