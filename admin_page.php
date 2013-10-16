@@ -191,6 +191,10 @@
 						<input type="checkbox" name="dg_tw_link_urls" <?php if( !empty($dg_tw_ft['link_urls']) ) echo 'checked'; ?> />
 						&nbsp;
 						<span class="description">Make urls linked</span><br/>
+						
+						<input type="checkbox" name="dg_tw_featured_image" <?php if( !empty($dg_tw_ft['featured_image']) ) echo 'checked'; ?> />
+						&nbsp;
+						<span class="description">Insert images ad feature image</span><br/>
 					</p>
 					<br/>
 				</p>

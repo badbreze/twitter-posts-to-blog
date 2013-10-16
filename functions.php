@@ -450,19 +450,26 @@ function dg_tw_options() {
 		$now_ft['ipp'] = $_POST['dg_tw_ipp'];
 		$now_ft['privileges'] = $_POST['dg_tw_privileges'];
 		$now_ft['maxtitle'] = $_POST['dg_tw_maxtitle'];
+		
 		$now_ft['title_format'] = stripslashes($_POST['dg_tw_title_format']);
 		$now_ft['title_remove_url'] = isset($_POST['dg_tw_title_remove_url']) ? true : false;
+		
 		$now_ft['badwords'] = $_POST['dg_tw_badwords'];
 		$now_ft['baduser'] = $_POST['dg_tw_baduser'];
+		
 		$now_ft['notags'] = isset($_POST['dg_tw_notags']) ? true : false;
-		$now_ft['noreplies'] = isset($_POST['dg_tw_noreplies']) ? true : false; 	
+		$now_ft['noreplies'] = isset($_POST['dg_tw_noreplies']) ? true : false;
+		 	
 		$now_ft['exclude_retweets'] = isset($_POST['dg_tw_exclude_retweets']) ? true : false;
 		$now_ft['exclude_no_images'] = isset($_POST['dg_tw_exclude_no_images']) ? true : false;
+		
 		$now_ft['authortag'] = isset($_POST['dg_tw_authortag']) ? true : false;
 		
 		$now_ft['link_hashtag'] = isset($_POST['dg_tw_link_hashtag']) ? true : false;
 		$now_ft['link_mentions'] = isset($_POST['dg_tw_link_mentions']) ? true : false;
 		$now_ft['link_urls'] = isset($_POST['dg_tw_link_urls']) ? true : false;
+		
+		$now_ft['featured_image'] = isset($_POST['dg_tw_featured_image']) ? true : false;
 		
 		update_option('dg_tw_ft',$now_ft);
 		$dg_tw_ft = get_option('dg_tw_ft');
@@ -559,10 +566,13 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 				
 			$post_content = filter_text($tweet,$dg_tw_ft['body_format'],$tweet_content);
 			
-			if(strstr($post_content,'%tweet_images%')) {
+			if(strstr($post_content,'%tweet_images%') || $dg_tw_ft['featured_image']) {
 				$images_html = dg_tw_put_attachments($dg_tw_this_post,$tweet);
 				
-				$post_content = str_replace('%tweet_images%',$images_html,$post_content);
+				if($dg_tw_ft['featured_image'])
+					set_post_thumbnail( $dg_tw_this_post, end($images_html['ids']) );
+				
+				$post_content = str_replace('%tweet_images%',$images_html['html'],$post_content);
 			}
 			
 			$update_post = array();
@@ -659,19 +669,16 @@ function filter_text($tweet,$format="",$content="",$limit=-1,$remove_url=false) 
 }
 
 function dg_tw_put_attachments($dg_tw_this_post,$tweet) {
-	$attaches_id = array();
-	$return = "";
+	$return = array('attaches'=>array(),'html'=>'');
 	
 	if( isset($tweet->entities->media) ) {
-		$attaches_id = dg_tw_insert_attachments($tweet->entities->media,$dg_tw_this_post);
+		$return['ids'] = dg_tw_insert_attachments($tweet->entities->media,$dg_tw_this_post);
 	}
 	
-	set_post_thumbnail( $dg_tw_this_post, end($attaches_id) );
-	
-	foreach($attaches_id as $attach) {
+	foreach($return['ids'] as $attach) {
 		$url = wp_get_attachment_url($attach);
 		
-		$return .= '<img data-id="'.$attach.'" src="'.$url.'" alt="'.htmlentities(dg_tw_slug($tweet->text)).'" align="baseline" border="0" />&nbsp;';
+		$return['html'] .= '<img data-id="'.$attach.'" src="'.$url.'" alt="'.htmlentities(dg_tw_slug($tweet->text)).'" align="baseline" border="0" />&nbsp;';
 	}
 	
 	return $return;

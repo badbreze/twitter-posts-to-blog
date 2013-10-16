@@ -155,11 +155,13 @@ Or you can exclude replies with the same filters but with a - in front of it
 * Tweet as link
 
 = 1.6.* =
-* Removed uneeded options, you can use filters in query string
-* Added %tweet_images% shortcode for post content
-* Revert times and some fix
-* Tweet time in retreive page (danswhc)
-* Plugin menu order set to AUTO
+* FIX: Removed uneeded options, you can use filters in query string
+* NEW: Added %tweet_images% shortcode for post content
+* FIX: Revert times and some fix
+* NEW: Tweet time in retreive page (danswhc)
+* FIX: Plugin menu order set to AUTO
+* NEW: Option to enable/disable featured image (jaja935)
+* FIX: Css isues
 
 = 1.5.* =
 * New Backend design
