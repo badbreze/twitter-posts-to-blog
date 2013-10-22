@@ -141,6 +141,11 @@ Or you can exclude replies with the same filters but with a - in front of it
 `-filter:mentions
 -filter:replies`
 
+= Why my site doesn't grab images from twitter? = 
+In some cases hosters have security setting in their configuration or firewalls or some other think like these, 
+if you have problems with images in tweets the main problem maybe is the "allow_url_fopen" PHP setting, 
+normaly you can request the activation of this function to enable the grabbing of images
+
 
 == Screenshots ==
 
