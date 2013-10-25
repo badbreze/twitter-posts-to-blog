@@ -559,7 +559,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 			}
 			
 			if($dg_tw_ft['link_hashtag']) {
-				$tweet_content = preg_replace('|#(\w+)|', '<a href="http://twitter.com/search?q=%23$1" target="_blank">#$1</a>', $tweet_content);
+				$tweet_content = preg_replace('|#(\S+)|', '<a href="http://twitter.com/search?q=%23$1" target="_blank">#$1</a>', $tweet_content);
 			}
 			
 			$post_title = filter_text($tweet,$dg_tw_ft['title_format'],"",$dg_tw_ft['maxtitle'],$dg_tw_ft['title_remove_url']);

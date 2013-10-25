@@ -167,6 +167,7 @@ normaly you can request the activation of this function to enable the grabbing o
 * FIX: Plugin menu order set to AUTO
 * NEW: Option to enable/disable featured image (jaja935)
 * FIX: Css isues
+* FIX: Regext fixed for some chars (ozdalgic)
 
 = 1.5.* =
 * New Backend design
