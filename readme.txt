@@ -159,6 +159,11 @@ normaly you can request the activation of this function to enable the grabbing o
 = What Next =
 * Tweet as link
 
+= 1.7.* =
+* NEW: Get images via curl (berendvaneerde)
+* FIX: Loop problem when update query strings
+* FIX: Item limits now work correctly (bhaskarping)
+
 = 1.6.* =
 * FIX: Removed uneeded options, you can use filters in query string
 * NEW: Added %tweet_images% shortcode for post content

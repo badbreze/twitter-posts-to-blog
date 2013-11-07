@@ -34,12 +34,9 @@ function dg_tw_load_next_items() {
 		//Set the last tweet id
 		if(count($dg_tw_data->statuses)) {
 			$status = end($dg_tw_data->statuses);
-			
 			$dg_tw_queryes[urlencode($query['value'])]['last_id'] = $status->id_str;
-			update_option('dg_tw_queryes',$dg_tw_queryes);
-			$dg_tw_queryes = get_option('dg_tw_queryes');
 		}
-
+		
 		foreach($dg_tw_data->statuses as $key=>$item) {
 			$count++;
 			
@@ -68,6 +65,8 @@ function dg_tw_load_next_items() {
 				break;
 		}
 	}
+	
+	update_option('dg_tw_queryes',$dg_tw_queryes);
 	
 	if(!empty($mega_tweet)) {
 		dg_tw_publish_mega_tweet($mega_tweet);
@@ -177,13 +176,25 @@ function dg_tw_feedback() {
 }
 
 /*
+ * Simple function to get file content via curl or via file get contents
+ */
+function dg_tw_file_get_contents($url) {
+	global $dg_tw_ft;
+
+	if(isset($dg_tw_ft['request_method']) && $dg_tw_ft['request_method'] == 'curl')
+		return dg_tw_curl_file_get_contents($url);
+	else
+		return file_get_contents($url);
+}
+
+/*
  * Simple function to get curl content (json)
  */
 function dg_tw_curl_file_get_contents($url) {
 	$curl = curl_init();
 
-	curl_setopt($curl,CURLOPT_URL,$url);
-	curl_setopt($curl,CURLOPT_RETURNTRANSFER,true);
+	curl_setopt($curl, CURLOPT_URL, $url);
+	curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
 	curl_setopt($curl, CURLOPT_BINARYTRANSFER, true);
 	curl_setopt($curl, CURLOPT_TIMEOUT, 12);
 
@@ -471,6 +482,8 @@ function dg_tw_options() {
 		
 		$now_ft['featured_image'] = isset($_POST['dg_tw_featured_image']) ? true : false;
 		
+		$now_ft['request_method'] = isset($_POST['dg_tw_request_method']) ? $_POST['dg_tw_request_method'] : 'standard';
+		
 		update_option('dg_tw_ft',$now_ft);
 		$dg_tw_ft = get_option('dg_tw_ft');
 
@@ -693,7 +706,8 @@ function dg_tw_insert_attachments($medias,$post_id) {
 	foreach( $medias as $media ) {
 		if( $media->type=="photo" ) {
 			$upload_dir = wp_upload_dir();
-			$image_data = file_get_contents($media->media_url);
+			
+			$image_data = dg_tw_file_get_contents($media->media_url);
 			$filename = strtolower(pathinfo($media->media_url, PATHINFO_FILENAME)).".".strtolower(pathinfo($media->media_url, PATHINFO_EXTENSION));
 			if(wp_mkdir_p($upload_dir['path']))
 				$file = $upload_dir['path'] . '/' . $filename;

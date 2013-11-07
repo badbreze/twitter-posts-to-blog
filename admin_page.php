@@ -10,6 +10,7 @@
 				<li><a href="#tabs-2">Post customization</a></li>
 				<li><a href="#tabs-3">Cron Settings</a></li>
 				<li><a href="#tabs-4">App settings</a></li>
+				<li><a href="#tabs-5">More settings</a></li>
 			</ul>
 			<div id="tabs-1" class="dg_tw_tabs">
 				<p>
@@ -343,6 +344,20 @@
 						<input type="text" size="60" name="dg_tw_access_token" class="regular-text" value="<?php echo @$dg_tw_ft['access_token']; ?>"><br/><br/>
 						<span class="description">Access token secret:</span><br/>
 						<input type="text" size="60" name="dg_tw_access_token_secret" class="regular-text" value="<?php echo @$dg_tw_ft['access_token_secret']; ?>">
+					</p>
+					<br/>
+				</p>
+			</div>
+			
+			<div id="tabs-5" class="dg_tw_tabs">
+				<p>
+					<b>More settings:</b><br/>
+					<p class="dg_tw_horiz">
+						<span class="description">Server call method:</span><br/>
+						<select name="dg_tw_request_method">
+							<option value="standard" <?php if (isset($dg_tw_ft['request_method']) && $dg_tw_ft['request_method'] === 'standard') echo 'selected=selected'; ?>>Standard</option>
+							<option value="curl" <?php if (isset($dg_tw_ft['request_method']) && $dg_tw_ft['request_method'] === 'curl') echo 'selected=selected'; ?>>Curl</option>
+						</select>
 					</p>
 					<br/>
 				</p>
