@@ -1,18 +1,25 @@
-<div class="wrap">
+<div class="wrap dgtw">
+
 	<form method="post">
+		<div class="icon32" style="background:url(<?php echo KNEWS_URL; ?>/images/icon32.png) no-repeat 0 0;"><br></div>
+		
+		
+				
+		<input type="submit" style="float:right;margin:0 3px;" value="Save settings" class="button-primary" id="submit" name="submit"/>
+		<button type="button" style="float:right;margin:0 3px;" class="button-primary" id="dg_tw_import_now">Import Tweets now!</button>
+			
+		<h3 class="nav-tab-wrapper-dgtw">
+			<a class="nav-tab nav-tab-active" data-item=".tabs-1" href="#tabs-1">Content selection</a>
+			<a class="nav-tab" data-item=".tabs-2" href="#tabs-2">Post customization</a>
+			<a class="nav-tab" data-item=".tabs-3" href="#tabs-3">Cron Settings</a>
+			<a class="nav-tab" data-item=".tabs-4" href="#tabs-4">App settings</a>
+			<a class="nav-tab" data-item=".tabs-5" href="#tabs-5">Advanced settings</a>
+		</h3>
+			
 		<input type="hidden" name="dg_tw_data_update" value="yes" />
 		
-		<button type="button" class="button-primary" id="dg_tw_import_now">Import Tweets now!</button>
-		<br/><br/>
-		<div id="tabs">
-			<ul>
-				<li><a href="#tabs-1">Content selection</a></li>
-				<li><a href="#tabs-2">Post customization</a></li>
-				<li><a href="#tabs-3">Cron Settings</a></li>
-				<li><a href="#tabs-4">App settings</a></li>
-				<li><a href="#tabs-5">More settings</a></li>
-			</ul>
-			<div id="tabs-1" class="dg_tw_tabs">
+		<div>
+			<div class="dg_tw_tabs tabs-1">
 				<p>
 					<b>Items at time:</b><br/>
 					<p class="dg_tw_horiz">
@@ -89,58 +96,7 @@
 				<br/>
 			</div>
 			
-			<div id="tabs-2" class="dg_tw_tabs">
-				<p>
-					<b>Publish settings:</b><br/>
-					<p class="dg_tw_horiz">
-						<span class="description">Post status: published or draft</span><br/>
-						<select name="dg_tw_publish_selected">
-							<option value="publish"<?php if ($dg_tw_publish === 'publish') echo ' selected=selected'; ?>>Published</option>
-							<option value="draft"<?php if ($dg_tw_publish === 'draft') echo ' selected=selected'; ?>>Draft</option>
-						</select><br/><br/>
-						
-						<span class="description">Post method</span><br/>
-						<select name="dg_tw_method">
-							<option value="multiple" <?php if (isset($dg_tw_ft['method']) && $dg_tw_ft['method'] === 'multiple') echo 'selected=selected'; ?>>One post per tweet</option>
-							<option value="single" <?php if (isset($dg_tw_ft['method']) && $dg_tw_ft['method'] === 'single') echo 'selected=selected'; ?>>All tweets in one post</option>
-						</select><br/><br/>
-						
-						<span class="description">Post format</span><br/>
-						<select name="dg_tw_format">
-							<option value="standard" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'standard') echo 'selected=selected'; ?>>Standard</option>
-							<option value="aside" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'aside') echo 'selected=selected'; ?>>Aside</option>
-							<option value="gallery" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'gallery') echo 'selected=selected'; ?>>Gallery</option>
-							<option value="link" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'link') echo 'selected=selected'; ?>>Link</option>
-							<option value="image" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'image') echo 'selected=selected'; ?>>Image</option>
-							<option value="quote" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'quote') echo 'selected=selected'; ?>>Quote</option>
-							<option value="status" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'status') echo 'selected=selected'; ?>>Status</option>
-							<option value="video" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'video') echo 'selected=selected'; ?>>Video</option>
-							<option value="audio" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'audio') echo 'selected=selected'; ?>>Audio</option>
-							<option value="chat" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'chat') echo 'selected=selected'; ?>>Chat</option>
-						</select><br/><br/>
-						
-						<span class="description">Post author:</span><br/>
-						<?php
-							$args = array(
-									'orderby'                 => 'display_name',
-									'order'                   => 'ASC',
-									'multi'                   => false,
-									'show'                    => 'display_name',
-									'echo'                    => true,
-									'selected'                => isset($dg_tw_ft['author']) ? $dg_tw_ft['author'] : null,
-									'include_selected'        => true,
-									'name'                    => 'dg_tw_author',
-									'blog_id'                 => $GLOBALS['blog_id']
-							);
-		
-							wp_dropdown_users( $args );
-						?>
-					</p>
-					<br/>
-				</p>
-			
-	
-			
+			<div class="dg_tw_tabs invisible tabs-2">
 				<p>
 					<b>Post tags:</b><br/>
 					<p class="dg_tw_horiz">
@@ -249,7 +205,7 @@
 				</p>
 			</div>
 			
-			<div id="tabs-3" class="dg_tw_tabs">
+			<div class="dg_tw_tabs invisible tabs-3">
 				<p>
 					<b>Capabilities:</b><br/>
 					<p class="dg_tw_horiz">
@@ -332,7 +288,7 @@
 				</p>
 			</div>
 			
-			<div id="tabs-4" class="dg_tw_tabs">
+			<div class="dg_tw_tabs invisible tabs-4">
 				<p>
 					<b>Twitter app settings:</b><br/>
 					<p class="dg_tw_horiz">
@@ -349,26 +305,77 @@
 				</p>
 			</div>
 			
-			<div id="tabs-5" class="dg_tw_tabs">
+			<div class="dg_tw_tabs invisible tabs-5">
 				<p>
-					<b>More settings:</b><br/>
+					<b>Publish settings:</b><br/>
 					<p class="dg_tw_horiz">
 						<span class="description">Server call method:</span><br/>
 						<select name="dg_tw_request_method">
 							<option value="standard" <?php if (isset($dg_tw_ft['request_method']) && $dg_tw_ft['request_method'] === 'standard') echo 'selected=selected'; ?>>Standard</option>
 							<option value="curl" <?php if (isset($dg_tw_ft['request_method']) && $dg_tw_ft['request_method'] === 'curl') echo 'selected=selected'; ?>>Curl</option>
-						</select>
+						</select><br/><br/>
+						
+						<span class="description">Post format</span><br/>
+						<select name="dg_tw_format">
+							<option value="standard" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'standard') echo 'selected=selected'; ?>>Standard</option>
+							<option value="aside" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'aside') echo 'selected=selected'; ?>>Aside</option>
+							<option value="gallery" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'gallery') echo 'selected=selected'; ?>>Gallery</option>
+							<option value="link" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'link') echo 'selected=selected'; ?>>Link</option>
+							<option value="image" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'image') echo 'selected=selected'; ?>>Image</option>
+							<option value="quote" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'quote') echo 'selected=selected'; ?>>Quote</option>
+							<option value="status" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'status') echo 'selected=selected'; ?>>Status</option>
+							<option value="video" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'video') echo 'selected=selected'; ?>>Video</option>
+							<option value="audio" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'audio') echo 'selected=selected'; ?>>Audio</option>
+							<option value="chat" <?php if (isset($dg_tw_ft['format']) && $dg_tw_ft['format'] === 'chat') echo 'selected=selected'; ?>>Chat</option>
+						</select><br/><br/>
+						
+						<span class="description">Post type:</span><br/>
+						<select name="dg_tw_post_type">
+							<?php
+								$post_types = get_post_types();
+								
+								foreach($post_types as $post_type=>$type_name) {
+									if(!in_array(strtolower($post_type),array('revision','nav_menu_item','attachment'))) {
+										?>
+											<option value="<?php echo strtolower($post_type); ?>" <?php if (isset($dg_tw_ft['post_type']) && $dg_tw_ft['post_type'] === $post_type) echo 'selected=selected'; ?>><?php echo ucfirst($type_name); ?></option>
+										<?php
+									}
+								}
+							?>
+						</select><br/><br/>
+						
+						<span class="description">Post status: published or draft</span><br/>
+						<select name="dg_tw_publish_selected">
+							<option value="publish"<?php if ($dg_tw_publish === 'publish') echo ' selected=selected'; ?>>Published</option>
+							<option value="draft"<?php if ($dg_tw_publish === 'draft') echo ' selected=selected'; ?>>Draft</option>
+						</select><br/><br/>
+						
+						<span class="description">Post method</span><br/>
+						<select name="dg_tw_method">
+							<option value="multiple" <?php if (isset($dg_tw_ft['method']) && $dg_tw_ft['method'] === 'multiple') echo 'selected=selected'; ?>>One post per tweet</option>
+							<option value="single" <?php if (isset($dg_tw_ft['method']) && $dg_tw_ft['method'] === 'single') echo 'selected=selected'; ?>>All tweets in one post</option>
+						</select><br/><br/>
+						
+						<span class="description">Post author:</span><br/>
+						<?php
+							$args = array(
+									'orderby'                 => 'display_name',
+									'order'                   => 'ASC',
+									'multi'                   => false,
+									'show'                    => 'display_name',
+									'echo'                    => true,
+									'selected'                => isset($dg_tw_ft['author']) ? $dg_tw_ft['author'] : null,
+									'include_selected'        => true,
+									'name'                    => 'dg_tw_author',
+									'blog_id'                 => $GLOBALS['blog_id']
+							);
+							
+							wp_dropdown_users( $args );
+						?>
 					</p>
 					<br/>
 				</p>
 			</div>
 		</div>
-				
-		
-				
-					
-		<p class="submit">
-			<input type="submit" value="Save settings" class="button-primary" id="submit" name="submit"/>
-		</p>
 	</form>
 </div>

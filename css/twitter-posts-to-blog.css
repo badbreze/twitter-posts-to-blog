@@ -5,4 +5,5 @@
 	background-position:6px 6px !important;
 }
 .dg_tw_tabs {padding:15px !important;}
+.dg_tw_tabs.invisible {display:none;}
 .dg_tw_horiz {margin:0 0 0 10px;}

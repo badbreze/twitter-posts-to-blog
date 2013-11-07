@@ -29,8 +29,14 @@ jQuery(document).ready(function() {
 		});
 	});
 	
-	jQuery(function() {
-		jQuery( "#tabs" ).tabs();
+	jQuery('.nav-tab-wrapper-dgtw .nav-tab').on('click',function(event) {
+		var item_to_show = '.dg_tw_tabs' + jQuery(this).data('item');
+
+		jQuery(this).siblings().removeClass('nav-tab-active');
+		jQuery(this).addClass("nav-tab-active");
+		
+		jQuery(item_to_show).siblings().css('display','none');
+		jQuery(item_to_show).css('display','block');
 	});
 });
 

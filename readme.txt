@@ -160,7 +160,10 @@ normaly you can request the activation of this function to enable the grabbing o
 * Tweet as link
 
 = 1.7.* =
+* NEW: Image preview in retreive page
 * NEW: Get images via curl (berendvaneerde)
+* IMP: Layout of retreive page
+* IMP: Layout for settings page
 * FIX: Loop problem when update query strings
 * FIX: Item limits now work correctly (bhaskarping)
 

@@ -132,15 +132,15 @@ function dg_add_menu_item() {
 	add_submenu_page( 'dg_tw_admin_menu', 'Manual Posting', 'Manual Posting', $privilege['privileges'], 'dg_tw_retrieve_menu', 'dg_tw_drawpage_retrieve' );
 	
 	wp_enqueue_script( "twitter-posts-to-blog-js",plugins_url('js/twitter-posts-to-blog.js', __FILE__),array('jquery','jquery-ui-core','jquery-ui-tabs'));
-	wp_enqueue_style( "twitter-posts-to-blog-css", plugins_url('css/twitter-posts-to-blog.css', __FILE__), false, '1.0.0');
-	wp_enqueue_style( "twitter-posts-to-blog-css-ui", plugins_url('css/twitter-posts-to-blog-ui.css', __FILE__), false, '1.0.0');
+	wp_enqueue_style( "twitter-posts-to-blog-css", plugins_url('css/twitter-posts-to-blog.css', __FILE__), array('colors-fresh'), '1.7.0');
+	wp_enqueue_style( "twitter-posts-to-blog-css-ui", plugins_url('css/twitter-posts-to-blog-ui.css', __FILE__), array('twitter-posts-to-blog-css'), '1.7.0');
 }
 
 /*
  * Call admin page for this plugin
  */
 function dg_tw_drawpage() {
-	global $dg_tw_queryes,$dg_tw_time, $dg_tw_publish, $dg_tw_ft, $dg_tw_tags, $dg_tw_cats,$tokens_error;
+	global $dg_tw_queryes,$dg_tw_time, $dg_tw_publish, $dg_tw_ft, $dg_tw_tags, $dg_tw_cats,$tokens_error,$wp_post_types;
 	
 	require_once('admin_page.php');
 }
@@ -483,6 +483,7 @@ function dg_tw_options() {
 		$now_ft['featured_image'] = isset($_POST['dg_tw_featured_image']) ? true : false;
 		
 		$now_ft['request_method'] = isset($_POST['dg_tw_request_method']) ? $_POST['dg_tw_request_method'] : 'standard';
+		$now_ft['post_type'] = isset($_POST['dg_tw_post_type']) ? $_POST['dg_tw_post_type'] : 'post';
 		
 		update_option('dg_tw_ft',$now_ft);
 		$dg_tw_ft = get_option('dg_tw_ft');
@@ -529,6 +530,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 	$tweet_title = filter_text($tweet,$dg_tw_ft['title_format'],"",$dg_tw_ft['maxtitle'],$dg_tw_ft['title_remove_url']);
 	$author_tag = ( !empty($dg_tw_ft['authortag']) ) ? ','.$username : '';
 	$post_tags = htmlspecialchars($dg_tw_tags.','.$current_query['tag'].$author_tag);
+	$post_type = isset($dg_tw_ft['post_type']) ? $dg_tw_ft['post_type'] : 'post';
 	
 	if(!count($postid)) {
 		$post = array(
@@ -539,7 +541,7 @@ function dg_tw_publish_tweet($tweet,$query = false) {
 				'post_title'     => $tweet_title,
 				'post_category'  => $dg_tw_cats,
 				'tags_input'     => $post_tags,
-				'post_type'      => 'post',
+				'post_type'      => $post_type,
 				'post_status'    => strval($dg_tw_publish)
 		);
 		

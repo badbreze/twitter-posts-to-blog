@@ -1,7 +1,6 @@
 <div class="wrap">
 	<div id="icon-options-general" class="icon32"><br /></div>
 	<h2>Twitter To WordPress Autopost</h2>
-	<h3>Autopost Next Items</h3>
 	
 	<?php
 		if(empty($dg_tw_queryes)) {
@@ -37,21 +36,24 @@
 				echo "<h3>".$query['value']."</h3>";
 				
 				?>
-				<table class="wp-list-table widefat fixed posts" cellspacing="0">
+				<table class="widefat" cellspacing="0">
 					<thead>
+						<th style="width:55px;text-align:center;" class="manage-column column-cb check-column">
+							Pic
+						</th>
 						<th scope="col" style="width: 20%;" id="title" class="manage-column sortable desc" style="">
 							<span>Author</span>
 						</th>
-						<th scope="col" id="title" class="manage-column column-title sortable desc" style="">
-							<span>Post Content</span>
+						<th scope="col">
+							<span>Filtered Tweet</span>
 						</th>
-						<th scope="col" id="title" class="manage-column column-title sortable desc" style="">
-							<span>Original Content</span>
+						<th scope="col">
+							<span>Original Tweet</span>
 						</th>
-						<th scope="col" id="title" style="width: 10%;" class="manage-column column-title sortable desc" style="">
+						<th scope="col"style="width: 10%;">
 							<span>Tweet Time</span>
 						</th>
-						<th scope="col" id="title" style="width: 10%;" class="manage-column column-title sortable desc" style="">
+						<th scope="col" style="width: 10%;">
 							<span>Publish</span>
 						</th>
 					</thead>
@@ -69,13 +71,25 @@
 									$content = dg_tw_regexText( $item->text );
 									?>
 									<tr id="post-190" class="post-190 type-post status-publish format-standard hentry alternate iedit author-self" valign="top">
+										<td scope="row" style="width:55px;text-align:center;" align="center">
+											<?php
+												if(isset($item->entities->media)) {
+													foreach($item->entities->media as $media) {
+														if($media->type=="photo") {
+															echo '<img style="max-height:50px;max-width:50px;" src="'.$media->media_url.'" alt=""/>';
+															break;
+														}
+													}
+												}
+											?>
+										</td>
 										<td scope="row">
 											<b><?php echo $item->user->name; ?></b>
 										</td>
-										<td scope="row">
+										<td scope="row" style="word-break:break-all;">
 											<?php echo $content; ?>
 										</td>
-										<td scope="row">
+										<td scope="row" style="word-break:break-all;">
 											<?php echo $item->text; ?>
 										</td>
 										<td scope="row">
@@ -92,19 +106,22 @@
 					</tbody>
 					
 					<tfoot>
+						<th style="width:55px;text-align:center;" class="manage-column column-cb check-column">
+							Pic
+						</th>
 						<th scope="col" style="width: 20%;" id="title" class="manage-column sortable desc" style="">
 							<span>Author</span>
 						</th>
-						<th scope="col" id="title" class="manage-column column-title sortable desc" style="">
-							<span>Post Content</span>
+						<th scope="col" style="">
+							<span>Filtered Tweet</span>
 						</th>
-						<th scope="col" id="title" class="manage-column column-title sortable desc" style="">
-							<span>Original Content</span>
+						<th scope="col" style="">
+							<span>Original Tweet</span>
 						</th>
-						<th scope="col" id="title" style="width: 10%;" class="manage-column column-title sortable desc" style="">
+						<th scope="col" style="width: 10%;" style="">
 							<span>Tweet Time</span>
 						</th>
-						<th scope="col" id="title" style="width: 10%;" class="manage-column column-title sortable desc" style="">
+						<th scope="col" valign="middle" style="width: 10%;" style="">
 							<span>Publish</span>
 						</th>
 					</tfoot>
