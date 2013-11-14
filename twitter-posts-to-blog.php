@@ -2,12 +2,11 @@
 /*
 Plugin Name: Twitter posts to Blog
 Description: Post twetts to your blog
-Version: 1.11.14
+Version: 1.11.14.1
 Author: Damian Gomez
 */
 
 require_once 'libs/twitteroauth/twitteroauth.php';
-require_once 'libs/convertcharset/ConvertCharset.class.php';
 require_once 'functions.php';
 
 //Variables
