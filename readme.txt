@@ -146,6 +146,48 @@ In some cases hosters have security setting in their configuration or firewalls 
 if you have problems with images in tweets the main problem maybe is the "allow_url_fopen" PHP setting, 
 normaly you can request the activation of this function to enable the grabbing of images
 
+= Can i intercept some actions on the plugin runtime? =
+Here the list of actions with a small description
+
+`dg_tw_before_images_placed`
+This action runs before the insertion of the image (from twitter) in the post
+
+`dg_tw_images_placed`
+This action runs after the insertion of the image (from twitter) in the post (runs only if you choosed to insert the 
+image as preview or as content
+
+`dg_tw_after_post_published`
+This action runs after the insertion of the post, the only parameter gived is the id of the post
+
+= Can i customize posts without edit the plugin? =
+Yes you can, usin filter you can edit some parts of the plugin engine without edit it, keeping the ability to 
+update the plugin without lost any costomization made by you. Filters are listed here.
+
+`dg_tw_before_post_tweet`
+Allow to edit the post data before it be published, is and array with and array containing infomations for "wp_insert_post"
+
+`dg_tw_the_author`
+Filter the author name
+
+`dg_tw_the_author_link`
+Filter the html link to the author page on twitter
+
+= Can i the id/author/avatar or query string of certain post in my template? =
+All posts made by this plugin are created with some metas for those who want cusutomize their theme for tweets, 
+here the collected post metas:
+
+`dg_tw_query`
+The query string used to pick up this post
+
+`dg_tw_id`
+The id of the tweet in this post
+
+`dg_tw_author`
+The author name of the tweet in this post
+
+`dg_tw_author_avatar`
+The avatar url of the author
+
 
 == Screenshots ==
 
@@ -157,7 +199,12 @@ normaly you can request the activation of this function to enable the grabbing o
 == Changelog ==
 
 = What Next =
-* Tweet as link
+* Dont know, waiting featire request
+
+= 1.11.14 =
+* FIX: Pick images from retweets (RonnyDee)
+* NEW: Added actions to intercept runtime points
+* NEW: Added some filters in the runtime
 
 = 1.7.* =
 * NEW: Image preview in retreive page

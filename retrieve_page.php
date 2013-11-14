@@ -67,7 +67,7 @@
 								if( isset( $dg_tw_ft['exclude_no_images'] ) && $dg_tw_ft['exclude_no_images'] && !count($item->entities->media))
 									continue;
 								
-								if(dg_tw_iswhite($item->text)) {
+								if(dg_tw_iswhite($item)) {
 									$content = dg_tw_regexText( $item->text );
 									?>
 									<tr id="post-190" class="post-190 type-post status-publish format-standard hentry alternate iedit author-self" valign="top">
