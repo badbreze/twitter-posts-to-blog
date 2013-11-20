@@ -201,6 +201,10 @@ The avatar url of the author
 = What Next =
 * Dont know, waiting featire request
 
+= 1.11.20 =
+* NEW: shortcode for date
+* NEW: Customize date format
+
 = 1.11.14 =
 * FIX: Pick images from retweets (RonnyDee)
 * NEW: Added actions to intercept runtime points

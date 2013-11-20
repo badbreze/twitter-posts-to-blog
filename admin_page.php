@@ -163,7 +163,7 @@
 					<p class="dg_tw_horiz">
 						<textarea cols="45" name="dg_tw_body_format"><?php echo isset( $dg_tw_ft['body_format'] ) ? $dg_tw_ft['body_format'] : "<p class='tweet_text'>%tweet%</p>"; ?></textarea>
 						<br/>
-						<span class="description">Shortcodes: %tweet% %author% %avatar_url% %tweet_url% %tweet_images%</span>
+						<span class="description">Shortcodes: %tweet% %author% %avatar_url% %tweet_url% %tweet_images% %tweet_date%</span>
 						<br/><br/>
 					</p>
 					<br/>
@@ -193,13 +193,26 @@
 						<span class="description">Title structure</span><br/>
 						<textarea cols="45" name="dg_tw_title_format"><?php echo isset( $dg_tw_ft['title_format'] ) ? $dg_tw_ft['title_format'] : 'Tweet from %author%'; ?></textarea>
 						<br/>
-						<span class="description">Shortcodes: %tweet% %author% %avatar_url% %tweet_url%</span>
+						<span class="description">Shortcodes: %tweet% %author% %avatar_url% %tweet_url%  %tweet_date%</span>
 						<br/><br/>
 						<span class="description">Set the maximum length in characters of the title;</span><br/>
 						<input type="text" size="60" name="dg_tw_maxtitle" class="regular-text" value="<?php echo isset( $dg_tw_ft['maxtitle'] ) ? $dg_tw_ft['maxtitle'] : ''; ?>">
 						<br/>
 						<input type="checkbox" name="dg_tw_title_remove_url" <?php if( !empty($dg_tw_ft['title_remove_url']) ) echo 'checked'; ?> />
 						<span class="description">Remove urls from the title string</span><br/>
+					</p>
+					<br/>
+				</p>
+			
+	
+			
+				<p>
+					<b>Date structure:</b><br/>
+					<p class="dg_tw_horiz">
+						<input type="text" name="dg_tw_date_format" value="<?php echo isset( $dg_tw_ft['date_format'] ) ? $dg_tw_ft['date_format'] : "F j, Y, g:i a"; ?>" class="regular-text" />
+						<br/>
+						<span class="description">See <a href="http://php.net/manual/en/function.date.php" target="_blank">PHP Date</a> for all date structure codes</span>
+						<br/><br/>
 					</p>
 					<br/>
 				</p>

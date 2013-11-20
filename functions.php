@@ -463,7 +463,10 @@ function dg_tw_options() {
 		$now_ft['author'] = (int) $_POST['dg_tw_author'];
 		$now_ft['method'] = $_POST['dg_tw_method'];
 		$now_ft['format'] = $_POST['dg_tw_format'];
+		
 		$now_ft['body_format'] = stripslashes($_POST['dg_tw_body_format']);
+		$now_ft['date_format'] = stripslashes($_POST['dg_tw_date_format']);
+		
 		$now_ft['img_size'] = $_POST['dg_tw_ft_size'];
 		$now_ft['ipp'] = $_POST['dg_tw_ipp'];
 		$now_ft['privileges'] = $_POST['dg_tw_privileges'];
@@ -670,15 +673,18 @@ function filter_text($tweet,$format="",$content="",$limit=-1,$remove_url=false) 
 	
 	$text = ($content == "") ? $tweet->text : $content;
 	$result = ($format == "") ? $text : $format;
+	$tweet_time = strtotime($tweet->created_at);
 	
 	$username = (isset($tweet->user->display_ame) && !empty($tweet->user->display_ame)) ? $tweet->user->display_ame : $tweet->user->name;
 	$username = (isset($tweet->user->screen_name) && !empty($tweet->user->screen_name)) ? $tweet->user->screen_name : $username;
 	$tweet_url = 'https://twitter.com/'.$username.'/status/'.$tweet->id_str;
+	$tweet_date = date($dg_tw_ft['date_format'],$tweet_time);
 	
 	$result = str_replace('%tweet%',$text,$result);
 	$result = str_replace('%author%',$username,$result);
 	$result = str_replace('%avatar_url%',$tweet->user->profile_image_url,$result);
 	$result = str_replace('%tweet_url%',$tweet_url,$result);
+	$result = str_replace('%tweet_date%',$tweet_date,$result);
 	
 	if($remove_url)
 		$result = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i","",$result);
