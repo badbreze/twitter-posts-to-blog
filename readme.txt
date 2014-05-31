@@ -1,5 +1,5 @@
 === Twitter posts to Blog ===
-Contributors: badbreze,sforsberg
+Contributors: badbreze,sforsberg,sudocat
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QV5Y8ZNVWGEA8
 Tags: twitter, autopost
 Tested up to: 3.6
@@ -199,7 +199,10 @@ The avatar url of the author
 == Changelog ==
 
 = What Next =
-* Dont know, waiting featire request
+* Dont know
+
+= 1.11.21 =
+* FIX: sudocat code submission to fix some problems
 
 = 1.11.20 =
 * NEW: shortcode for date
