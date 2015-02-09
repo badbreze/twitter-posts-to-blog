@@ -201,6 +201,9 @@ The avatar url of the author
 = What Next =
 * Dont know
 
+= 1.11.22 =
+* LANG: prepare for translation
+
 = 1.11.21 =
 * FIX: sudocat code submission to fix some problems
 
