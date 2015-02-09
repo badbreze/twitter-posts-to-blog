@@ -4,7 +4,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/twitter-posts-to-"
 "blog\n"
 "POT-Creation-Date: 2015-02-09 23:15:44+00:00\n"
-"PO-Revision-Date: 2015-02-10 00:21+0100\n"
+"PO-Revision-Date: 2015-02-10 00:49+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: it_IT\n"
@@ -91,67 +91,67 @@ msgstr "Standard"
 
 #: admin_page.php:68
 msgid "User timeline (screen_name)"
-msgstr ""
+msgstr "Timeline utente"
 
 #: admin_page.php:69
 msgid "Retweets of id (tweet_id)"
-msgstr ""
+msgstr "Retweet per id"
 
 #: admin_page.php:70
 msgid "User favorites (screen_name"
-msgstr ""
+msgstr "Preferiti utente"
 
 #: admin_page.php:71
 msgid "Lists (list_id or slug of list)"
-msgstr ""
+msgstr "Liste"
 
 #: admin_page.php:79
 msgid "Current queryes"
-msgstr ""
+msgstr "Query correnti"
 
 #: admin_page.php:88
 msgid "From last"
-msgstr ""
+msgstr "Mostra dall'ultima"
 
 #: admin_page.php:99
 msgid "Post tags"
-msgstr ""
+msgstr "Tags dei post"
 
 #: admin_page.php:101
 msgid "Type tags you want append to each tweet (dont use query strings here)"
-msgstr ""
+msgstr "Scrivi i tag che vuoi aggiungere a ogni post"
 
 #: admin_page.php:105
 msgid "Insert the author name as tag"
-msgstr ""
+msgstr "Inserisci il nome dell'autore come tag"
 
 #: admin_page.php:113
 msgid "Post category"
-msgstr ""
+msgstr "Categoria post"
 
 #: admin_page.php:135
 msgid "Content"
-msgstr ""
+msgstr "Contenuto"
 
 #: admin_page.php:139
 msgid "Make hasktag linked"
-msgstr ""
+msgstr "Crea link per gli hashtag"
 
 #: admin_page.php:143
 msgid "Make mentions linked"
-msgstr ""
+msgstr "Crea link alle menzioni"
 
 #: admin_page.php:147
 msgid "Make urls linked"
-msgstr ""
+msgstr "Rendi cliccabili gli url"
 
 #: admin_page.php:151
 msgid "Insert images ad feature image"
-msgstr ""
+msgstr "Inserisci immagine come copertina"
 
 #: admin_page.php:159
 msgid "Body structure"
-msgstr ""
+msgstr "Struttura corpo"
 
 #: admin_page.php:163 admin_page.php:193
 msgid "Shortcodes"
@@ -159,15 +159,15 @@ msgstr ""
 
 #: admin_page.php:172
 msgid "Image size"
-msgstr ""
+msgstr "Dimensione immagini"
 
 #: admin_page.php:174
 msgid "Select user image size"
-msgstr ""
+msgstr "Scegli dimensione dell'immagine utente"
 
 #: admin_page.php:176
 msgid "Original"
-msgstr ""
+msgstr "Originale"
 
 #: admin_page.php:177
 msgid "Mini - 24px by 24px"
@@ -183,55 +183,55 @@ msgstr ""
 
 #: admin_page.php:188
 msgid "Title Settings"
-msgstr ""
+msgstr "Impostazioni titolo"
 
 #: admin_page.php:190
 msgid "Title structure"
-msgstr ""
+msgstr "Struttura titolo"
 
 #: admin_page.php:191 functions.php:370
 msgid "Tweet from %author%"
-msgstr ""
+msgstr "Tweet da %author%"
 
 #: admin_page.php:195
 msgid "Set the maximum length in characters of the title"
-msgstr ""
+msgstr "Imposta lunghezza massima in caratteri del titolo"
 
 #: admin_page.php:199
 msgid "Remove urls from the title string"
-msgstr ""
+msgstr "Rimuovi link dal testo del titolo"
 
 #: admin_page.php:207
 msgid "Date structure"
-msgstr ""
+msgstr "Struttura data"
 
 #: admin_page.php:211
 msgid "See"
-msgstr ""
+msgstr "Vedi"
 
 #: admin_page.php:211
 msgid "for all date structure codes"
-msgstr ""
+msgstr "per tutte le informazioni sulla composizione della data"
 
 #: admin_page.php:220
 msgid "Capabilities"
-msgstr ""
+msgstr "Permessi"
 
 #: admin_page.php:222
 msgid "Who can see this page and change settings"
-msgstr ""
+msgstr "Chi può accedere alle impostazioni di questo plugin"
 
 #: admin_page.php:224
 msgid "Administrator"
-msgstr ""
+msgstr "Amministratore"
 
 #: admin_page.php:225
 msgid "Editor"
-msgstr ""
+msgstr "Editor"
 
 #: admin_page.php:226 retrieve_page.php:44 retrieve_page.php:112
 msgid "Author"
-msgstr ""
+msgstr "Autore"
 
 #: admin_page.php:233
 msgid "Cron time"
@@ -241,11 +241,11 @@ msgstr ""
 msgid ""
 "Choose how much time must pass before load new items, use \"never\" to "
 "disable"
-msgstr ""
+msgstr "Scegli quanto tempo deve passare prima di caricare nuovi elementi"
 
 #: admin_page.php:237
 msgid "never"
-msgstr ""
+msgstr "never"
 
 #: admin_page.php:249
 msgid "Choose the cycle time (this is the start date be carefuly)"
@@ -253,47 +253,47 @@ msgstr ""
 
 #: admin_page.php:250
 msgid "Day of the month"
-msgstr ""
+msgstr "Giorno del mese"
 
 #: admin_page.php:261
 msgid "Day of the week"
-msgstr ""
+msgstr "Giorno della settimana"
 
 #: admin_page.php:266
 msgid "Monday"
-msgstr ""
+msgstr "Lunedì"
 
 #: admin_page.php:267
 msgid "Tuesday"
-msgstr ""
+msgstr "Martedì"
 
 #: admin_page.php:268
 msgid "Wednesday"
-msgstr ""
+msgstr "Mercoledì"
 
 #: admin_page.php:269
 msgid "Thursday"
-msgstr ""
+msgstr "Giovedì"
 
 #: admin_page.php:270
 msgid "Friday"
-msgstr ""
+msgstr "Venerdì"
 
 #: admin_page.php:271
 msgid "Saturday"
-msgstr ""
+msgstr "Sabato"
 
 #: admin_page.php:272
 msgid "Sunday"
-msgstr ""
+msgstr "Domenica"
 
 #: admin_page.php:283
 msgid "Time"
-msgstr ""
+msgstr "Ora"
 
 #: admin_page.php:311
 msgid "Twitter app settings"
-msgstr ""
+msgstr "Impostazioni App Twitter"
 
 #: admin_page.php:313
 msgid "Consumer key"
@@ -313,11 +313,11 @@ msgstr ""
 
 #: admin_page.php:328
 msgid "Publish settings"
-msgstr ""
+msgstr "Impostazioni Pubblicazione"
 
 #: admin_page.php:330
 msgid "Server call method"
-msgstr ""
+msgstr "Metodo di chiamata server"
 
 #: admin_page.php:333
 msgid "Curl"
@@ -325,15 +325,15 @@ msgstr ""
 
 #: admin_page.php:336
 msgid "Post format"
-msgstr ""
+msgstr "Formatta post"
 
 #: admin_page.php:339
 msgid "Aside"
-msgstr ""
+msgstr "Aside"
 
 #: admin_page.php:340
 msgid "Gallery"
-msgstr ""
+msgstr "Gallery"
 
 #: admin_page.php:341
 msgid "Link"
@@ -365,35 +365,35 @@ msgstr ""
 
 #: admin_page.php:350
 msgid "Post type"
-msgstr ""
+msgstr "Tipo di post"
 
 #: admin_page.php:365
 msgid "Post status: published or draft"
-msgstr ""
+msgstr "Stato del post, pubblicato o bozza"
 
 #: admin_page.php:367
 msgid "Published"
-msgstr ""
+msgstr "Pubblicato"
 
 #: admin_page.php:368
 msgid "Draft"
-msgstr ""
+msgstr "Bozza"
 
 #: admin_page.php:371
 msgid "Post method"
-msgstr ""
+msgstr "Tipologia di post"
 
 #: admin_page.php:373
 msgid "One post per tweet"
-msgstr ""
+msgstr "Un post per ogni tweet"
 
 #: admin_page.php:374
 msgid "All tweets in one post"
-msgstr ""
+msgstr "Tutti i tweet in un solo grande post"
 
 #: admin_page.php:377
 msgid "Post author"
-msgstr ""
+msgstr "Autore dei post"
 
 #: functions.php:94
 msgid "Once Every Minute"
@@ -437,51 +437,51 @@ msgstr ""
 
 #: retrieve_page.php:7
 msgid "Nothing to show here"
-msgstr ""
+msgstr "Nulla da mostrare qui"
 
 #: retrieve_page.php:12
 msgid "You need to configure tokens in the plugin settings page"
-msgstr ""
+msgstr "Devi prima configurare i token nella pagina delle impostazioni"
 
 #: retrieve_page.php:29
 msgid "ERROR!"
-msgstr ""
+msgstr "ERRORE!"
 
 #: retrieve_page.php:29
 msgid "Check your twitter app configuration"
-msgstr ""
+msgstr "Verifica le configurazioni di twitter"
 
 #: retrieve_page.php:41 retrieve_page.php:109
 msgid "Pic"
-msgstr ""
+msgstr "Immagine"
 
 #: retrieve_page.php:47 retrieve_page.php:115
 msgid "Filtered Tweet"
-msgstr ""
+msgstr "Tweet filtrato"
 
 #: retrieve_page.php:50 retrieve_page.php:118
 msgid "Original Tweet"
-msgstr ""
+msgstr "Tweet originale"
 
 #: retrieve_page.php:53 retrieve_page.php:121
 msgid "Tweet Time"
-msgstr ""
+msgstr "Data Tweet"
 
 #: retrieve_page.php:56 retrieve_page.php:98 retrieve_page.php:124
 msgid "Publish"
-msgstr ""
+msgstr "Pubblica"
 
 #: retrieve_page.php:144
 msgid "Publishing"
-msgstr ""
+msgstr "Pubblicazione"
 
 #: retrieve_page.php:157
 msgid "This tweet is already published!"
-msgstr ""
+msgstr "Tweet già pubblicato"
 
 #: retrieve_page.php:160
 msgid "Tweet nowt found, retry later!"
-msgstr ""
+msgstr "Tweet non trovato, riprova più tardi"
 
 #. Plugin Name of the plugin/theme
 msgid "Twitter posts to Blog"

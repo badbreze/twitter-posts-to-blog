@@ -62,15 +62,8 @@
                     <b><?= __('Your search queryes','twitter-posts-to-blog') ?></b><br/>
                 <p class="dg_tw_horiz">
                     <span class="description"><?= __('You can add more item by click the ADD button below','twitter-posts-to-blog') ?></span><br/>
-                    <input type="text" id="dg_tw_add_title" size="60" name="dg_tw_query" class="regular-text" value=""> 
-                    <select id="dg_tw_query_method" disabled="disabled">
-                        <option value="search/tweets" selected="selected"><?= __('Standard','twitter-posts-to-blog') ?></option>
-                        <option value="statuses/user_timeline"><?= __('User timeline (screen_name)','twitter-posts-to-blog') ?></option>
-                        <option value="statuses/retweets/"><?= __('Retweets of id (tweet_id)','twitter-posts-to-blog') ?></option>
-                        <option value="favorites/list"><?= __('User favorites (screen_name','twitter-posts-to-blog') ?>)</option>
-                        <option value="lists/statuses"><?= __('Lists (list_id or slug of list)','twitter-posts-to-blog') ?></option>
-                    </select>
-                    <input type="button" id="dg_tw_add_element" name="add_feed" value="Add" class="button-primary">
+                    <input type="text" id="dg_tw_add_title" size="60" name="dg_tw_query" class="regular-text" value="">
+                    <input type="button" id="dg_tw_add_element" name="add_feed" value="<?= __('Add'); ?>" class="button-primary">
                 </p>
                 <br/>
                 </p>
@@ -84,7 +77,6 @@
                                 <input class="button-primary dg_tw_button_remove" type="button" name="delete" value="Delete"> 
                                 <input type="text" size="20" class="regular-text" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][value]" value="<?php echo $query_element['value']; ?>">
                                 &nbsp;&nbsp;&nbsp;tag:&nbsp;<input type="text" size="20" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][tag]" value="<?php echo $query_element['tag']; ?>">
-                                &nbsp;&nbsp;&nbsp;method:&nbsp;<input type="text" size="20" name="dg_tw_item_query[<?php echo $query_element['value']; ?>][method]" value="<?php echo 'method'; ?>" disabled="disabled">
                                 <span> - <a target="_blank" href="https://twitter.com/search?q=<?php echo urlencode($query_element['value']); ?>&since_id=<?php echo $query_element['last_id']; ?>"><?= __('From last','twitter-posts-to-blog') ?></a></span> 
                             </p>
                         <?php } ?>
