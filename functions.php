@@ -74,8 +74,6 @@ function dg_tw_load_next_items()
         }
     }
 
-    update_option('dg_tw_queryes', $dg_tw_queryes);
-
     if (!empty($mega_tweet)) {
         dg_tw_publish_mega_tweet($mega_tweet);
 
