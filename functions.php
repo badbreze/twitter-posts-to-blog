@@ -11,11 +11,16 @@ require_once(dirname(__FILE__) . '/../../../wp-admin/includes/admin.php');
 
 function dg_tw_load_next_items()
 {
-    global $dg_tw_queryes, $dg_tw_time, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb, $connection;
-
     if (!function_exists('curl_init')) {
         error_log('The DG Twitter to blog plugin require CURL libraries');
         return;
+    }
+
+    $dg_tw_queryes = get_option('dg_tw_queryes');
+    $dg_tw_ft = get_option('dg_tw_ft');
+
+    if (!empty($dg_tw_ft['access_key']) && !empty($dg_tw_ft['access_secret']) && !empty($dg_tw_ft['access_token']) && !empty($dg_tw_ft['access_token_secret'])) {
+        $connection = new TwitterOAuth($dg_tw_ft['access_key'], $dg_tw_ft['access_secret'], $dg_tw_ft['access_token'], $dg_tw_ft['access_token_secret']);
     }
 
     $dg_tw_exclusions = get_option('dg_tw_exclusions');
@@ -73,8 +78,6 @@ function dg_tw_load_next_items()
                 break;
         }
     }
-
-    update_option('dg_tw_queryes', $dg_tw_queryes);
 
     if (!empty($mega_tweet)) {
         dg_tw_publish_mega_tweet($mega_tweet);

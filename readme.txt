@@ -12,6 +12,9 @@ Good work with this plugin.
 
 
 == Description ==
+= Source Available on GitHub =
+Fork Me on GitHub https://github.com/badbreze/twitter-posts-to-blog.git
+
 = With this plugin you can stream tweets to your blog, it's simply to use =
 * Go to the plugin settings menu "Twitter To WP" under "Dashboard"
 * Configure the plugin options eg.:
@@ -200,6 +203,10 @@ The avatar url of the author
 
 = What Next =
 * Dont know
+
+= 1.11.24 =
+* FIX: Queryes may delete when cron runs (eg. when save settings)
+* FIX: Tweets Import Fails
 
 = 1.11.22 =
 * LANG: prepare for translation
