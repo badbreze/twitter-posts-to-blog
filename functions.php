@@ -606,7 +606,8 @@ function dg_tw_publish_tweet($tweet, $query = false)
             'post_category' => $dg_tw_cats,
             'tags_input' => $post_tags,
             'post_type' => $post_type,
-            'post_status' => strval($dg_tw_publish)
+            'post_status' => strval($dg_tw_publish),
+            'post_date' => date('Y-m-d H:i:s', strtotime($tweet->created_at))
         );
 
         $post = apply_filters('dg_tw_before_post_tweet', $post);
