@@ -610,8 +610,8 @@ function dg_tw_publish_tweet($tweet, $query = false)
             'tags_input' => $post_tags,
             'post_type' => $post_type,
             'post_status' => strval($dg_tw_publish),
-            'post_date_gmt' => $tweet_date
-
+            'post_date_gmt' => $tweet_date,
+            'post_date' => date('Y-m-d H:i:s', strtotime($tweet->created_at))
         );
 
         $post = apply_filters('dg_tw_before_post_tweet', $post);
