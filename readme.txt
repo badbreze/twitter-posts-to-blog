@@ -1,6 +1,6 @@
 === Twitter posts to Blog ===
 Contributors: badbreze,sforsberg,sudocat
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QV5Y8ZNVWGEA8
+Donate link: https://www.paypal.me/DamianGomez/
 Tags: twitter, autopost
 Tested up to: 3.6
 License: GPLv2 or later
@@ -34,7 +34,7 @@ Fork Me on GitHub https://github.com/badbreze/twitter-posts-to-blog.git
 
 Built by <a href="//twitter.com/iwafer">@iWafer</a> / <a rel="author" href="https://plus.google.com/111606514487113936457">Damian Gomez</a>
 
-For my projects see http://www.divenock.com/progetti/
+For my projects see http://www.divenock.com/projects/
 
 = Limitations =
 * Twitter api has some limitations, one of this is the last week limitation for Standard Search Api
