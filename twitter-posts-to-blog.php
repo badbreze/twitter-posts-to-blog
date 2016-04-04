@@ -29,8 +29,7 @@ add_action('wp_ajax_dg_tw_manual_publish', 'dg_tw_manual_publish');
 //Filters
 add_filter('cron_schedules', 'dg_tw_schedule');
 
-function myplugin_init()
-{
+function myplugin_init() {
     load_plugin_textdomain('twitter-posts-to-blog', false, basename(dirname(__FILE__)) . '/languages');
 }
 

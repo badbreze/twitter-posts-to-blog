@@ -186,7 +186,7 @@ function dg_tw_feedback()
     ?>
     <div class="updated">
         <p>
-            Thanks for using this plugin, please leave feedback in the <a href="http://wordpress.org/plugins/twitter-posts-to-blog/">plugin page</a> 
+            Thanks for using this plugin, please leave feedback in the <a href="http://wordpress.org/plugins/twitter-posts-to-blog/">plugin page</a>
             and if you want you can <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=QV5Y8ZNVWGEA8">offer me a beer</a>
             <br/>
             <a href="?page=dg_tw_admin_menu&feedback=true">Close message!</a>
@@ -228,7 +228,7 @@ function dg_tw_curl_file_get_contents($url)
 }
 
 /*
- * 
+ *
  */
 
 function dg_tw_slug($str)
@@ -320,7 +320,7 @@ function dg_tw_the_author_link($author)
 
     if (isset($custom_fields["dg_tw_author"])) {
         $author = sprintf(
-                '<a href="https://twitter.com/%1$s" title="%2$s" rel="author">@%3$s</a>', end($custom_fields["dg_tw_author"]), end($custom_fields["dg_tw_author"]), end($custom_fields["dg_tw_author"])
+            '<a href="https://twitter.com/%1$s" title="%2$s" rel="author">@%3$s</a>', end($custom_fields["dg_tw_author"]), end($custom_fields["dg_tw_author"]), end($custom_fields["dg_tw_author"])
         );
     }
 
@@ -564,21 +564,24 @@ function dg_tw_publish_tweet($tweet, $query = false)
 {
     global $dg_tw_queryes, $dg_tw_publish, $dg_tw_tags, $dg_tw_cats, $dg_tw_ft, $wpdb;
 
+    $tweet_time = strtotime($tweet->created_at);
+
     $post_type = isset($dg_tw_ft['post_type']) ? $dg_tw_ft['post_type'] : 'post';
     $dg_tw_start_post = get_default_post_to_edit($post_type, true);
     $username = dg_tw_tweet_user($tweet);
     $current_query = ($query != false) ? $query : array('tag' => '', 'value' => '');
 
     $querystr = "SELECT *
-					FROM $wpdb->postmeta
-					WHERE (meta_key = 'dg_tw_id' AND meta_value = '" . (int) $tweet->id_str . "')
-					GROUP BY post_id";
+                    FROM $wpdb->postmeta
+                    WHERE (meta_key = 'dg_tw_id' AND meta_value = '" . (int) $tweet->id_str . "')
+                    GROUP BY post_id";
 
     $postid = $wpdb->get_results($querystr);
     $author_tag = (!empty($dg_tw_ft['authortag']) ) ? ',' . $username : '';
     $post_tags = htmlspecialchars($dg_tw_tags . ',' . $current_query['tag'] . $author_tag);
 
     if (!count($postid)) {
+        $tweet_date = date($dg_tw_ft['date_format'], $tweet_time);
         $tweet_content = dg_tw_regexText($tweet->text);
         $post_title = filter_text($tweet, $dg_tw_ft['title_format'], "", $dg_tw_ft['maxtitle'], $dg_tw_ft['title_remove_url']);
         $post_content = filter_text($tweet, $dg_tw_ft['body_format'], $tweet_content);
@@ -606,7 +609,9 @@ function dg_tw_publish_tweet($tweet, $query = false)
             'post_category' => $dg_tw_cats,
             'tags_input' => $post_tags,
             'post_type' => $post_type,
-            'post_status' => strval($dg_tw_publish)
+            'post_status' => strval($dg_tw_publish),
+            'post_date_gmt' => $tweet_date
+
         );
 
         $post = apply_filters('dg_tw_before_post_tweet', $post);
@@ -695,15 +700,15 @@ function dg_tw_regexText($string)
     }
 
     if ($dg_tw_ft['link_urls']) {
-        $string = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i", "<a href=\"\\0\" target=\"_blank\">\\0</a>", $string);
+        $string = preg_replace("/(?<!a href=\")(?<!src=\")((http|ftp)+(s)?:\/\/[^<>\s]+)/i", "<a rel=\"nofollow\" href=\"\\0\" target=\"_blank\">\\0</a>", $string);
     }
 
     if ($dg_tw_ft['link_mentions']) {
-        $string = preg_replace('|@(\w+)|', '<a href="http://twitter.com/$1" target="_blank">@$1</a>', $string);
+        $string = preg_replace('|@(\w+)|', '<a rel="nofollow" href="http://twitter.com/$1" target="_blank">@$1</a>', $string);
     }
 
     if ($dg_tw_ft['link_hashtag']) {
-        $string = preg_replace('|#(\S+)|', '<a href="http://twitter.com/search?q=%23$1" target="_blank">#$1</a>', $string);
+        $string = preg_replace('|#(\S+)|', '<a rel="nofollow" href="http://twitter.com/search?q=%23$1" target="_blank">#$1</a>', $string);
     }
 
     return $string;
@@ -788,8 +793,9 @@ function dg_tw_insert_attachments($tweet, $post_id)
 
         if ($media->type == "photo") {
             $upload_dir = wp_upload_dir();
+            $media_url_large = $media_url . ':large';
+            $image_data = dg_tw_file_get_contents($media_url_large);
 
-            $image_data = dg_tw_file_get_contents($media_url);
             $filename = strtolower(pathinfo($media_url, PATHINFO_FILENAME)) . "." . strtolower(pathinfo($media_url, PATHINFO_EXTENSION));
             if (wp_mkdir_p($upload_dir['path']))
                 $file = $upload_dir['path'] . '/' . $filename;
