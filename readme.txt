@@ -2,7 +2,7 @@
 Contributors: badbreze,sforsberg,sudocat
 Donate link: https://www.paypal.me/DamianGomez/
 Tags: twitter, autopost
-Tested up to: 3.6
+Tested up to: 4.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -203,6 +203,11 @@ The avatar url of the author
 
 = What Next =
 * Dont know
+
+= 1.11.25 =
+* FIX: Post Date same As Tweet Date
+* FIX: NoFollow on links
+* NEW: Bigger Images Available
 
 = 1.11.24 =
 * FIX: Queryes may delete when cron runs (eg. when save settings)
