@@ -15,22 +15,22 @@ Good work with this plugin.
 = Source Available on GitHub =
 Fork Me on GitHub https://github.com/badbreze/twitter-posts-to-blog.git
 
-= With this plugin you can stream tweets to your blog, it's simply to use =
+= With this plugin you can stream tweets to your blog, it's simple to use =
 * Go to the plugin settings menu "Twitter To WP" under "Dashboard"
 * Configure the plugin options eg.:
 * Capabilities: here you can select who can change settings of this plugin 
-* Cron time: choose how much time must pass before load new items, use "never" to disable
-* Publish status: Choose how the plugin create articles: published or draft
-* Posts Tags: Type tags you want append to each tweet (dont use query strings here)
-* Posts categories: Choose categories you want append to each tweet post
+* Cron time: choose how much time must pass before loading new items, use "never" to disable
+* Publish status: Choose how the plugin creates articles: published or draft
+* Posts Tags: Type tags you want to append to each tweet (don't use query strings here)
+* Posts categories: Choose categories you want to append to each tweet post
 * Body images: Check if you want to insert images into body of the posts
 * Body text: Check if you want to insert the tweet text into body of the posts
 * Images size: deprecated, witing for feedback about the use of this image (the user avatar)
-* Items at time: choose how much tweets want to import each time the cron run
+* Items at time: choose how many tweets to import each time the cron runs
 * Max Title Length: because the title is the tweet text here you can choose the lenght of the title (truncate tweet text) (0 = no title)
-* Post Modifications: here you can remove from tweets #hastags and/or @replies - Tanks to sforsberg
-* Words blacklist: insert unwanted words to the blacklist (comma separated) tweets with choosed words will be ignored
-* Your search queryes: here you can add or remove terms for tweets import, here the query samples
+* Post Modifications: here you can remove from tweets #hastags and/or @replies - Thanks to sforsberg
+* Words blacklist: insert unwanted words to the blacklist (comma separated), tweets with chosen words will be ignored
+* Your search queries: here you can add or remove terms for tweets import, here the query samples
 
 Built by <a href="//twitter.com/iwafer">@iWafer</a> / <a rel="author" href="https://plus.google.com/111606514487113936457">Damian Gomez</a>
 
@@ -59,14 +59,14 @@ For my projects see http://www.divenock.com/projects/
 * news source:tweet_button - containing "news" and entered via the Tweet Button
 
 = More? =
-Want more functionality or some modifications? Ok tell me wath you want and i try to add or modify the plugin functions
+Want more functionality or some modifications? Ok tell me what you want and I'll try to add or modify the plugin functions
 
 
 == Installation ==
 Copy the plugin into the WordPress directory ( wp-content/plugins/ )
 Activate plugin from admin control panel
 
-Create your twitter application here:
+Create your Twitter application here:
 https://dev.twitter.com/apps/new
 
 = Once you have created you need to pick tookens from the app panel and configure this plugin with these informations: =
@@ -88,21 +88,21 @@ Follow the description in order to configure the plugin
 
 = I don't understand the utility of this plugin. Can you explain me what's mean? =
 
-This plugin periodicaly pick tweets from tag,username or some text like this: 
+This plugin periodicaly pick tweets from tag, username or some text like this: 
 https://twitter.com/search?q=%40iWafer&src=typd and for each tweet create one post in your blog.
 
-= Where do I select the category,tags,content it will post to? =
+= Where do I select the category, tags, content it will post to? =
 
 In plugin settings page there is a tab called "Post customization" where you can choose those 
 and more options for each tweet post this plugin publish
 
-= Can i exclude tweets with unwanted words/authors? =
+= Can I exclude tweets with unwanted words/authors? =
 
-Yes you can exclude authors or words from the main configuration tab of the plugin
+Yes, you can exclude authors or words from the main configuration tab of the plugin
 
 = How work the title/body formatting =
 
-Formatting is easy to use, you can choose what you want to see in every post you publish, for egsample, you can set as title something 
+Formatting is easy to use, you can choose what you want to see in every post you publish, for example, you can set as title something 
 like this:
 
 `Tweet from %author%`
@@ -124,7 +124,7 @@ This is the list of codes you can use in the formatting fields
 %tweet_url% Url of this tweet in twitter.com
 %tweet_images% An html block of all images in the tweet`
 
-= How can i filter for tweets with images =
+= How can I filter for tweets with images =
 
 You can search tweets with images using this filter in your query string
 
@@ -133,7 +133,7 @@ You can search tweets with images using this filter in your query string
 Or you can exclude images with the same filter but with a - in front of it
 `-filter:images`
 
-= How can i filter for tweets with Mentions or Replies =
+= How can I filter for tweets with Mentions or Replies =
 
 You can search replies or mentions using these filters in your query string
 
@@ -144,12 +144,12 @@ Or you can exclude replies with the same filters but with a - in front of it
 `-filter:mentions
 -filter:replies`
 
-= Why my site doesn't grab images from twitter? = 
+= Why my site doesn't grab images from Twitter? = 
 In some cases hosters have security setting in their configuration or firewalls or some other think like these, 
 if you have problems with images in tweets the main problem maybe is the "allow_url_fopen" PHP setting, 
 normaly you can request the activation of this function to enable the grabbing of images
 
-= Can i intercept some actions on the plugin runtime? =
+= Can I intercept some actions on the plugin runtime? =
 Here the list of actions with a small description
 
 `dg_tw_before_images_placed`
@@ -162,8 +162,8 @@ image as preview or as content
 `dg_tw_after_post_published`
 This action runs after the insertion of the post, the only parameter gived is the id of the post
 
-= Can i customize posts without edit the plugin? =
-Yes you can, usin filter you can edit some parts of the plugin engine without edit it, keeping the ability to 
+= Can I customize posts without editing the plugin? =
+Yes you can, using filter you can edit some parts of the plugin engine without edit it, keeping the ability to 
 update the plugin without lost any costomization made by you. Filters are listed here.
 
 `dg_tw_before_post_tweet`
@@ -173,9 +173,9 @@ Allow to edit the post data before it be published, is and array with and array 
 Filter the author name
 
 `dg_tw_the_author_link`
-Filter the html link to the author page on twitter
+Filter the html link to the author page on Twitter
 
-= Can i the id/author/avatar or query string of certain post in my template? =
+= Can I the id/author/avatar or query string of certain post in my template? =
 All posts made by this plugin are created with some metas for those who want cusutomize their theme for tweets, 
 here the collected post metas:
 
