@@ -66,7 +66,7 @@ function dg_tw_load_next_items()
             } elseif (!in_array($item->id_str, $dg_tw_exclusions)) {
                 $mega_tweet[] = array(
                     'text' => $item->text,
-                    'author' => isset($item->user->display_name) ? $item->user->display_name : $item->user->name,
+                    'author' => dg_tw_tweet_user($item),
                     'id' => $item->id_str,
                     'created_at' => $item->created_at
                 );
@@ -350,8 +350,8 @@ function dg_tw_activation()
 
     $dg_tw_queryes = get_option('dg_tw_queryes');
     $dg_tw_time = get_option('dg_tw_time');
-    $dg_tw_publish = (string) get_option('dg_tw_publish');
-    $dg_tw_tags = (string) get_option('dg_tw_tags');
+    $dg_tw_publish = (string)get_option('dg_tw_publish');
+    $dg_tw_tags = (string)get_option('dg_tw_tags');
     $dg_tw_cats = get_option('dg_tw_cats');
     $dg_tw_ft = get_option('dg_tw_ft');
 
@@ -405,8 +405,8 @@ function dg_tw_options()
 
     $dg_tw_queryes = get_option('dg_tw_queryes');
     $dg_tw_time = get_option('dg_tw_time');
-    $dg_tw_publish = (string) get_option('dg_tw_publish');
-    $dg_tw_tags = (string) get_option('dg_tw_tags');
+    $dg_tw_publish = (string)get_option('dg_tw_publish');
+    $dg_tw_tags = (string)get_option('dg_tw_tags');
     $dg_tw_cats = get_option('dg_tw_cats');
     $dg_tw_ft = get_option('dg_tw_ft');
 
@@ -496,7 +496,7 @@ function dg_tw_options()
         $now_ft['access_token'] = $_POST['dg_tw_access_token'];
         $now_ft['access_token_secret'] = $_POST['dg_tw_access_token_secret'];
 
-        $now_ft['author'] = (int) $_POST['dg_tw_author'];
+        $now_ft['author'] = (int)$_POST['dg_tw_author'];
         $now_ft['method'] = $_POST['dg_tw_method'];
         $now_ft['format'] = $_POST['dg_tw_format'];
 
@@ -538,13 +538,13 @@ function dg_tw_options()
          * UPDATE PUBLISH MODE
          */
         update_option('dg_tw_publish', $_POST['dg_tw_publish_selected']);
-        $dg_tw_publish = (string) get_option('dg_tw_publish');
+        $dg_tw_publish = (string)get_option('dg_tw_publish');
 
         /*
          * UPDATE TAGS
          */
         update_option('dg_tw_tags', $_POST['dg_tw_tag_tweets']);
-        $dg_tw_tags = (string) get_option('dg_tw_tags');
+        $dg_tw_tags = (string)get_option('dg_tw_tags');
 
         /*
          * UPDATE CATS
@@ -573,11 +573,11 @@ function dg_tw_publish_tweet($tweet, $query = false)
 
     $querystr = "SELECT *
                     FROM $wpdb->postmeta
-                    WHERE (meta_key = 'dg_tw_id' AND meta_value = '" . (int) $tweet->id_str . "')
+                    WHERE (meta_key = 'dg_tw_id' AND meta_value = '" . (int)$tweet->id_str . "')
                     GROUP BY post_id";
 
     $postid = $wpdb->get_results($querystr);
-    $author_tag = (!empty($dg_tw_ft['authortag']) ) ? ',' . $username : '';
+    $author_tag = (!empty($dg_tw_ft['authortag'])) ? ',' . $username : '';
     $post_tags = htmlspecialchars($dg_tw_tags . ',' . $current_query['tag'] . $author_tag);
 
     if (!count($postid)) {
@@ -614,7 +614,7 @@ function dg_tw_publish_tweet($tweet, $query = false)
             'post_date' => date('Y-m-d H:i:s', strtotime($tweet->created_at))
         );
 
-        $post = apply_filters('dg_tw_before_post_tweet', $post);
+        $post = apply_filters('dg_tw_before_post_tweet', $post, $tweet);
 
         $dg_tw_this_post = wp_insert_post($post, true);
 
@@ -722,8 +722,7 @@ function filter_text($tweet, $format = "", $content = "", $limit = -1, $remove_u
     $result = ($format == "") ? $text : $format;
     $tweet_time = strtotime($tweet->created_at);
 
-    $username = (isset($tweet->user->display_ame) && !empty($tweet->user->display_ame)) ? $tweet->user->display_ame : $tweet->user->name;
-    $username = (isset($tweet->user->screen_name) && !empty($tweet->user->screen_name)) ? $tweet->user->screen_name : $username;
+    $username = dg_tw_tweet_user($tweet);
     $tweet_url = 'https://twitter.com/' . $username . '/status/' . $tweet->id_str;
     $tweet_date = date($dg_tw_ft['date_format'], $tweet_time);
 
@@ -867,9 +866,16 @@ function dg_tw_manual_publish()
 
 function dg_tw_tweet_user($tweet)
 {
-    $username = "";
-    $username = (isset($tweet->user->display_name) && !empty($tweet->user->display_name)) ? $tweet->user->display_name : $tweet->user->name;
-    $username = (isset($tweet->user->screen_name) && !empty($tweet->user->screen_name)) ? $tweet->user->screen_name : $username;
+    $name = $tweet->user->name;
 
-    return $username;
+    switch (true) {
+        case isset($tweet->user->screen_name):
+            $name = $tweet->user->screen_name;
+            break;
+        case isset($tweet->user->screen_name):
+            $name = $tweet->user->screen_name;
+            break;
+    }
+
+    return $name;
 }
